@@ -3,9 +3,11 @@ package com.cinego.services;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.cinego.configs.JwtFilter;
+import com.cinego.dtos.LoginRequest;
 import com.cinego.models.Token;
+import com.cinego.models.Usuario;
 import com.cinego.repositories.TokenRepository;
+import com.cinego.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -23,23 +25,30 @@ public class TokenService {
     @Value("${spring.tempo_expiracao}")
     private Long tempo;
 
-    private String emissor = "cinegobybedebola";
+    private String emissor = "CineGoByBedeBola";
 
     @Autowired
     private TokenRepository tokenRepository;
 
-    public String gerarToken(String email, String senha){
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
+
+    public String gerarToken(LoginRequest request){
+
+        var usuario = usuarioRepository.findByEmail(request.email()).orElse(null);
 
         Algorithm algorithm = Algorithm.HMAC256(secret);
 
         String token = JWT.create()
                 .withIssuer(emissor)
-                .withSubject(email)
-                .withExpiresAt(this.gerarDataExpiracao() )
+                .withSubject(usuario.getEmail())
+                .withExpiresAt(this.gerarDataExpiracao())
                 .sign(algorithm);
 
-        tokenRepository.save(new Token(null, token, email));
+        tokenRepository.save(new Token(null, token, usuario));
         return token;
+
     }
 
     public Instant gerarDataExpiracao(){
@@ -49,21 +58,21 @@ public class TokenService {
         return dataAtual.toInstant(ZoneOffset.of("-03:00"));
     }
 
-
-    public String validarToken(String token) {
+    public Usuario validarToken(String token){
         Algorithm algorithm = Algorithm.HMAC256(secret);
-        JWTVerifier verificador = JWT.require(algorithm)
+        JWTVerifier verifier = JWT.require(algorithm)
                 .withIssuer(emissor)
                 .build();
 
-        verificador.verify(token);
+        verifier.verify(token);
 
         var tokenResult = tokenRepository.findByToken(token).orElse(null);
 
         if (tokenResult == null){
-            throw new IllegalArgumentException("O token não é válido!");
+            throw new IllegalArgumentException("Token invalido!");
         }
 
         return tokenResult.getUsuario();
     }
+
 }

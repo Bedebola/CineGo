@@ -19,6 +19,5 @@ public class Token {
     private Long id;
 
     private String token;
-
-    private String usuario;
+    private Usuario usuario;
 }

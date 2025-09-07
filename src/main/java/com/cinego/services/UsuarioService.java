@@ -13,6 +13,5 @@ public class UsuarioService {
 
     public boolean validarSenha(LoginRequest login){
         return usuarioRepository.existsUsuarioByEmailContainingAndSenha(login.email(), login.senha());
-
     }
 }

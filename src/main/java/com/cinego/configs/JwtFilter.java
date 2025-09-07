@@ -10,16 +10,15 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.w3c.dom.html.HTMLParagraphElement;
 
 import java.io.IOException;
-import java.util.Collections;
 
 @Component
 public class JwtFilter extends OncePerRequestFilter {
 
     @Autowired
     private TokenService tokenService;
+
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -40,26 +39,27 @@ public class JwtFilter extends OncePerRequestFilter {
 
             if (header != null && header.startsWith("Bearer ")){
                 String token = header.replace("Bearer ", "");
-                var validador = tokenService.validarToken(token);
+                var usuario = tokenService.validarToken(token);
 
-                String user = validador;
-                System.out.println(user);
+                var autorizacao = new UsernamePasswordAuthenticationToken(
+                        usuario.getEmail(),
+                        null,
+                        usuario.getAuthorities()
+                );
 
-                var autorizacao = new UsernamePasswordAuthenticationToken((user, null, Collections.emptyList());
                 SecurityContextHolder.getContext().setAuthentication(autorizacao);
 
                 filterChain.doFilter(request, response);
 
-            } else {
+            }else {
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                 response.getWriter().write("Token não informado!");
+                return;
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("Token não informado!");
-        }
+            return;        }
+
     }
-
-
-
 }
