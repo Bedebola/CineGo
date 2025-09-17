@@ -19,10 +19,10 @@ import java.time.ZoneOffset;
 @Service
 public class TokenService {
 
-    @Value("${spring.secretKey}")
+    @Value("${spring.seguranca.secret}")
     private String secret;
 
-    @Value("${spring.tempo_expiracao}")
+    @Value("${spring.seguranca.expirationTime}")
     private Long tempo;
 
     private String emissor = "CineGoByBedeBola";

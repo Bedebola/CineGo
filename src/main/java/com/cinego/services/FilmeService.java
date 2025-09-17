@@ -45,7 +45,7 @@ public class FilmeService {
         }
     }
 
-    public void validarCamposFilme (Long idIgnore, Filme filme) throws ArgumentoInvalidoOuNaoEncontradoException {
+    public void validarCamposFilme (Filme filme,Long idIgnore) throws ArgumentoInvalidoOuNaoEncontradoException {
 
         if (filme == null){
             throw new ArgumentoInvalidoOuNaoEncontradoException("Filme não pode ser nulo!");
@@ -59,7 +59,7 @@ public class FilmeService {
 
         boolean nomeExiste = (idIgnore == null)
                 ? filmeRepository.existsByNomeIgnoreCase(filme.getNome())
-                : filmeRepository.existsByNomeIgnoreCaseAndIdNot(idIgnore, filme.getNome());
+                : filmeRepository.existsByNomeIgnoreCaseAndIdNot(filme.getNome(), idIgnore);
 
         if (nomeExiste) {
             throw new ArgumentoInvalidoOuNaoEncontradoException("Já existe um filme registrado com esse nome!");
@@ -67,7 +67,7 @@ public class FilmeService {
     }
 
     public Filme cadastrarFilme(Filme filme) throws ArgumentoInvalidoOuNaoEncontradoException {
-        validarCamposFilme(null, filme);
+        validarCamposFilme(filme, null);
         filme.setStatus(StatusFilme.DISPONIVEL);
 
         return filmeRepository.save(filme);
@@ -76,7 +76,7 @@ public class FilmeService {
     public Filme editarFilme(Long idFilme, Filme filme) throws ArgumentoInvalidoOuNaoEncontradoException{
         Filme filmeExistente = buscarFilmePorId(idFilme);
 
-        validarCamposFilme(idFilme, filme);
+        validarCamposFilme(filme, idFilme);
 
         filmeExistente.setNome(filme.getNome());
         filmeExistente.setSinopse(filme.getSinopse());

@@ -27,24 +27,24 @@ public class SecurityConfig {
                         //autorizações do swagger
                         .requestMatchers("/swagger-resources/**").permitAll()
                         .requestMatchers("/swagger-ui/**").permitAll()
-                        .requestMatchers("/v3/api-docs").permitAll()
+                        .requestMatchers("/v3/api-docs/**").permitAll()
 
                         //autorizações das rotas de usuario
-                        .requestMatchers("/auth/login").permitAll()
-                        .requestMatchers("/listarTodos").hasRole("ADMIN")
-                        .requestMatchers("/usuario/**").authenticated()
-                        .requestMatchers("/novo").hasRole("ADMIN")
+                        .requestMatchers("/usuario/auth/login").permitAll()
+                        .requestMatchers("/usuario/listarTodos").hasRole("ADMIN")
+                        .requestMatchers("/usuario/usuario/**").authenticated()
+                        .requestMatchers("/usuario/novo/**").permitAll()
 
                         //autorizações das rotas de filme
-                        .requestMatchers("/listarFilmes").authenticated()
-                        .requestMatchers("/buscarFilmeId/**").authenticated()
-                        .requestMatchers("/cadastrarFilme").hasRole("ADMIN")
-                        .requestMatchers("/editarFilme/**").hasRole("ADMIN")
-                        .requestMatchers("/alugarFilme/**").hasRole("ADMIN")
-                        .requestMatchers("/devolverFilme/**").hasRole("ADMIN")
-                        .requestMatchers("/desativarFilme/**").hasRole("ADMIN")
-                        .requestMatchers("/ativarFilme/**").hasRole("ADMIN")
-                        .requestMatchers("/excluir/**").hasRole("ADMIN")
+                        .requestMatchers("/filme/listarFilmes").authenticated()
+                        .requestMatchers("/filme/buscarFilmeId/**").authenticated()
+                        .requestMatchers("/filme/cadastrarFilme").hasRole("ADMIN")
+                        .requestMatchers("/filme/editarFilme/**").hasRole("ADMIN")
+                        .requestMatchers("/filme/alugarFilme/**").hasRole("ADMIN")
+                        .requestMatchers("/filme/devolverFilme/**").hasRole("ADMIN")
+                        .requestMatchers("/filme/desativarFilme/**").hasRole("ADMIN")
+                        .requestMatchers("/filme/ativarFilme/**").hasRole("ADMIN")
+                        .requestMatchers("/filme/excluir/**").hasRole("ADMIN")
 
                         .anyRequest().authenticated()
                 )

@@ -1,0 +1,27 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/cinego
+    username: root
+    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  seguranca:
+    secret: aminhasenha2003
+    expirationTime: 360
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
+
+server:
+  error:
+    include-message: always
+    include-binding-errors: always
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
