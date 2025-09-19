@@ -19,10 +19,8 @@ public class Filme {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nome;
-
+    private String titulo;
     private String sinopse;
-
     private StatusFilme status;
 
 }

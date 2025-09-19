@@ -1,6 +1,7 @@
 package com.cinego.controllers;
 
 import com.cinego.dtos.LoginRequest;
+import com.cinego.dtos.TokenResponse;
 import com.cinego.services.TokenService;
 import com.cinego.services.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,12 +28,11 @@ public class AccessController {
     public ResponseEntity<?> login(
             @RequestBody LoginRequest request
     ){
-
         if (!usuarioService.validarSenha(request)){
             return ResponseEntity.badRequest().body("Usuario ou senha invalidos");
         }
 
         var token = tokenService.gerarToken(request);
-        return ResponseEntity.ok(token);
+        return ResponseEntity.ok(new TokenResponse(token));
     }
 }

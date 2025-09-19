@@ -1,8 +1,10 @@
 package com.cinego.controllers;
 
+import com.cinego.exceptions.ArgumentoInvalidoOuNaoEncontradoException;
 import com.cinego.models.Usuario;
-import com.cinego.repositories.UsuarioRepository;
+import com.cinego.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,39 +13,60 @@ import org.springframework.web.bind.annotation.*;
 public class UsuarioController {
 
     @Autowired
-    UsuarioRepository usuarioRepository;
+    UsuarioService usuarioService;
 
-    @GetMapping
-    public ResponseEntity<?> consultarTodos(){
-        return ResponseEntity.ok(usuarioRepository.findAll());
+    @GetMapping("/listarUsuarios")
+    ResponseEntity<?> listarUsuarios(){
+        try {
+            return ResponseEntity.ok(usuarioService.listarUsuarios());
+        } catch (ArgumentoInvalidoOuNaoEncontradoException e) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
     }
 
-    @GetMapping("/listarTodos")
-    ResponseEntity<?> listarTodos(){
-        return ResponseEntity.ok(usuarioRepository.findAll());
-    }
-
-    @GetMapping("/usuario/{id}")
+    @GetMapping("/usuario/{idUsuario}")
     ResponseEntity<?> consultarUsuarioId(
-            @PathVariable Long id
+            @PathVariable Long idUsuario
     ){
-            var usuario = usuarioRepository.findById(id)
-                    .orElse(null);
-            if (usuario == null){
-                return ResponseEntity.notFound().build();
-            }
-            return ResponseEntity.ok(usuario);
+        try {
+            return ResponseEntity.ok(usuarioService.buscarUsuarioId(idUsuario));
+        } catch (ArgumentoInvalidoOuNaoEncontradoException e){
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
     }
 
     @PostMapping("/novo")
     public ResponseEntity<?> criarUsuario(
             @RequestBody Usuario usuario
     ){
-        try{
-            var UsuarioResponse = usuarioRepository.save(usuario);
-            return ResponseEntity.ok(UsuarioResponse);
-        }catch (Exception e){
-            return ResponseEntity.badRequest().build();
+        try {
+            return ResponseEntity.ok(usuarioService.cadastrarUsuario(usuario));
+        } catch (ArgumentoInvalidoOuNaoEncontradoException e){
+            return ResponseEntity.badRequest().body("Erro: " + e);
+        }
+    }
+
+    @PutMapping("/editar/{idUsuario}")
+    public ResponseEntity<?> editarUsuario(
+            @PathVariable Long idUsuario,
+            @RequestBody Usuario usuario
+    ){
+        try {
+            return  ResponseEntity.ok(usuarioService.editarUsuario(idUsuario, usuario));
+        } catch (ArgumentoInvalidoOuNaoEncontradoException e) {
+            return ResponseEntity.badRequest().body("Erro: " + e);
+        }
+    }
+
+    @DeleteMapping("/excluir/{idUsuario}")
+    public ResponseEntity<?> excluirUsuario (
+            @PathVariable long idUsuario
+    ){
+        try {
+            usuarioService.excluirUsuario(idUsuario);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro interno no servidor");
         }
     }
 }

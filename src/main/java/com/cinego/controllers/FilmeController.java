@@ -47,7 +47,7 @@ public class FilmeController {
         }
     }
 
-    @PutMapping("editarFilme/{id}")
+    @PutMapping("editarFilme/{idFilme}")
     ResponseEntity<?> editarfilme(
             @PathVariable Long idFilme,
             @RequestBody Filme filme
@@ -59,7 +59,7 @@ public class FilmeController {
         }
     }
 
-    @PutMapping("/alugarFilme/{id}")
+    @PutMapping("/alugarFilme/{idFilme}")
     ResponseEntity<?> alugarFilme(
             @PathVariable Long idFilme
     ){
@@ -70,7 +70,7 @@ public class FilmeController {
         }
     }
 
-    @PutMapping("/devolverFilme/{id}")
+    @PutMapping("/devolverFilme/{idFilme}")
     ResponseEntity<?> devolverFilme(
             @PathVariable Long idFilme
     ){
@@ -81,7 +81,7 @@ public class FilmeController {
         }
     }
 
-    @PutMapping("/desativarFilme/{id}")
+    @PutMapping("/desativarFilme/{idFilme}")
     ResponseEntity<?> desativarFilme(
             @PathVariable Long idFilme
     ){
@@ -92,7 +92,7 @@ public class FilmeController {
         }
     }
 
-    @PutMapping("/ativarFilme/{id}")
+    @PutMapping("/ativarFilme/{idFilme}")
     ResponseEntity<?> ativarFilme(
             @PathVariable Long idFilme
     ){
@@ -103,12 +103,12 @@ public class FilmeController {
         }
     }
 
-    @DeleteMapping("/excluir/{id}")
-    public ResponseEntity<?> excluirPrato (
-            @PathVariable long id
+    @DeleteMapping("/excluir/{idFilme}")
+    public ResponseEntity<?> excluirFilme (
+            @PathVariable Long idFilme
     ){
         try {
-            filmeService.excluirFilme(id);
+            filmeService.excluirFilme(idFilme);
             return ResponseEntity.noContent().build();
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro interno no servidor");

@@ -25,7 +25,8 @@ public class JwtFilter extends OncePerRequestFilter {
         String path = request.getRequestURI();
 
         try {
-            if (path.equals("/access/login")
+            if (
+                    path.equals("/access/login")
                     || path.startsWith("/swagger-resources")
                     || path.startsWith("/v3/api-docs")
                     || path.startsWith("/webjars")
@@ -48,18 +49,19 @@ public class JwtFilter extends OncePerRequestFilter {
                 );
 
                 SecurityContextHolder.getContext().setAuthentication(autorizacao);
-
                 filterChain.doFilter(request, response);
 
-            }else {
+            }  else {
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                response.getWriter().write("Token não informado!");
+                response.getWriter().write("Token nao informado!");
                 return;
             }
+
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("Token não informado!");
-            return;        }
-
+            response.getWriter().write("Erro no token: " + e.getMessage());
+            e.printStackTrace();
+            return;
+        }
     }
 }
