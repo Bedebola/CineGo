@@ -12,4 +12,5 @@ public class DtoUsuario {
     private String nome;
     private String cpf;
     private String email;
+    private String role;
 }

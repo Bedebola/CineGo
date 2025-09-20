@@ -9,6 +9,7 @@ import com.cinego.repositories.FilmeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,18 +22,27 @@ public class FilmeService {
         DtoFilme filmeRetorno = new DtoFilme();
         filmeRetorno.setTitulo(filme.getTitulo());
         filmeRetorno.setSinopse(filme.getSinopse());
+        filmeRetorno.setStatus(filme.getStatus());
 
         return filmeRetorno;
     }
 
-
-    public List<Filme> listarFilmes() throws ArgumentoInvalidoOuNaoEncontradoException {
+    public List<DtoFilme> listarFilmes() throws ArgumentoInvalidoOuNaoEncontradoException {
 
         try {
-            List<Filme> listaFilmesRetorno = filmeRepository.findAll();
+            List<Filme> listaFilmes = filmeRepository.findAll();
 
-            if (listaFilmesRetorno.isEmpty()){
+            if (listaFilmes.isEmpty()){
                 throw new ArgumentoInvalidoOuNaoEncontradoException("A lista de filmes encontra-se vazia!");
+            }
+
+            List<DtoFilme> listaFilmesRetorno = new ArrayList<>();
+
+            for (int i = 0; i < listaFilmes.size(); i++) {
+                Filme filme = listaFilmes.get(i);
+                DtoFilme dtoFilme = criarRetornoFilme(filme);
+
+                listaFilmesRetorno.add(dtoFilme);
             }
 
             return listaFilmesRetorno;
@@ -105,7 +115,7 @@ public class FilmeService {
         }
     }
 
-    public Filme alugarFilme(Long idFilme) throws ArgumentoInvalidoOuNaoEncontradoException {
+    public DtoFilme alugarFilme(Long idFilme) throws ArgumentoInvalidoOuNaoEncontradoException {
 
         Filme filmeRegistrado = filmeRepository.findById(idFilme)
                 .orElseThrow(()->new ArgumentoInvalidoOuNaoEncontradoException("Nenhum usuario encontrado para o id informado"));
@@ -115,10 +125,10 @@ public class FilmeService {
         }
 
         filmeRegistrado.setStatus(StatusFilme.ALUGADO);
-        return filmeRepository.save(filmeRegistrado);
+        return criarRetornoFilme(filmeRegistrado);
     }
 
-    public Filme devolverFilme(Long idFilme) throws ArgumentoInvalidoOuNaoEncontradoException {
+    public DtoFilme devolverFilme(Long idFilme) throws ArgumentoInvalidoOuNaoEncontradoException {
 
         Filme filmeRegistrado = filmeRepository.findById(idFilme)
                 .orElseThrow(()->new ArgumentoInvalidoOuNaoEncontradoException("Nenhum usuario encontrado para o id informado"));
@@ -129,10 +139,11 @@ public class FilmeService {
         }
 
         filmeRegistrado.setStatus(StatusFilme.DISPONIVEL);
-        return filmeRepository.save(filmeRegistrado);
+        filmeRepository.save(filmeRegistrado);
+        return criarRetornoFilme(filmeRegistrado);
     }
 
-    public Filme desativarFilme(Long idFilme) throws ArgumentoInvalidoOuNaoEncontradoException {
+    public DtoFilme desativarFilme(Long idFilme) throws ArgumentoInvalidoOuNaoEncontradoException {
 
         Filme filmeRegistrado = filmeRepository.findById(idFilme)
                 .orElseThrow(()->new ArgumentoInvalidoOuNaoEncontradoException("Nenhum usuario encontrado para o id informado"));
@@ -143,10 +154,11 @@ public class FilmeService {
         }
 
         filmeRegistrado.setStatus(StatusFilme.DESATIVADO);
-        return filmeRepository.save(filmeRegistrado);
+        filmeRepository.save(filmeRegistrado);
+        return criarRetornoFilme(filmeRegistrado);
     }
 
-    public Filme ativarFilme(Long idFilme) throws ArgumentoInvalidoOuNaoEncontradoException {
+    public DtoFilme ativarFilme(Long idFilme) throws ArgumentoInvalidoOuNaoEncontradoException {
 
         Filme filmeRegistrado = filmeRepository.findById(idFilme)
                 .orElseThrow(()->new ArgumentoInvalidoOuNaoEncontradoException("Nenhum usuario encontrado para o id informado"));
@@ -156,7 +168,8 @@ public class FilmeService {
         }
 
         filmeRegistrado.setStatus(StatusFilme.DISPONIVEL);
-        return filmeRepository.save(filmeRegistrado);
+        filmeRepository.save(filmeRegistrado);
+        return criarRetornoFilme(filmeRegistrado);
     }
 
     public void excluirFilme(Long idFilme) throws ArgumentoInvalidoOuNaoEncontradoException {

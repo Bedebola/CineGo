@@ -3,6 +3,7 @@ package com.cinego.controllers;
 import com.cinego.exceptions.ArgumentoInvalidoOuNaoEncontradoException;
 import com.cinego.models.Filme;
 import com.cinego.services.FilmeService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/filme")
+@Tag(name = "Controller de Filmes", description = "Controler responsável pelas ações feitas na entidade Filmes. Possibilita o CRUDE Basico (Criação, Edição, Listagem/Busca e exclusão) e também ações como alugar, devolver e destivar através do método PUT.")
 public class FilmeController {
 
     @Autowired
@@ -25,7 +27,7 @@ public class FilmeController {
         }
     }
 
-    @GetMapping("/buscarFilmeId/{id}")
+    @GetMapping("/buscarFilmeId/{idFilme}")
     ResponseEntity<?> buscarFilmePorId(
             @PathVariable Long idFilme
     ){

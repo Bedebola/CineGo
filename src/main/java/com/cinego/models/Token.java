@@ -1,6 +1,10 @@
 package com.cinego.models;
 
-import jakarta.persistence.*;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,6 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Tag(name = "Entidade Token", description = "Entidade que contem os atributos do token de acesso.")
 public class Token {
 
     @Id
@@ -16,9 +21,5 @@ public class Token {
     private Long id;
 
     private String token;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "usuario_id", nullable = true)
     private Usuario usuario;
-
 }

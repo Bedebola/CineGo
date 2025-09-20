@@ -1,5 +1,6 @@
 package com.cinego.models;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,6 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "usuarios")
+@Tag(name = "Entidade Usuario", description = "Entidade de usuarios do sistema.")
 public class Usuario implements UserDetails {
 
     @Id

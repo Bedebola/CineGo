@@ -9,6 +9,7 @@ import com.cinego.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,6 +27,7 @@ public class UsuarioService {
         usuarioRetorno.setNome(usuario.getNome());
         usuarioRetorno.setCpf(usuario.getCpf());
         usuarioRetorno.setEmail(usuario.getEmail());
+        usuarioRetorno.setRole(usuario.getRole());
 
         return usuarioRetorno;
     }
@@ -61,12 +63,21 @@ public class UsuarioService {
         }
     }
 
-    public List<Usuario> listarUsuarios() throws ArgumentoInvalidoOuNaoEncontradoException{
+    public List<DtoUsuario> listarUsuarios() throws ArgumentoInvalidoOuNaoEncontradoException{
         try{
-            List<Usuario> listaUsuariosRetorno = usuarioRepository.findAll();
+            List<Usuario> listaUsuarios = usuarioRepository.findAll();
 
-            if (listaUsuariosRetorno.isEmpty()){
+            if (listaUsuarios.isEmpty()){
                 throw new ArgumentoInvalidoOuNaoEncontradoException("A lista de usuarios está vazia.");
+            }
+
+            List<DtoUsuario> listaUsuariosRetorno = new ArrayList<>();
+
+            for (int i = 0; i < listaUsuarios.size(); i++) {
+                Usuario usuario = listaUsuarios.get(i);
+                DtoUsuario dtoUsuario = criarRetornoUsuario(usuario);
+
+                listaUsuariosRetorno.add(dtoUsuario);
             }
 
             return listaUsuariosRetorno;
@@ -105,7 +116,14 @@ public class UsuarioService {
             Usuario usuarioExistente = usuarioRepository.findById(idUsuario)
                     .orElseThrow(()->new ArgumentoInvalidoOuNaoEncontradoException("Nenhum usuario encontrado para o id informado"));
 
-            validarCamposUsuario(usuarioExistente, null);
+            validarCamposUsuario(usuario, idUsuario);
+
+            usuarioExistente.setNome(usuario.getNome());
+            usuarioExistente.setCpf(usuario.getCpf());
+            usuarioExistente.setEmail(usuario.getEmail());
+            usuarioExistente.setSenha(usuario.getSenha());
+            usuarioExistente.setRole(usuario.getRole());
+
             usuarioRepository.save(usuarioExistente);
 
             return criarRetornoUsuario(usuarioExistente);
