@@ -1,0 +1,13 @@
+package com.cinego.repositories;
+
+import com.cinego.models.Filme;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+@Tag(name = "Repositorio de Filmes", description = "Repositorio da entide Filme.")
+public interface FilmeRepository extends JpaRepository<Filme, Long> {
+    boolean existsByTituloIgnoreCase(String titulo);
+    boolean existsByTituloIgnoreCaseAndIdNot(String titulo, Long id);
+}
