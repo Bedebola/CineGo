@@ -20,6 +20,7 @@ public class FilmeService {
 
     public DtoFilme criarRetornoFilme(Filme filme)throws ArgumentoInvalidoOuNaoEncontradoException{
         DtoFilme filmeRetorno = new DtoFilme();
+        filmeRetorno.setFilmeId(filme.getId());
         filmeRetorno.setTitulo(filme.getTitulo());
         filmeRetorno.setSinopse(filme.getSinopse());
         filmeRetorno.setStatus(filme.getStatus());
@@ -52,13 +53,13 @@ public class FilmeService {
         }
     }
 
-    public DtoFilme buscarFilmePorId(Long filmeId) throws ArgumentoInvalidoOuNaoEncontradoException {
+    public Filme buscarFilmePorId(Long filmeId) throws ArgumentoInvalidoOuNaoEncontradoException {
 
         try {
             Filme filme = filmeRepository.findById(filmeId)
                     .orElseThrow(()-> new ArgumentoInvalidoOuNaoEncontradoException("Nenhum filme foi encontrado para o ID informado!"));
 
-            return criarRetornoFilme(filme);
+            return filme;
 
         } catch (Exception e) {
             throw new AcaoInvalidaException("Ocorreu um erro ao buscar o filme pelo id: " + e.getMessage());

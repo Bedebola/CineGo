@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DtoFilme {
 
+    private Long filmeId;
     private String titulo;
     private String sinopse;
     private StatusFilme status;
