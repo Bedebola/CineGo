@@ -13,6 +13,9 @@ export default function Header() {
         <Link to="/usuarios" className="text-white text-decoration-none">
           Usuarios
         </Link>
+        <Link to="/filmes" className="text-white text-decoration-none">
+          Catálogo de Filmes
+        </Link>
       </nav>
     </header>
   );
