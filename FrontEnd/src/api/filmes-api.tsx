@@ -58,9 +58,11 @@ export async function cadastrarFilme(filme: { titulo: string; sinopse: string })
   return response.json();
 }
 
-export async function editarFilme(filmeId: number){
+export async function editarFilme(filmeId: number, filme: { titulo: string; sinopse: string }){
     const response = await api(`/filme/editarFilme/${filmeId}`, {
-        method: 'PUT'
+        method: 'PUT',
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(filme),
     });
     const data = await response.json();
     return data;

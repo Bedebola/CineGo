@@ -25,4 +25,9 @@ public class Filme {
     private String sinopse;
     private StatusFilme status;
 
+    public Filme(String titulo, String sinopse, StatusFilme status) {
+        this.sinopse = sinopse;
+        this.status = status;
+        this.titulo = titulo;
+    }
 }

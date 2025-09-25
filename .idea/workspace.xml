@@ -6,24 +6,21 @@
   <component name="ChangeListManager">
     <list default="true" id="6e0f71df-840d-45ba-9ebc-9679c8838246" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/FrontEnd/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/FrontEnd/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/FrontEnd/eslint.config.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/FrontEnd/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/FrontEnd/package-lock.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/FrontEnd/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/FrontEnd/public/vite.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/FrontEnd/src/App.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/FrontEnd/src/App.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/FrontEnd/src/assets/react.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/FrontEnd/src/index.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/FrontEnd/src/main.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/FrontEnd/src/vite-env.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/FrontEnd/tsconfig.app.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/FrontEnd/tsconfig.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/FrontEnd/tsconfig.node.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/FrontEnd/vite.config.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackEnd/src/main/java/com/cinego/configs/CorsConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/src/main/java/com/cinego/configs/CorsConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackEnd/src/main/java/com/cinego/configs/JwtFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/src/main/java/com/cinego/configs/JwtFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackEnd/src/main/java/com/cinego/controllers/FilmeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/src/main/java/com/cinego/controllers/FilmeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackEnd/src/main/java/com/cinego/models/Filme.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/src/main/java/com/cinego/models/Filme.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackEnd/src/main/java/com/cinego/models/Usuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/src/main/java/com/cinego/models/Usuario.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackEnd/src/main/java/com/cinego/services/FilmeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/src/main/java/com/cinego/services/FilmeService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackEnd/src/main/java/com/cinego/services/UsuarioService.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/src/main/java/com/cinego/services/UsuarioService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/src/Componentes/Dialogs/Filmes/FilmeEdicaoDialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/src/Componentes/Dialogs/Filmes/FilmeEdicaoDialog.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/src/Componentes/Dialogs/Filmes/FilmeViewDialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/src/Componentes/Dialogs/Filmes/FilmeViewDialog.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/src/Componentes/Dialogs/Usuarios/UsuarioEdicaoDialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/src/Componentes/Dialogs/Usuarios/UsuarioEdicaoDialog.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/src/Paginas/Filmes/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/src/Paginas/Filmes/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/src/Paginas/Usuarios/CadastrarUsuario.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/src/Paginas/Usuarios/CadastrarUsuario.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/src/Paginas/Usuarios/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/src/Paginas/Usuarios/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/src/api/filmes-api.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/src/api/filmes-api.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/src/api/usuarios-api.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/src/api/usuarios-api.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,16 +57,16 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.CineGoApplication.executor": "Debug",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Suporte/Documents/CineGo/BackEnd"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.CineGoApplication.executor&quot;: &quot;Debug&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Suporte/Documents/CineGo/BackEnd&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="com.cinego.dtos" />

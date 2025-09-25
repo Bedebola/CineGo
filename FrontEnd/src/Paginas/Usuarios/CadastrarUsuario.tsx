@@ -55,11 +55,16 @@ function CadastrarUsuario() {
           Cadastrar Usuário
         </h2>
 
-        {message && (
-          <div className="alert alert-info text-center" role="alert">
-            {message}
-          </div>
-        )}
+            {message && (
+              <div
+                className={`alert ${
+                  message.includes("sucesso") ? "alert-success" : "alert-danger"
+                } mb-3`}
+                role="alert"
+              >
+                {message}
+              </div>
+            )}
 
         <form onSubmit={handleSubmit}>
           <div className="mb-3">

@@ -60,7 +60,7 @@ function FilmeViewDialog ({ filmeId, onChange }: FilmeViewProps) {
 
   return (
     <>
-      <button onClick={abrirDialog} className="btn btn-primary btn-sm">
+      <button onClick={abrirDialog} className="btn btn-sm">
         <i className="bi bi-eye-fill"></i>
       </button>
 

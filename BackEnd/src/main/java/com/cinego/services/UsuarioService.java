@@ -44,8 +44,10 @@ public class UsuarioService {
         if (usuario.getCpf() == null || usuario.getCpf().isEmpty() || usuario.getCpf().length() < 11 || usuario.getCpf().length() > 14){
             throw new ArgumentoInvalidoOuNaoEncontradoException("O campo CPF não pode ser vazio e deve conter 11 dígitos");
         }
-        if (usuario.getSenha() == null || usuario.getSenha().isEmpty()){
-            throw new ArgumentoInvalidoOuNaoEncontradoException("O campo SENHA não pode ser vazio!");
+        if (idIgnorar == null) {
+            if (usuario.getSenha() == null || usuario.getSenha().isEmpty()){
+                throw new ArgumentoInvalidoOuNaoEncontradoException("O campo SENHA não pode ser vazio!");
+            }
         }
         if (usuario.getEmail() == null || usuario.getEmail().isEmpty()){
             throw new ArgumentoInvalidoOuNaoEncontradoException("O campo EMAIL não pode ser vazio!");
@@ -53,14 +55,10 @@ public class UsuarioService {
 
         boolean emailExiste = (idIgnorar == null)
                 ?usuarioRepository.existsByEmailIgnoreCase(usuario.getEmail())
-                :usuarioRepository.existsByEmailIgnoreCaseAndIdNot(usuario.getEmail(), usuario.getId());
+                :usuarioRepository.existsByEmailIgnoreCaseAndIdNot(usuario.getEmail(), idIgnorar);
 
         if (emailExiste){
             throw new ArgumentoInvalidoOuNaoEncontradoException("Já existe um usuário cadastrado com esse e-mail!");
-        }
-
-        if (usuario.getRole() == null || usuario.getRole().isEmpty()){
-            throw new ArgumentoInvalidoOuNaoEncontradoException("O campo ROLE não pode ser vazio!");
         }
     }
 

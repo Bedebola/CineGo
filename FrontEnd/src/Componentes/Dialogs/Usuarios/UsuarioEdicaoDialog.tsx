@@ -11,9 +11,10 @@ interface Usuario {
 
 interface EditarUsuarioProps {
   usuarioId: number;
+  onChange?: () => void;
 }
 
-function EditarUsuario({ usuarioId }: EditarUsuarioProps) {
+function EditarUsuario({ usuarioId, onChange }: EditarUsuarioProps) {
   const [usuario, setUsuario] = useState<Usuario | null>(null);
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
@@ -53,17 +54,15 @@ function EditarUsuario({ usuarioId }: EditarUsuarioProps) {
     setMessage("");
 
     try {
-      await editarUsuario({
-        usuarioId,
+      await editarUsuario(usuarioId, {
         nome,
         email,
         cpf,
         senha,
-        role: "ADMIN",
       });
 
       setMessage("As alterações foram salvas com sucesso!");
-      fecharDialog();
+      onChange?.();
     } catch (error) {
       console.error(error);
       setMessage("Erro ao editar os dados do usuário. Tente novamente.");
@@ -72,11 +71,18 @@ function EditarUsuario({ usuarioId }: EditarUsuarioProps) {
 
   return (
     <>
-      <button onClick={abrirDialog} className="btn btn-primary btn-sm">
+      <button onClick={abrirDialog} className="btn  btn-sm">
         <i className="bi bi-pencil-square"></i>
       </button>
 
-      <style>{`#dlg-${usuarioId}::backdrop{background:rgba(0,0,0,.55)}`}</style>
+      <style>{`
+        #dlg-${usuarioId}::backdrop {
+          background: rgba(0, 0, 0, 0.55);
+        }
+        .form-label {
+          color: black !important;
+        }
+      `}</style>
 
       <dialog
         id={`dlg-${usuarioId}`}
@@ -101,9 +107,20 @@ function EditarUsuario({ usuarioId }: EditarUsuarioProps) {
             ></button>
           </div>
 
+            {message && (
+              <div
+                className={`alert ${
+                  message.includes("sucesso") ? "alert-success" : "alert-danger"
+                } mb-2`}
+                role="alert"
+              >
+                {message}
+              </div>
+            )}
+
           <form onSubmit={handleSubmit} className="p-4">
             <div className="mb-3">
-              <label htmlFor="nomeUsuario" className="form-label fw-bold" color="black">
+              <label htmlFor="nomeUsuario" className="form-label fw-bold">
                 Nome do Usuário
               </label>
               <input
@@ -153,8 +170,6 @@ function EditarUsuario({ usuarioId }: EditarUsuarioProps) {
                 onChange={(e) => setSenha(e.target.value)}
               />
             </div>
-
-            {message && <p className="text-center">{message}</p>}
 
             <button
               type="submit"

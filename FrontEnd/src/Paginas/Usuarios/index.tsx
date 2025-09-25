@@ -21,6 +21,11 @@ function Usuarios() {
     carregarUsuarios();
   }, []);
 
+  async function carregar() {
+    const data = await listarUsuarios();
+    setUsuarios(data);
+  }
+
   return (
     <main className="min-vh-100 d-flex flex-column align-items-center py-4">
       <h2 className="h5 mb-4">Usuários</h2>
@@ -54,7 +59,10 @@ function Usuarios() {
                 <td className="text-center">
                   <div className="d-inline-flex gap-2">
                     <UsuarioView usuarioId={usuario.usuarioId} />
-                    <UsuarioEdicaoDialog usuarioId={usuario.usuarioId} />
+                    <UsuarioEdicaoDialog
+                      usuarioId={usuario.usuarioId}
+                      onChange={() => carregar()}
+                    />
                   </div>
                 </td>
               </tr>

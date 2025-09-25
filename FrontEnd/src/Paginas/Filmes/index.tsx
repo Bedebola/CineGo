@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { listarFilmes } from "../../api/filmes-api";
 import FilmeView from "../../Componentes/Dialogs/Filmes/FilmeViewDialog";
+import FilmeEdicaoDialog from "../../Componentes/Dialogs/Filmes/FilmeEdicaoDialog";
 
 interface Filme {
   filmeId: number;
@@ -53,7 +54,14 @@ function Filmes() {
           <div key={filme.filmeId} className="col-md-4 col-lg-3">
             <div className="card h-100 shadow-sm position-relative">
               <div className="position-absolute top-0 end-0 m-2">
-                <FilmeView filmeId={filme.filmeId} onChange={() => carregar()} />
+                <FilmeView
+                  filmeId={filme.filmeId}
+                  onChange={() => carregar()}
+                />
+                <FilmeEdicaoDialog
+                  filmeId={filme.filmeId}
+                  onChange={() => carregar()}
+                />
               </div>
 
               <div className="card-body">

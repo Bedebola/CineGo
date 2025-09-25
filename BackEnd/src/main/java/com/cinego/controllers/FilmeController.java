@@ -27,12 +27,12 @@ public class FilmeController {
         }
     }
 
-    @GetMapping("/buscarFilmeId/{idFilme}")
+    @GetMapping("/buscarFilmeId/{filmeId}")
     ResponseEntity<?> buscarFilmePorId(
-            @PathVariable Long idFilme
+            @PathVariable Long filmeId
     ){
         try {
-            return ResponseEntity.ok(filmeService.buscarFilmePorId(idFilme));
+            return ResponseEntity.ok(filmeService.buscarFilmePorId(filmeId));
         } catch (ArgumentoInvalidoOuNaoEncontradoException e) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
@@ -49,68 +49,68 @@ public class FilmeController {
         }
     }
 
-    @PutMapping("editarFilme/{idFilme}")
+    @PutMapping("editarFilme/{filmeId}")
     ResponseEntity<?> editarfilme(
-            @PathVariable Long idFilme,
+            @PathVariable Long filmeId,
             @RequestBody Filme filme
     ){
         try {
-            return ResponseEntity.ok(filmeService.editarFilme(idFilme, filme));
+            return ResponseEntity.ok(filmeService.editarFilme(filmeId, filme));
         } catch (ArgumentoInvalidoOuNaoEncontradoException e) {
             return ResponseEntity.badRequest().body("Erro: " + e);
         }
     }
 
-    @PutMapping("/alugarFilme/{idFilme}")
+    @PutMapping("/alugarFilme/{filmeId}")
     ResponseEntity<?> alugarFilme(
-            @PathVariable Long idFilme
+            @PathVariable Long filmeId
     ){
         try {
-            return ResponseEntity.ok(filmeService.alugarFilme(idFilme));
+            return ResponseEntity.ok(filmeService.alugarFilme(filmeId));
         } catch (ArgumentoInvalidoOuNaoEncontradoException e) {
             return ResponseEntity.badRequest().body("Erro: " + e);
         }
     }
 
-    @PutMapping("/devolverFilme/{idFilme}")
+    @PutMapping("/devolverFilme/{filmeId}")
     ResponseEntity<?> devolverFilme(
-            @PathVariable Long idFilme
+            @PathVariable Long filmeId
     ){
         try {
-            return ResponseEntity.ok(filmeService.devolverFilme(idFilme));
+            return ResponseEntity.ok(filmeService.devolverFilme(filmeId));
         } catch (ArgumentoInvalidoOuNaoEncontradoException e) {
             return ResponseEntity.badRequest().body("Erro: " + e);
         }
     }
 
-    @PutMapping("/desativarFilme/{idFilme}")
+    @PutMapping("/desativarFilme/{filmeId}")
     ResponseEntity<?> desativarFilme(
-            @PathVariable Long idFilme
+            @PathVariable Long filmeId
     ){
         try {
-            return ResponseEntity.ok(filmeService.desativarFilme(idFilme));
+            return ResponseEntity.ok(filmeService.desativarFilme(filmeId));
         } catch (ArgumentoInvalidoOuNaoEncontradoException e) {
             return ResponseEntity.badRequest().body("Erro: " + e);
         }
     }
 
-    @PutMapping("/ativarFilme/{idFilme}")
+    @PutMapping("/ativarFilme/{filmeId}")
     ResponseEntity<?> ativarFilme(
-            @PathVariable Long idFilme
+            @PathVariable Long filmeId
     ){
         try {
-            return ResponseEntity.ok(filmeService.ativarFilme(idFilme));
+            return ResponseEntity.ok(filmeService.ativarFilme(filmeId));
         } catch (ArgumentoInvalidoOuNaoEncontradoException e) {
             return ResponseEntity.badRequest().body("Erro: " + e);
         }
     }
 
-    @DeleteMapping("/excluirFilme{idFilme}")
+    @DeleteMapping("/excluirFilme{filmeId}")
     public ResponseEntity<?> excluirFilme (
-            @PathVariable Long idFilme
+            @PathVariable Long filmeId
     ){
         try {
-            filmeService.excluirFilme(idFilme);
+            filmeService.excluirFilme(filmeId);
             return ResponseEntity.noContent().build();
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro interno no servidor");

@@ -23,11 +23,20 @@ public class Usuario implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String nome;
     private String cpf;
-    private String senha;
     private String email;
     private String role;
+    private String senha;
+
+    public Usuario(String nome, String cpf, String senha, String email, String role) {
+        this.nome = nome;
+        this.cpf = cpf;
+        this.senha = senha;
+        this.email = email;
+        this.role = role;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

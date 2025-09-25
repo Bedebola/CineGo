@@ -28,15 +28,13 @@ export async function cadastrarUsuario(usuario: {
   return data;
 }
 
-export async function editarUsuario(usuario:{
-  usuarioId: number
+export async function editarUsuario(  usuarioId: number, usuario:{
   nome: string;
   email: string;
   cpf: string;
   senha: string;
-  role: string;
 }) {
-  const response = await api(`/usuario/editarUsuario/${usuario.usuarioId}`, {
+  const response = await api(`/usuario/editarUsuario/${usuarioId}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(usuario),
