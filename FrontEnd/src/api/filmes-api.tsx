@@ -44,4 +44,33 @@ export async function ativarFilme(filmeId: number){
     return data;
 }
 
+export async function cadastrarFilme(filme: { titulo: string; sinopse: string }) {
+  const response = await api("/filme/cadastrarFilme", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(filme),
+  });
+
+  if (!response.ok) {
+    throw new Error("Erro ao cadastrar filme");
+  }
+
+  return response.json();
+}
+
+export async function editarFilme(filmeId: number){
+    const response = await api(`/filme/editarFilme/${filmeId}`, {
+        method: 'PUT'
+    });
+    const data = await response.json();
+    return data;
+}
+
+export async function excluirFilme(filmeId: number){
+    const response = await api(`/filme/excluir/${filmeId}`, {
+        method: 'DELETE'
+    });
+    const data = await response.json();
+    return data;
+}
 

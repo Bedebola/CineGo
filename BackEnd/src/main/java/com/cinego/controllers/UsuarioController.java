@@ -3,7 +3,6 @@ package com.cinego.controllers;
 import com.cinego.exceptions.ArgumentoInvalidoOuNaoEncontradoException;
 import com.cinego.models.Usuario;
 import com.cinego.services.UsuarioService;
-import com.cinego.repositories.UsuarioRepository;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,19 +26,19 @@ public class UsuarioController {
         }
     }
 
-    @GetMapping("/usuario/{idUsuario}")
+    @GetMapping("/usuario/{usuarioId}")
     ResponseEntity<?> consultarUsuarioId(
-            @PathVariable Long idUsuario
+            @PathVariable Long usuarioId
     ){
         try {
-            return ResponseEntity.ok(usuarioService.buscarUsuarioId(idUsuario));
+            return ResponseEntity.ok(usuarioService.buscarUsuarioId(usuarioId));
         } catch (ArgumentoInvalidoOuNaoEncontradoException e){
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
     }
 
-    @PostMapping("/novo")
-    public ResponseEntity<?> criarUsuario(
+    @PostMapping("/cadastrarUsuario")
+    public ResponseEntity<?> cadastrarUsuario(
             @RequestBody Usuario usuario
     ){
         try {
@@ -49,24 +48,24 @@ public class UsuarioController {
         }
     }
 
-    @PutMapping("/editar/{idUsuario}")
+    @PutMapping("/editarUsuario/{usuarioId}")
     public ResponseEntity<?> editarUsuario(
-            @PathVariable Long idUsuario,
+            @PathVariable Long usuarioId,
             @RequestBody Usuario usuario
     ){
         try {
-            return  ResponseEntity.ok(usuarioService.editarUsuario(idUsuario, usuario));
+            return  ResponseEntity.ok(usuarioService.editarUsuario(usuarioId, usuario));
         } catch (ArgumentoInvalidoOuNaoEncontradoException e) {
             return ResponseEntity.badRequest().body("Erro: " + e);
         }
     }
 
-    @DeleteMapping("/excluir/{idUsuario}")
+    @DeleteMapping("/excluirUsuario/{usuarioId}")
     public ResponseEntity<?> excluirUsuario (
-            @PathVariable long idUsuario
+            @PathVariable long usuarioId
     ){
         try {
-            usuarioService.excluirUsuario(idUsuario);
+            usuarioService.excluirUsuario(usuarioId);
             return ResponseEntity.noContent().build();
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro interno no servidor");

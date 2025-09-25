@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { listarFilmes } from "../../api/filmes-api";
-import FilmeView from "../../Componentes/Views/FilmeView";
+import FilmeView from "../../Componentes/Dialogs/Filmes/FilmeViewDialog";
 
 interface Filme {
   filmeId: number;

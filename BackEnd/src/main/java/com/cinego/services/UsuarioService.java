@@ -24,6 +24,7 @@ public class UsuarioService {
 
     public DtoUsuario criarRetornoUsuario(Usuario usuario) throws ArgumentoInvalidoOuNaoEncontradoException{
         DtoUsuario usuarioRetorno = new DtoUsuario();
+        usuarioRetorno.setUsuarioId(usuario.getId());
         usuarioRetorno.setNome(usuario.getNome());
         usuarioRetorno.setCpf(usuario.getCpf());
         usuarioRetorno.setEmail(usuario.getEmail());
@@ -87,9 +88,9 @@ public class UsuarioService {
         }
     }
 
-    public DtoUsuario buscarUsuarioId(Long idUsuario) throws ArgumentoInvalidoOuNaoEncontradoException{
+    public DtoUsuario buscarUsuarioId(Long usuarioId) throws ArgumentoInvalidoOuNaoEncontradoException{
         try{
-            Usuario usuarioRecord = usuarioRepository.findById(idUsuario)
+            Usuario usuarioRecord = usuarioRepository.findById(usuarioId)
                     .orElseThrow(()-> new ArgumentoInvalidoOuNaoEncontradoException("Nenhum usuario foi encontrado para o ID informado!"));
 
             return criarRetornoUsuario(usuarioRecord);
@@ -111,12 +112,12 @@ public class UsuarioService {
         }
     }
 
-    public DtoUsuario editarUsuario(Long idUsuario, Usuario usuario) throws ArgumentoInvalidoOuNaoEncontradoException {
+    public DtoUsuario editarUsuario(Long usuarioId, Usuario usuario) throws ArgumentoInvalidoOuNaoEncontradoException {
         try{
-            Usuario usuarioExistente = usuarioRepository.findById(idUsuario)
+            Usuario usuarioExistente = usuarioRepository.findById(usuarioId)
                     .orElseThrow(()->new ArgumentoInvalidoOuNaoEncontradoException("Nenhum usuario encontrado para o id informado"));
 
-            validarCamposUsuario(usuario, idUsuario);
+            validarCamposUsuario(usuario, usuarioId);
 
             usuarioExistente.setNome(usuario.getNome());
             usuarioExistente.setCpf(usuario.getCpf());
@@ -133,9 +134,9 @@ public class UsuarioService {
         }
     }
 
-    public void excluirUsuario(Long idUsuario) throws ArgumentoInvalidoOuNaoEncontradoException {
+    public void excluirUsuario(Long usuarioId) throws ArgumentoInvalidoOuNaoEncontradoException {
 
-        Usuario usuarioRegistrado = usuarioRepository.findById(idUsuario)
+        Usuario usuarioRegistrado = usuarioRepository.findById(usuarioId)
                 .orElseThrow(()-> new ArgumentoInvalidoOuNaoEncontradoException("Nenhum filme foi encontrado para o ID informado!"));
 
         usuarioRepository.delete(usuarioRegistrado);
