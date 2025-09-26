@@ -2,11 +2,11 @@ import React, { useState, useEffect, useRef } from "react";
 import { editarUsuario, buscarUsuarioId } from "../../../api/usuarios-api";
 
 interface Usuario {
-  usuarioId: number;
   nome: string;
-  cpf: string;
   email: string;
-  senha?: string;
+  cpf: string;
+  role: "ADMIN";
+  senha?: string
 }
 
 interface EditarUsuarioProps {
@@ -49,12 +49,12 @@ function EditarUsuario({ usuarioId, onChange }: EditarUsuarioProps) {
 
   const fecharDialog = () => dialogRef.current?.close();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setMessage("");
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setMessage("");
 
   try {
-    const usuarioEditado: any = {
+    const usuarioEditado: Usuario = {
       nome,
       email,
       cpf,
@@ -67,14 +67,13 @@ function EditarUsuario({ usuarioId, onChange }: EditarUsuarioProps) {
 
     await editarUsuario(usuarioId, usuarioEditado);
 
-      setMessage("As alterações foram salvas com sucesso!");
-      onChange?.();
-    } catch (error) {
-      console.error(error);
-      setMessage("Erro ao editar os dados do usuário. Tente novamente.");
-    }
-  };
-
+    setMessage("As alterações foram salvas com sucesso!");
+    onChange?.();
+  } catch (error) {
+    console.error(error);
+    setMessage("Erro ao editar os dados do usuário. Tente novamente.");
+  }
+};
   return (
     <>
       <button onClick={abrirDialog} className="btn  btn-sm">

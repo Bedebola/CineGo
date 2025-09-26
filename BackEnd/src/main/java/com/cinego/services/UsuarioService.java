@@ -6,12 +6,15 @@ import com.cinego.exceptions.AcaoInvalidaException;
 import com.cinego.exceptions.ArgumentoInvalidoOuNaoEncontradoException;
 import com.cinego.models.Usuario;
 import com.cinego.repositories.UsuarioRepository;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+
+@Tag(name = "UsuarioService", description = "Classe de serviço da entidade USUARIO onde são implementadas as regras de negocio e validação de campos.")
 @Service
 public class UsuarioService {
 

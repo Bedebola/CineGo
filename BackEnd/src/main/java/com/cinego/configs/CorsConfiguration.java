@@ -1,10 +1,12 @@
 package com.cinego.configs;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+@Tag(name = "Configuração de Cors", description = "Classe para configuração de CORS e controle de permissão de requisições externas")
 @Configuration
 public class CorsConfiguration {
 

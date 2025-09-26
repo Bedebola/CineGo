@@ -3,12 +3,14 @@ package com.cinego.data;
 import com.cinego.enums.StatusFilme;
 import com.cinego.models.Filme;
 import com.cinego.repositories.FilmeRepository;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Tag(name = "Filme Data", description = "Injeção automatica de dados no banco na tabela de filmes caso ela esteja vazia. Usada somente em ambiente de testes")
 @Component
 public class FilmeData {
 

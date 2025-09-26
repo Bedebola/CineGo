@@ -69,10 +69,9 @@ export async function editarFilme(filmeId: number, filme: { titulo: string; sino
 }
 
 export async function excluirFilme(filmeId: number){
-    const response = await api(`/filme/excluir/${filmeId}`, {
+    await api(`/filme/excluirFilme/${filmeId}`, {
         method: 'DELETE'
     });
-    const data = await response.json();
-    return data;
+    return;
 }
 

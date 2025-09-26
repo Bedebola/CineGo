@@ -10,6 +10,7 @@ import com.cinego.models.Token;
 import com.cinego.models.Usuario;
 import com.cinego.repositories.TokenRepository;
 import com.cinego.repositories.UsuarioRepository;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,6 +21,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
 
+@Tag(name = "TokenService", description = "Classe de serviço da entidade TOKEN onde o token é gerado e validado.")
 @Service
 public class TokenService {
 

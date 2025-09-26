@@ -2,12 +2,14 @@ package com.cinego.data;
 
 import com.cinego.models.Usuario;
 import com.cinego.repositories.UsuarioRepository;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Tag(name = "Usuario Data", description = "Injeção automatica de dados no banco na tabela de usuarios caso ela esteja vazia. Usada somente em ambiente de testes")
 @Component
 public class UsuarioData {
 

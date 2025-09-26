@@ -26,7 +26,7 @@ function ExcluirUsuario({ usuarioId, onChange }: UsuarioExclusaoProps) {
     try {
       await excluirUsuario(usuarioId);
       fecharDialog();
-      if (onChange) onChange(); // atualiza a lista se o pai passar a função
+      if (onChange) onChange();
     } catch (error) {
       console.error("Erro ao excluir usuário:", error);
     }

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { listarFilmes } from "../../api/filmes-api";
 import FilmeView from "../../Componentes/Dialogs/Filmes/FilmeViewDialog";
 import FilmeEdicaoDialog from "../../Componentes/Dialogs/Filmes/FilmeEdicaoDialog";
+import FilmeExclusaoDialog from "../../Componentes/Dialogs/Filmes/FilmeExclusaoDialog";
 
 interface Filme {
   filmeId: number;
@@ -59,6 +60,10 @@ function Filmes() {
                   onChange={() => carregar()}
                 />
                 <FilmeEdicaoDialog
+                  filmeId={filme.filmeId}
+                  onChange={() => carregar()}
+                />
+                <FilmeExclusaoDialog
                   filmeId={filme.filmeId}
                   onChange={() => carregar()}
                 />

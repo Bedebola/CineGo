@@ -1,6 +1,7 @@
 package com.cinego.configs;
 
 import com.cinego.services.TokenService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,6 +14,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+@Tag(name = "Filtro JWT", description = "Classe de aplicação do filtro de segurança")
 @Component
 public class JwtFilter extends OncePerRequestFilter {
 

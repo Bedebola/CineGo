@@ -105,7 +105,7 @@ public class FilmeController {
         }
     }
 
-    @DeleteMapping("/excluirFilme{filmeId}")
+    @DeleteMapping("/excluirFilme/{filmeId}")
     public ResponseEntity<?> excluirFilme (
             @PathVariable Long filmeId
     ){

@@ -6,12 +6,14 @@ import com.cinego.exceptions.AcaoInvalidaException;
 import com.cinego.exceptions.ArgumentoInvalidoOuNaoEncontradoException;
 import com.cinego.models.Filme;
 import com.cinego.repositories.FilmeRepository;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Tag(name = "FilmeService", description = "Classe de serviço da entidade FILME onde são implementadas as regras de negocio e validação de campos.")
 @Service
 public class FilmeService {
 
@@ -180,9 +182,6 @@ public class FilmeService {
         Filme filmeRegistrado = filmeRepository.findById(filmeId)
                 .orElseThrow(()->new ArgumentoInvalidoOuNaoEncontradoException("Nenhum filme encontrado para o id informado"));
 
-        if (filmeRegistrado.getStatus() == StatusFilme.ALUGADO){
-            throw new AcaoInvalidaException("Não foi possível completar a ação: O título selecionado está atualmente alugado, faça a devolução para poder excluir.");
-        }
         filmeRepository.delete(filmeRegistrado);
     }
 }

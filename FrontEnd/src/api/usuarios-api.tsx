@@ -32,8 +32,8 @@ export async function editarUsuario(  usuarioId: number, usuario:{
   nome: string;
   email: string;
   cpf: string;
-  senha: string;
-  role: string;
+  senha?: string;
+  role: string
 }) {
   const response = await api(`/usuario/editarUsuario/${usuarioId}`, {
     method: "PUT",

@@ -1,5 +1,6 @@
 package com.cinego.configs;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +12,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+@Tag(name = "SecurityConfig", description = "Classe de configuração das rotas da API")
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
