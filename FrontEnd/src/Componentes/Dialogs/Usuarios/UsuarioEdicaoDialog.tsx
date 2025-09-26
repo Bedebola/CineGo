@@ -53,13 +53,19 @@ function EditarUsuario({ usuarioId, onChange }: EditarUsuarioProps) {
     e.preventDefault();
     setMessage("");
 
-    try {
-      await editarUsuario(usuarioId, {
-        nome,
-        email,
-        cpf,
-        senha,
-      });
+  try {
+    const usuarioEditado: any = {
+      nome,
+      email,
+      cpf,
+      role: "ADMIN",
+    };
+
+    if (senha.trim()) {
+      usuarioEditado.senha = senha;
+    }
+
+    await editarUsuario(usuarioId, usuarioEditado);
 
       setMessage("As alterações foram salvas com sucesso!");
       onChange?.();
@@ -107,16 +113,16 @@ function EditarUsuario({ usuarioId, onChange }: EditarUsuarioProps) {
             ></button>
           </div>
 
-            {message && (
-              <div
-                className={`alert ${
-                  message.includes("sucesso") ? "alert-success" : "alert-danger"
-                } mb-2`}
-                role="alert"
-              >
-                {message}
-              </div>
-            )}
+          {message && (
+            <div
+              className={`alert ${
+                message.includes("sucesso") ? "alert-success" : "alert-danger"
+              } mb-2`}
+              role="alert"
+            >
+              {message}
+            </div>
+          )}
 
           <form onSubmit={handleSubmit} className="p-4">
             <div className="mb-3">

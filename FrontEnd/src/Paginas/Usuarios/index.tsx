@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { listarUsuarios } from "../../api/usuarios-api";
 import UsuarioView from "../../Componentes/Dialogs/Usuarios/UsuarioViewDialog";
 import UsuarioEdicaoDialog from "../../Componentes/Dialogs/Usuarios/UsuarioEdicaoDialog";
+import UsuarioExclusaoDialog from "../../Componentes/Dialogs/Usuarios/UsuarioExclusaoDialog";
 
 interface Usuario {
   usuarioId: number;
@@ -14,11 +15,7 @@ function Usuarios() {
   const [usuarios, setUsuarios] = useState<Usuario[]>([]);
 
   useEffect(() => {
-    async function carregarUsuarios() {
-      const data: Usuario[] = await listarUsuarios();
-      setUsuarios(data);
-    }
-    carregarUsuarios();
+    carregar();
   }, []);
 
   async function carregar() {
@@ -61,7 +58,11 @@ function Usuarios() {
                     <UsuarioView usuarioId={usuario.usuarioId} />
                     <UsuarioEdicaoDialog
                       usuarioId={usuario.usuarioId}
-                      onChange={() => carregar()}
+                      onChange={carregar}
+                    />
+                    <UsuarioExclusaoDialog
+                      usuarioId={usuario.usuarioId}
+                      onChange={carregar}
                     />
                   </div>
                 </td>

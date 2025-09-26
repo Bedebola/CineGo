@@ -11,7 +11,7 @@ interface UsuarioViewProps {
   usuarioId: number;
 }
 
-export default function UsuarioView({ usuarioId }: UsuarioViewProps) {
+function UsuarioView({ usuarioId }: UsuarioViewProps) {
   const [usuario, setUsuario] = useState<Usuario | null>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
 
@@ -25,7 +25,7 @@ export default function UsuarioView({ usuarioId }: UsuarioViewProps) {
 
   return (
     <>
-      <button onClick={abrirDialog} className="btn btn-primary btn-sm">
+      <button onClick={abrirDialog} className="btn btn-sm">
         <i className="bi bi-eye-fill"></i>
       </button>
 
@@ -69,3 +69,6 @@ export default function UsuarioView({ usuarioId }: UsuarioViewProps) {
     </>
   );
 }
+
+
+export default UsuarioView;

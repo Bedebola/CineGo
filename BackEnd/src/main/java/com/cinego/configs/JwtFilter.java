@@ -24,11 +24,11 @@ public class JwtFilter extends OncePerRequestFilter {
         String path = request.getRequestURI();
 
         try {
-            if (true
-                || path.equals("/access/login")
+            if ( path.equals("/access/login")
                 || path.startsWith("/swagger-resources")
                 || path.startsWith("/v3/api-docs")
                 || path.startsWith("/webjars")
+                || path.startsWith("/")
                 || path.startsWith("/swagger-ui")
             ) {
                 filterChain.doFilter(request, response);

@@ -120,7 +120,11 @@ public class UsuarioService {
             usuarioExistente.setNome(usuario.getNome());
             usuarioExistente.setCpf(usuario.getCpf());
             usuarioExistente.setEmail(usuario.getEmail());
-            usuarioExistente.setSenha(usuario.getSenha());
+
+            if (usuario.getSenha() != null && !usuario.getSenha().isEmpty()) {
+                usuarioExistente.setSenha(usuario.getSenha());
+            }
+
             usuarioExistente.setRole(usuario.getRole());
 
             usuarioRepository.save(usuarioExistente);

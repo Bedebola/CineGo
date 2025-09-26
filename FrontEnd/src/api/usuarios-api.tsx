@@ -33,6 +33,7 @@ export async function editarUsuario(  usuarioId: number, usuario:{
   email: string;
   cpf: string;
   senha: string;
+  role: string;
 }) {
   const response = await api(`/usuario/editarUsuario/${usuarioId}`, {
     method: "PUT",
@@ -44,9 +45,8 @@ export async function editarUsuario(  usuarioId: number, usuario:{
 }
 
 export async function excluirUsuario(usuarioId: number) {
-  const response = await api(`/usuario/excluirUsuario/${usuarioId}`, {
+    await api(`/usuario/excluirUsuario/${usuarioId}`, {
     method: "DELETE",
   });
-  const data = await response.json();
-  return data;
+  return;
 }
