@@ -1,77 +1,56 @@
-import { api } from "../api/http";
+import { AxiosError } from "axios";
+import { http } from "./http";
 
-export async function listarFilmes(){
-    const response = await api(`/filme/listarFilmes`);
-    const data = await response.json();
-    return data;
+export async function listarFilmes() {
+  const { data } = await http.get("/filme/listarFilmes");
+  return data;
 }
 
-export async function buscarFilmeId(filmeId: number){
-    const response = await api(`/filme/buscarFilmeId/${filmeId}`);
-    const data = await response.json();
-    return data;
+export async function buscarFilmeId(filmeId: number) {
+  const { data } = await http.get(`/filme/buscarFilmeId/${filmeId}`);
+  return data;
 }
 
-export async function alugarFilme(filmeId: number){
-    const response = await api(`/filme/alugarFilme/${filmeId}`, {
-        method: 'PUT'
-    });
-    const data = await response.json();
-    return data;
+export async function alugarFilme(filmeId: number) {
+  const { data } = await http.put(`/filme/alugarFilme/${filmeId}`);
+  return data;
 }
 
-export async function devolverFilme(filmeId: number){
-    const response = await api(`/filme/devolverFilme/${filmeId}`, {
-        method: 'PUT'
-    });
-    const data = await response.json();
-    return data;
+export async function devolverFilme(filmeId: number) {
+  const { data } = await http.put(`/filme/devolverFilme/${filmeId}`);
+  return data;
 }
 
-export async function desativarFilme(filmeId: number){
-    const response = await api(`/filme/desativarFilme/${filmeId}`, {
-        method: 'PUT'
-    });
-    const data = await response.json();
-    return data;
+export async function desativarFilme(filmeId: number) {
+  const { data } = await http.put(`/filme/desativarFilme/${filmeId}`);
+  return data;
 }
 
-export async function ativarFilme(filmeId: number){
-    const response = await api(`/filme/ativarFilme/${filmeId}`, {
-        method: 'PUT'
-    });
-    const data = await response.json();
-    return data;
+export async function ativarFilme(filmeId: number) {
+  const { data } = await http.put(`/filme/ativarFilme/${filmeId}`);
+  return data;
 }
 
-export async function cadastrarFilme(filme: { titulo: string; sinopse: string }) {
-  const response = await api("/filme/cadastrarFilme", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(filme),
-  });
-
-  if (!response.ok) {
+type FilmeRequest = { titulo: string; sinopse: string };
+export async function cadastrarFilme(filme: FilmeRequest) {
+  try {
+    const { data } = await http.post("/filme/cadastrarFilme", filme);
+    return data;
+  } catch (err: unknown) {
+    if (err instanceof AxiosError) {
+      throw new Error(err.response?.data?.message || "Erro ao cadastrar filme");
+    }
     throw new Error("Erro ao cadastrar filme");
   }
-
-  return response.json();
+}
+export async function editarFilme(
+  filmeId: number,
+  filme: { titulo: string; sinopse: string }
+) {
+  const { data } = await http.put(`/filme/editarFilme/${filmeId}`, filme);
+  return data;
 }
 
-export async function editarFilme(filmeId: number, filme: { titulo: string; sinopse: string }){
-    const response = await api(`/filme/editarFilme/${filmeId}`, {
-        method: 'PUT',
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(filme),
-    });
-    const data = await response.json();
-    return data;
+export async function excluirFilme(filmeId: number) {
+  await http.delete(`/filme/excluirFilme/${filmeId}`);
 }
-
-export async function excluirFilme(filmeId: number){
-    await api(`/filme/excluirFilme/${filmeId}`, {
-        method: 'DELETE'
-    });
-    return;
-}
-

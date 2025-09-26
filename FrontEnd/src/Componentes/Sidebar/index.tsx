@@ -50,16 +50,7 @@ export default function SideBar() {
               Usuarios
             </Link>
           </li>
-          <li>
-            <Link
-              to="/usuarioView/:usuarioId"
-              className="nav-link text-white-50 ps-5 py-2"
-            >
-              Meus Dados
-            </Link>
-          </li>
         </ul>
-
         <a
           href="#"
           onClick={(e) => {
