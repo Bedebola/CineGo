@@ -91,7 +91,7 @@ export default function Home() {
                   {f.status}
                 </span>
               </div>
-              <div className="card-footer bg-transparent border-0 text-end">
+              <div className="card-footer bg-transparent border-0 text-end ">
                 <FilmeView filmeId={f.filmeId} onChange={() => carregar()} />
               </div>
             </div>

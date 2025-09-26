@@ -45,7 +45,7 @@ public class FilmeData {
                     new Filme("A Culpa é das Estrelas", "Romance/Drama", "Um casal enfrenta desafios em uma história de romance e fantasia.", StatusFilme.ALUGADO),
                     new Filme("Missão Impossível: Protocolo Fantasma", "Ação/Espionagem", "Um agente secreto luta para impedir que uma ameaça global destrua a paz mundial.", StatusFilme.DESATIVADO)
             );
-            
+
             filmeRepository.saveAll(filmes);
         }
     }

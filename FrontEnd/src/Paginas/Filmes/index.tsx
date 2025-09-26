@@ -57,7 +57,6 @@ function Filmes() {
               <div className="position-absolute top-0 end-0 m-2">
                 <FilmeView
                   filmeId={filme.filmeId}
-                  onChange={() => carregar()}
                 />
                 <FilmeEdicaoDialog
                   filmeId={filme.filmeId}

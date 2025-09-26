@@ -65,7 +65,7 @@ function FilmeViewDialog({ filmeId, onChange }: FilmeViewProps) {
         <i className="bi bi-eye-fill"></i>
       </button>
 
-      <style>{`#dlg-${filmeId}::backdrop{background:rgba(0,0,0,.55)}`}</style>
+      <style>{`#dlg-${filmeId}::backdrop{background:rgba(0,0,0,.55)} #dlg-${filmeId} .form-label { color: #212529 !important; }`}</style>
 
       <dialog
         id={`dlg-${filmeId}`}
@@ -106,14 +106,14 @@ function FilmeViewDialog({ filmeId, onChange }: FilmeViewProps) {
           </div>
 
           <div className="p-4">
-            <p className="form-label fw-bold">
+            <p className="form-label fw-bold text-dark">
               <strong>Sinopse do Filme</strong>
             </p>
             <p className="text-muted">{filme?.sinopse}</p>
           </div>
 
           <div className="p-4">
-            <p className="form-label fw-bold">
+            <p className="form-label fw-bold text-dark">
               <strong>Gênero do Filme</strong>
             </p>
             <p className="text-muted">{filme?.genero}</p>
