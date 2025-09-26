@@ -4,6 +4,7 @@ import { editarFilme, buscarFilmeId } from "../../../api/filmes-api";
 interface Filme {
   filmeId: number;
   titulo: string;
+  genero: string;
   sinopse: string;
 }
 
@@ -15,6 +16,7 @@ interface EditarFilmeProps {
 function EditarFilme({ filmeId, onChange }: EditarFilmeProps) {
   const [filme, setFilme] = useState<Filme | null>(null);
   const [titulo, setTitulo] = useState("");
+  const [genero, setGenero] = useState("");
   const [sinopse, setSinopse] = useState("");
   const [isFormValid, setIsFormValid] = useState(false);
 
@@ -28,13 +30,14 @@ function EditarFilme({ filmeId, onChange }: EditarFilmeProps) {
     } else {
       setIsFormValid(false);
     }
-  }, [titulo, sinopse]);
+  }, [titulo, genero, sinopse]);
 
   const abrirDialog = async () => {
     try {
       const dados = await buscarFilmeId(filmeId);
       setFilme(dados);
       setTitulo(dados.titulo);
+      setGenero(dados.genero);
       setSinopse(dados.sinopse);
 
       dialogRef.current?.showModal();
@@ -52,6 +55,7 @@ function EditarFilme({ filmeId, onChange }: EditarFilmeProps) {
     try {
       await editarFilme(filmeId, {
         titulo,
+        genero,
         sinopse,
       });
 
@@ -124,6 +128,19 @@ function EditarFilme({ filmeId, onChange }: EditarFilmeProps) {
                 className="form-control"
                 value={titulo}
                 onChange={(e) => setTitulo(e.target.value)}
+              />
+            </div>
+
+            <div className="mb-3">
+              <label htmlFor="generoFilme" className="form-label fw-bold">
+                Gênero do Filme
+              </label>
+              <input
+                type="text"
+                id="generoFilme"
+                className="form-control"
+                value={genero}
+                onChange={(e) => setGenero(e.target.value)}
               />
             </div>
 

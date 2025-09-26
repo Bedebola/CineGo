@@ -31,7 +31,7 @@ export async function ativarFilme(filmeId: number) {
   return data;
 }
 
-type FilmeRequest = { titulo: string; sinopse: string };
+type FilmeRequest = { titulo: string; genero: string, sinopse: string };
 export async function cadastrarFilme(filme: FilmeRequest) {
   try {
     const { data } = await http.post("/filme/cadastrarFilme", filme);
@@ -45,7 +45,7 @@ export async function cadastrarFilme(filme: FilmeRequest) {
 }
 export async function editarFilme(
   filmeId: number,
-  filme: { titulo: string; sinopse: string }
+  filme: { titulo: string; genero: string, sinopse: string }
 ) {
   const { data } = await http.put(`/filme/editarFilme/${filmeId}`, filme);
   return data;

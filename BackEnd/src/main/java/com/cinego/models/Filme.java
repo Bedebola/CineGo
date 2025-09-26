@@ -22,12 +22,14 @@ public class Filme {
     private Long id;
 
     private String titulo;
+    private String genero;
     private String sinopse;
     private StatusFilme status;
 
-    public Filme(String titulo, String sinopse, StatusFilme status) {
+    public Filme(String titulo, String genero, String sinopse, StatusFilme status) {
+        this.titulo = titulo;
+        this.genero = genero;
         this.sinopse = sinopse;
         this.status = status;
-        this.titulo = titulo;
     }
 }

@@ -14,6 +14,7 @@ public class DtoFilme {
 
     private Long filmeId;
     private String titulo;
+    private String genero;
     private String sinopse;
     private StatusFilme status;
 }

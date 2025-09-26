@@ -24,6 +24,7 @@ public class FilmeService {
         DtoFilme filmeRetorno = new DtoFilme();
         filmeRetorno.setFilmeId(filme.getId());
         filmeRetorno.setTitulo(filme.getTitulo());
+        filmeRetorno.setGenero(filme.getGenero());
         filmeRetorno.setSinopse(filme.getSinopse());
         filmeRetorno.setStatus(filme.getStatus());
 
@@ -76,6 +77,9 @@ public class FilmeService {
         if (filme.getTitulo() == null || filme.getTitulo().isEmpty()){
             throw new ArgumentoInvalidoOuNaoEncontradoException("O campo NOME não pode ser vazio!");
         }
+        if (filme.getGenero() == null || filme.getGenero().isEmpty()){
+            throw new ArgumentoInvalidoOuNaoEncontradoException("O campo GENERO não pode ser vazio!");
+        }
         if (filme.getSinopse() == null || filme.getSinopse().isEmpty()){
             throw new ArgumentoInvalidoOuNaoEncontradoException("O campo SINOPSE não pode ser vazio!");
         }
@@ -109,6 +113,7 @@ public class FilmeService {
 
             validarCamposFilme(filmeExistente, filmeId);
             filmeExistente.setTitulo(filme.getTitulo());
+            filmeExistente.setGenero(filme.getGenero());
             filmeExistente.setSinopse(filme.getSinopse());
 
             filmeRepository.save(filmeExistente);

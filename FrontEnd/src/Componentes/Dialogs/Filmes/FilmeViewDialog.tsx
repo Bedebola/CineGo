@@ -9,6 +9,7 @@ import {
 
 interface Filme {
   titulo: string;
+  genero: string;
   sinopse: string;
   status: string;
 }
@@ -18,7 +19,7 @@ interface FilmeViewProps {
   onChange?: () => void;
 }
 
-function FilmeViewDialog ({ filmeId, onChange }: FilmeViewProps) {
+function FilmeViewDialog({ filmeId, onChange }: FilmeViewProps) {
   const [filme, setFilme] = useState<Filme | null>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
 
@@ -105,7 +106,17 @@ function FilmeViewDialog ({ filmeId, onChange }: FilmeViewProps) {
           </div>
 
           <div className="p-4">
+            <p className="form-label fw-bold">
+              <strong>Sinopse do Filme</strong>
+            </p>
             <p className="text-muted">{filme?.sinopse}</p>
+          </div>
+
+          <div className="p-4">
+            <p className="form-label fw-bold">
+              <strong>Gênero do Filme</strong>
+            </p>
+            <p className="text-muted">{filme?.genero}</p>
           </div>
 
           <div className="d-flex gap-2 justify-content-end px-4 pb-4">

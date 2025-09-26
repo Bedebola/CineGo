@@ -3,22 +3,26 @@ import { cadastrarFilme } from "../../api/filmes-api";
 
 function CadastrarFilme() {
   const [titulo, setTitulo] = useState("");
+  const [genero, setGenero] = useState("");
   const [sinopse, setSinopse] = useState("");
   const [isFormValid, setIsFormValid] = useState(false);
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    setIsFormValid(titulo.trim() !== "" && sinopse.trim() !== "");
-  }, [titulo, sinopse]);
+    setIsFormValid(
+      titulo.trim() !== "" && genero.trim() !== "" && sinopse.trim() !== ""
+    );
+  }, [titulo, genero, sinopse]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setMessage("");
 
     try {
-      await cadastrarFilme({ titulo, sinopse });
+      await cadastrarFilme({ titulo, genero, sinopse });
       setMessage("Filme cadastrado com sucesso!");
       setTitulo("");
+      setGenero("");
       setSinopse("");
     } catch (error) {
       console.error(error);
@@ -33,15 +37,25 @@ function CadastrarFilme() {
     >
       <div
         className="card p-4 shadow"
-        style={{ minWidth: "400px", width: "100%", maxWidth: "500px", borderRadius: "12px" }}
+        style={{
+          minWidth: "400px",
+          width: "100%",
+          maxWidth: "500px",
+          borderRadius: "12px",
+        }}
       >
-        <h2 className="text-center mb-4" style={{ fontWeight: "700", color: "#333" }}>
+        <h2
+          className="text-center mb-4"
+          style={{ fontWeight: "700", color: "#333" }}
+        >
           Cadastrar Filme
         </h2>
 
         {message && (
           <div
-            className={`alert ${message.includes("sucesso") ? "alert-success" : "alert-danger"} mb-3`}
+            className={`alert ${
+              message.includes("sucesso") ? "alert-success" : "alert-danger"
+            } mb-3`}
             role="alert"
           >
             {message}
@@ -50,7 +64,9 @@ function CadastrarFilme() {
 
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
-            <label htmlFor="tituloFilme" className="form-label">Título do Filme:</label>
+            <label htmlFor="tituloFilme" className="form-label">
+              Título do Filme:
+            </label>
             <input
               type="text"
               id="tituloFilme"
@@ -63,7 +79,24 @@ function CadastrarFilme() {
           </div>
 
           <div className="mb-4">
-            <label htmlFor="sinopseFilme" className="form-label">Sinopse do Filme:</label>
+            <label htmlFor="generoFilme" className="form-label">
+              Genero do Filme:
+            </label>
+            <textarea
+              id="generoFilme"
+              className="form-control"
+              rows={1}
+              placeholder="Digite o genero do filme"
+              style={{ borderRadius: "10px", padding: "10px", resize: "none" }}
+              value={genero}
+              onChange={(e) => setGenero(e.target.value)}
+            />
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="sinopseFilme" className="form-label">
+              Sinopse do Filme:
+            </label>
             <textarea
               id="sinopseFilme"
               className="form-control"
