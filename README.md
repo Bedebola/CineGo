@@ -3,72 +3,42 @@
 Sistema para controle de usuários, autenticação e gerenciamento de filmes (aluguel e devolução).
 Backend desenvolvido em Java (Spring Boot) e frontend em React com TypeScript (Vite).
 
-🚀 Funcionalidades
+🚀 Funcionalidades:
 Backend (Java - Spring Boot)
+- Controle de Usuário e Autenticação
+- Cadastro de usuários com os campos: id, nome, cpf, email (login) e senha.
+- Login com retorno de Token JWT.
+- Todas as rotas protegidas, exigindo token de acesso.
 
-Controle de Usuário e Autenticação
+Boas Práticas:
+- Uso de DTOs para Request e Response (não expor entidades diretamente).
+- Lógica de negócio centralizada em camada de Service.
+- Tratamento básico de exceções.
 
-Cadastro de usuários com os campos: id, nome, email (login) e senha.
-
-Senhas armazenadas de forma criptografada.
-
-Login com retorno de Token JWT.
-
-Todas as rotas protegidas, exigindo token de acesso.
-
-Boas Práticas
-
-Uso de DTOs para Request e Response (não expor entidades diretamente).
-
-Lógica de negócio centralizada em camada de Service.
-
-Tratamento básico de exceções.
-
-Regra de Negócio
-
-Entidade principal: Filme (id, título, gênero, status [DISPONIVEL, ALUGADO]).
+Regra de Negócio:
+- Entidade principal: Filme (id, título, sinopse, gênero, status [DISPONIVEL, ALUGADO]).
 
 Funções:
-
-Alugar filme (apenas se estiver DISPONIVEL).
-
-Devolver filme (alterar status para DISPONIVEL).
+- Alugar filme (apenas se estiver DISPONIVEL).
+- Devolver filme (alterar status para DISPONIVEL).
 
 Frontend (React + TypeScript)
 
-Telas
-
-Login: Consome o endpoint de autenticação do backend.
-
-Principal: Lista todos os filmes com botões para:
-
-Criar novo filme.
-
-Executar ações de alugar e devolver.
-
-Autenticação
-
-Token JWT salvo no Redux.
-
-Todas as requisições enviam o token no cabeçalho Authorization.
-
-Tela principal acessível apenas para usuários logados.
+Telas:
+- Login: Consome o endpoint de autenticação do backend.
+- Principal: Dashboard com os filmes mais recentes e indicadores de quantidade de filmes em cada status.
+- Catalogo de Filmes: Lista todos os filmes registrados e permite exclusão, edição e mudança de status(alugar, devolver e desativar)
+- Tabela de Usuarios: Lista todos os usuarios registrados e permite exclusão e edição.
+- Cadastro de Filme: Permite cadastrar um novo filme.
+- Cadastro de Usuario: Permite cadastrar um novo usuario.
 
 🛠️ Tecnologias Utilizadas
-Backend
+Backend:
+- Java + Spring Boot
+- Spring Security + JWT
+- JPA / Hibernate
+- MySQL
 
-Java + Spring Boot
-
-Spring Security + JWT
-
-JPA / Hibernate
-
-PostgreSQL
-
-Frontend
-
-React + TypeScript
-
-Vite
-
-Redux
+Frontend:
+- React + TypeScript
+- Vite
