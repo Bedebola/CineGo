@@ -26,9 +26,9 @@ function Login() {
         className="card p-4 shadow-lg"
         style={{ minWidth: "350px", borderRadius: "15px", backgroundColor: "white" }}
       >
-        <h1 className="text-center mb-4" style={{ color: "#333", fontWeight: 700 }}>
-          Login
-        </h1>
+        <h2 className="text-center mb-3" style={{ color: "#333", fontWeight: 700 }}>
+          CineGo Login
+        </h2>
 
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
