@@ -6,23 +6,11 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class MenuController {
-
-    public void sair(){
-        System.exit(0);
-    }
-
-    public void abrirMenuAdmin(ActionEvent event) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/cinego/cinegoadminconfig/admin-view.fxml"));
+public class SucessMessage {
+    public void voltarTelaInicial(ActionEvent event) throws Exception {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/cinego/cinegoadminconfig/menu-view.fxml"));
         Scene scene = new Scene(loader.load());
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(scene);
     }
-
-
-
-
-
-
-
 }

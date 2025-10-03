@@ -31,7 +31,7 @@ public class SecurityConfig {
                         //autorizações do swagger
                         .requestMatchers("/swagger-resources/**").permitAll()
                         .requestMatchers("/swagger-ui/**").permitAll()
-                        .requestMatchers("/v3/api-docs/**").permitAll()
+                            .requestMatchers("/v3/api-docs/**").permitAll()
                         .requestMatchers("/**").permitAll()
 
                         //autorizações das rotas de usuario
