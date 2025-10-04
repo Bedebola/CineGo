@@ -5,7 +5,11 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="350.0" prefWidth="250.0" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #0d1b2a, #1b263b, #415a77);" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cinego.cinegoadminconfig.controllers.MenuController">
+<AnchorPane prefHeight="350.0" prefWidth="250.0"
+            style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #0d1b2a, #1b263b, #415a77);"
+            xmlns="http://javafx.com/javafx/17.0.2-ea"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.cinego.cinegoadminconfig.controllers.MenuController">
 
 <children>
       <ImageView fitHeight="202.0" fitWidth="139.0" layoutX="56.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">

@@ -18,24 +18,20 @@
          </cursor>
         </ImageView>
         <Label layoutX="125.0" layoutY="172.0" prefHeight="17.0" prefWidth="150.0" text="Nome" textFill="WHITE" />
-        <TextField fx:id="nomeUsuario" layoutX="123.0" layoutY="188.0" prefHeight="25.0" prefWidth="150.0" promptText="Nome do Usuario" style="-fx-background-radius: 8; -fx-border-radius: 8; -fx-border-color: #415a77;">
-         <cursor>
-            <Cursor fx:constant="TEXT" />
-         </cursor>
-         <effect>
-            <Blend mode="GREEN" />
-         </effect></TextField>
+        <TextField fx:id="nomeUsuario" layoutX="123.0" layoutY="188.0" prefHeight="25.0" prefWidth="150.0"
+                   promptText="Nome do Usuario"
+                   style="-fx-background-radius: 8; -fx-border-radius: 8; -fx-border-color: #415a77;"/>
         <Label layoutX="125.0" layoutY="220.0" prefHeight="17.0" prefWidth="147.0" text="CPF" textFill="WHITE" />
         <TextField fx:id="cpfUsuario" layoutX="124.0" layoutY="237.0" prefHeight="25.0" prefWidth="150.0" promptText="CPF do Usuario" style="-fx-background-radius: 8; -fx-border-radius: 8; -fx-border-color: #415a77;" />
         <Label layoutX="126.0" layoutY="269.0" prefHeight="17.0" prefWidth="150.0" text="E-mail" textFill="WHITE" />
         <TextField fx:id="emailUsuario" layoutX="125.0" layoutY="286.0" prefHeight="25.0" prefWidth="150.0" promptText="E-mail do Usuario" style="-fx-background-radius: 8; -fx-border-radius: 8; -fx-border-color: #415a77;" />
         <Label layoutX="128.0" layoutY="318.0" prefHeight="17.0" prefWidth="147.0" text="Senha" textFill="WHITE" />
         <PasswordField fx:id="senhaUsuario" layoutX="125.0" layoutY="335.0" prefHeight="25.0" prefWidth="150.0" promptText="Senha do Usuario" style="-fx-background-radius: 8; -fx-border-radius: 8; -fx-border-color: #415a77;" />
-      <Button fx:id="txtNome" layoutX="155.0" layoutY="384.0" mnemonicParsing="false" onAction="#cadastrarUsuarioAdmin" prefHeight="29.0" prefWidth="87.0" style="-fx-background-color: #f0f0f0; -fx-text-fill: #0d1b2a; -fx-background-radius: 10; -fx-border-radius: 10; -fx-padding: 6 14 6 14;" text="Cadastrar">
+      <Button layoutX="149.0" layoutY="385.0" mnemonicParsing="false" onAction="#cadastrarUsuarioAdmin" prefHeight="29.0" prefWidth="98.0" style="-fx-background-color: #f0f0f0; -fx-text-fill: #0d1b2a; -fx-background-radius: 10; -fx-border-radius: 10; -fx-padding: 6 14 6 14;" text="Cadastrar">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
-      <Button layoutX="20.0" layoutY="427.0" mnemonicParsing="false" onAction="#voltarTelaInicial" prefHeight="29.0" prefWidth="87.0" style="-fx-background-color: #f0f0f0; -fx-text-fill: #0d1b2a; -fx-background-radius: 10; -fx-border-radius: 10; -fx-padding: 6 14 6 14;" text="Voltar">
+      <Button layoutX="20.0" layoutY="427.0" mnemonicParsing="false" onAction="#voltarTelaInicial" prefHeight="17.0" prefWidth="64.0" style="-fx-background-color: #f0f0f0; -fx-text-fill: #0d1b2a; -fx-background-radius: 10; -fx-border-radius: 10; -fx-padding: 6 14 6 14;" text="Voltar">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
