@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { cadastrarFilme } from "../../api/filmes-api";
+import React, { useState, useEffect, useRef } from "react";
+import { cadastrarFilme } from "../../../api/filmes-api";
 
 function CadastrarFilme() {
+  const dialogRef = useRef<HTMLDialogElement>(null);
   const [titulo, setTitulo] = useState("");
   const [genero, setGenero] = useState("");
   const [sinopse, setSinopse] = useState("");
   const [isFormValid, setIsFormValid] = useState(false);
-  const [message, setMessage] = useState("");
 
   useEffect(() => {
     setIsFormValid(
@@ -14,55 +14,44 @@ function CadastrarFilme() {
     );
   }, [titulo, genero, sinopse]);
 
+  const abrirDialog = () => {
+    dialogRef.current?.showModal();
+  };
+
+  const fecharDialog = () => dialogRef.current?.close();
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setMessage("");
-
     try {
       await cadastrarFilme({ titulo, genero, sinopse });
-      setMessage("Filme cadastrado com sucesso!");
+      fecharDialog();
       setTitulo("");
       setGenero("");
       setSinopse("");
     } catch (error) {
       console.error(error);
-      setMessage("Erro ao cadastrar filme. Tente novamente.");
     }
   };
 
   return (
-    <div
-      className="d-flex justify-content-center align-items-center"
-      style={{ minHeight: "80vh", marginLeft: "250px", padding: "20px" }}
-    >
-      <div
-        className="card p-4 shadow"
+    <>
+      <button onClick={abrirDialog} className="btn btn-sm">
+        <i className="bi bi-plus-square"> Cadastrar Filme</i>
+      </button>
+
+      <dialog
+        ref={dialogRef}
+        className="border-0 rounded-4 shadow-lg p-4"
         style={{
-          minWidth: "400px",
-          width: "100%",
-          maxWidth: "500px",
+          width: "min(500px, 90vw)",
+          border: "none",
           borderRadius: "12px",
+          boxShadow: "0 5px 15px rgba(0,0,0,0.3)",
         }}
       >
-        <h2
-          className="text-center mb-4"
-          style={{ fontWeight: "700", color: "#333" }}
-        >
-          Cadastrar Filme
-        </h2>
-
-        {message && (
-          <div
-            className={`alert ${
-              message.includes("sucesso") ? "alert-success" : "alert-danger"
-            } mb-3`}
-            role="alert"
-          >
-            {message}
-          </div>
-        )}
-
         <form onSubmit={handleSubmit}>
+          <h4 className="mb-3 text-center">Cadastrar Filme</h4>
+
           <div className="mb-3">
             <label htmlFor="tituloFilme" className="form-label">
               Título do Filme:
@@ -72,60 +61,59 @@ function CadastrarFilme() {
               id="tituloFilme"
               className="form-control"
               placeholder="Digite o título do filme"
-              style={{ borderRadius: "10px", padding: "10px" }}
               value={titulo}
               onChange={(e) => setTitulo(e.target.value)}
             />
           </div>
 
-          <div className="mb-4">
+          <div className="mb-3">
             <label htmlFor="generoFilme" className="form-label">
-              Genero do Filme:
+              Gênero:
             </label>
-            <textarea
+            <input
+              type="text"
               id="generoFilme"
               className="form-control"
-              rows={1}
-              placeholder="Digite o genero do filme"
-              style={{ borderRadius: "10px", padding: "10px", resize: "none" }}
+              placeholder="Digite o gênero do filme"
               value={genero}
               onChange={(e) => setGenero(e.target.value)}
             />
           </div>
 
-          <div className="mb-4">
+          <div className="mb-3">
             <label htmlFor="sinopseFilme" className="form-label">
-              Sinopse do Filme:
+              Sinopse:
             </label>
             <textarea
               id="sinopseFilme"
               className="form-control"
-              rows={4}
+              rows={3}
               placeholder="Digite a sinopse do filme"
-              style={{ borderRadius: "10px", padding: "10px", resize: "none" }}
               value={sinopse}
               onChange={(e) => setSinopse(e.target.value)}
             />
           </div>
 
-          <button
-            type="submit"
-            className="btn w-100"
-            style={{
-              backgroundColor: "#343a40",
-              color: "white",
-              fontWeight: "600",
-              borderRadius: "10px",
-              padding: "10px",
-              transition: "0.3s",
-            }}
-            disabled={!isFormValid}
-          >
-            Cadastrar
-          </button>
+          <div className="d-flex justify-content-between mt-4">
+            <button
+              type="button"
+              onClick={fecharDialog}
+              className="btn btn-outline-secondary"
+            >
+              Cancelar
+            </button>
+
+            <button
+              type="submit"
+              className="btn btn-dark"
+              disabled={!isFormValid}
+            >
+              Cadastrar
+            </button>
+          </div>
         </form>
-      </div>
-    </div>
+      </dialog>
+    </>
   );
 }
 

@@ -6,6 +6,11 @@ export async function listarFilmes() {
   return data;
 }
 
+export async function listarFilmesPorStatus(status: string) {
+  const { data } = await http.get(`/filme/listarFilmesPorStatus/${status}`);
+  return data;
+}
+
 export async function buscarFilmeId(filmeId: number) {
   const { data } = await http.get(`/filme/buscarFilmeId/${filmeId}`);
   return data;

@@ -8,6 +8,7 @@ interface Usuario {
   usuarioId: number;
   nome: string;
   cpf: string;
+  role: string;
   email: string;
 }
 
@@ -36,6 +37,7 @@ function Usuarios() {
               </th>
               <th>E-mail</th>
               <th>CPF</th>
+              <th>Role</th>
               <th className="text-center" style={{ width: 140 }}>
                 Ações
               </th>
@@ -52,6 +54,9 @@ function Usuarios() {
                 </td>
                 <td>
                   <span className="text-muted">{usuario.cpf}</span>
+                </td>
+                <td>
+                  <span className="text-muted">{usuario.role}</span>
                 </td>
                 <td className="text-center">
                   <div className="d-inline-flex gap-2">

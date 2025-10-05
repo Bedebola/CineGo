@@ -20,7 +20,10 @@ public class FilmeService {
     @Autowired
     private FilmeRepository filmeRepository;
 
-    public DtoFilme criarRetornoFilme(Filme filme)throws ArgumentoInvalidoOuNaoEncontradoException{
+    @Autowired
+    private RegistroLocacaoService registroLocacaoService;
+
+    public DtoFilme criarRetornoFilme(Filme filme) throws ArgumentoInvalidoOuNaoEncontradoException {
         DtoFilme filmeRetorno = new DtoFilme();
         filmeRetorno.setFilmeId(filme.getId());
         filmeRetorno.setTitulo(filme.getTitulo());
@@ -36,7 +39,7 @@ public class FilmeService {
         try {
             List<Filme> listaFilmes = filmeRepository.findAll();
 
-            if (listaFilmes.isEmpty()){
+            if (listaFilmes.isEmpty()) {
                 throw new ArgumentoInvalidoOuNaoEncontradoException("A lista de filmes encontra-se vazia!");
             }
 
@@ -56,11 +59,36 @@ public class FilmeService {
         }
     }
 
+    public List<DtoFilme> listarFilmesPorStatus(StatusFilme status) throws ArgumentoInvalidoOuNaoEncontradoException {
+
+        try {
+            List<Filme> listaFilmes = filmeRepository.findByStatus(status);
+
+            if (listaFilmes.isEmpty()) {
+                throw new ArgumentoInvalidoOuNaoEncontradoException("A lista de filmes encontra-se vazia!");
+            }
+
+            List<DtoFilme> listarFilmesPorStatusRetorno = new ArrayList<>();
+
+            for (int i = 0; i < listaFilmes.size(); i++) {
+                Filme filme = listaFilmes.get(i);
+                DtoFilme dtoFilme = criarRetornoFilme(filme);
+
+                listarFilmesPorStatusRetorno.add(dtoFilme);
+            }
+
+            return listarFilmesPorStatusRetorno;
+
+        } catch (Exception e) {
+            throw new AcaoInvalidaException("Ocorreu um erro ao buscar os filmes cadastrados: " + e.getMessage());
+        }
+    }
+
     public Filme buscarFilmePorId(Long filmeId) throws ArgumentoInvalidoOuNaoEncontradoException {
 
         try {
             Filme filme = filmeRepository.findById(filmeId)
-                    .orElseThrow(()-> new ArgumentoInvalidoOuNaoEncontradoException("Nenhum filme foi encontrado para o ID informado!"));
+                    .orElseThrow(() -> new ArgumentoInvalidoOuNaoEncontradoException("Nenhum filme foi encontrado para o ID informado!"));
 
             return filme;
 
@@ -69,18 +97,18 @@ public class FilmeService {
         }
     }
 
-    public void validarCamposFilme (Filme filme,Long idIgnore) throws ArgumentoInvalidoOuNaoEncontradoException {
+    public void validarCamposFilme(Filme filme, Long idIgnore) throws ArgumentoInvalidoOuNaoEncontradoException {
 
-        if (filme == null){
+        if (filme == null) {
             throw new ArgumentoInvalidoOuNaoEncontradoException("Filme não pode ser nulo!");
         }
-        if (filme.getTitulo() == null || filme.getTitulo().isEmpty()){
+        if (filme.getTitulo() == null || filme.getTitulo().isEmpty()) {
             throw new ArgumentoInvalidoOuNaoEncontradoException("O campo NOME não pode ser vazio!");
         }
-        if (filme.getGenero() == null || filme.getGenero().isEmpty()){
+        if (filme.getGenero() == null || filme.getGenero().isEmpty()) {
             throw new ArgumentoInvalidoOuNaoEncontradoException("O campo GENERO não pode ser vazio!");
         }
-        if (filme.getSinopse() == null || filme.getSinopse().isEmpty()){
+        if (filme.getSinopse() == null || filme.getSinopse().isEmpty()) {
             throw new ArgumentoInvalidoOuNaoEncontradoException("O campo SINOPSE não pode ser vazio!");
         }
 
@@ -97,6 +125,7 @@ public class FilmeService {
         try {
             validarCamposFilme(filme, null);
             filme.setStatus(StatusFilme.DISPONIVEL);
+
             filmeRepository.save(filme);
 
             return criarRetornoFilme(filme);
@@ -105,11 +134,11 @@ public class FilmeService {
         }
     }
 
-    public DtoFilme editarFilme(Long filmeId, Filme filme) throws ArgumentoInvalidoOuNaoEncontradoException{
+    public DtoFilme editarFilme(Long filmeId, Filme filme) throws ArgumentoInvalidoOuNaoEncontradoException {
 
         try {
             Filme filmeExistente = filmeRepository.findById(filmeId)
-                    .orElseThrow(()->new ArgumentoInvalidoOuNaoEncontradoException("Nenhum filme encontrado para o id informado"));
+                    .orElseThrow(() -> new ArgumentoInvalidoOuNaoEncontradoException("Nenhum filme encontrado para o id informado"));
 
             validarCamposFilme(filmeExistente, filmeId);
             filmeExistente.setTitulo(filme.getTitulo());
@@ -120,19 +149,20 @@ public class FilmeService {
             return criarRetornoFilme(filmeExistente);
 
         } catch (ArgumentoInvalidoOuNaoEncontradoException e) {
-            throw new ArgumentoInvalidoOuNaoEncontradoException("Não foi possível concluir a ação: "+e);
+            throw new ArgumentoInvalidoOuNaoEncontradoException("Não foi possível concluir a ação: " + e);
         }
     }
 
     public DtoFilme alugarFilme(Long filmeId) throws ArgumentoInvalidoOuNaoEncontradoException {
 
         Filme filmeRegistrado = filmeRepository.findById(filmeId)
-                .orElseThrow(()->new ArgumentoInvalidoOuNaoEncontradoException("Nenhum filme encontrado para o id informado"));
+                .orElseThrow(() -> new ArgumentoInvalidoOuNaoEncontradoException("Nenhum filme encontrado para o id informado"));
 
-        if (filmeRegistrado.getStatus() != StatusFilme.DISPONIVEL){
+        if (filmeRegistrado.getStatus() != StatusFilme.DISPONIVEL) {
             throw new AcaoInvalidaException("Não foi possível completar a ação: No momento, o título selecionado encontra-se alugado ou inativo.");
         }
 
+        registroLocacaoService.registrarLocacao(1L, filmeRegistrado.getId());
         filmeRegistrado.setStatus(StatusFilme.ALUGADO);
         filmeRepository.save(filmeRegistrado);
         return criarRetornoFilme(filmeRegistrado);
@@ -141,13 +171,13 @@ public class FilmeService {
     public DtoFilme devolverFilme(Long filmeId) throws ArgumentoInvalidoOuNaoEncontradoException {
 
         Filme filmeRegistrado = filmeRepository.findById(filmeId)
-                .orElseThrow(()->new ArgumentoInvalidoOuNaoEncontradoException("Nenhum filme encontrado para o id informado"));
+                .orElseThrow(() -> new ArgumentoInvalidoOuNaoEncontradoException("Nenhum filme encontrado para o id informado"));
 
 
-        if (filmeRegistrado.getStatus() != StatusFilme.ALUGADO){
+        if (filmeRegistrado.getStatus() != StatusFilme.ALUGADO)
             throw new AcaoInvalidaException("Não foi possível completar a ação: O título selecionado não está alugado, portanto não pode ser devolvido.");
-        }
 
+        registroLocacaoService.registrarDevolucao(filmeRegistrado.getId());
         filmeRegistrado.setStatus(StatusFilme.DISPONIVEL);
         filmeRepository.save(filmeRegistrado);
         return criarRetornoFilme(filmeRegistrado);
@@ -156,10 +186,10 @@ public class FilmeService {
     public DtoFilme desativarFilme(Long filmeId) throws ArgumentoInvalidoOuNaoEncontradoException {
 
         Filme filmeRegistrado = filmeRepository.findById(filmeId)
-                .orElseThrow(()->new ArgumentoInvalidoOuNaoEncontradoException("Nenhum filme encontrado para o id informado"));
+                .orElseThrow(() -> new ArgumentoInvalidoOuNaoEncontradoException("Nenhum filme encontrado para o id informado"));
 
 
-        if (filmeRegistrado.getStatus() != StatusFilme.DISPONIVEL){
+        if (filmeRegistrado.getStatus() != StatusFilme.DISPONIVEL) {
             throw new AcaoInvalidaException("Não foi possível completar a ação: O título selecionado está atualmente alugado, portanto não pode ser desativado.");
         }
 
@@ -171,9 +201,9 @@ public class FilmeService {
     public DtoFilme ativarFilme(Long filmeId) throws ArgumentoInvalidoOuNaoEncontradoException {
 
         Filme filmeRegistrado = filmeRepository.findById(filmeId)
-                .orElseThrow(()->new ArgumentoInvalidoOuNaoEncontradoException("Nenhum filme encontrado para o id informado"));
+                .orElseThrow(() -> new ArgumentoInvalidoOuNaoEncontradoException("Nenhum filme encontrado para o id informado"));
 
-        if (filmeRegistrado.getStatus() != StatusFilme.DESATIVADO){
+        if (filmeRegistrado.getStatus() != StatusFilme.DESATIVADO) {
             throw new AcaoInvalidaException("Não foi possível completar a ação: O título selecionado não está desativado, portanto não pode ser ativado.");
         }
 
@@ -185,7 +215,7 @@ public class FilmeService {
     public void excluirFilme(Long filmeId) throws ArgumentoInvalidoOuNaoEncontradoException {
 
         Filme filmeRegistrado = filmeRepository.findById(filmeId)
-                .orElseThrow(()->new ArgumentoInvalidoOuNaoEncontradoException("Nenhum filme encontrado para o id informado"));
+                .orElseThrow(() -> new ArgumentoInvalidoOuNaoEncontradoException("Nenhum filme encontrado para o id informado"));
 
         filmeRepository.delete(filmeRegistrado);
     }

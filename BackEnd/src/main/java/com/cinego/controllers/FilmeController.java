@@ -1,5 +1,6 @@
 package com.cinego.controllers;
 
+import com.cinego.enums.StatusFilme;
 import com.cinego.exceptions.ArgumentoInvalidoOuNaoEncontradoException;
 import com.cinego.models.Filme;
 import com.cinego.services.FilmeService;
@@ -22,6 +23,17 @@ public class FilmeController {
     ResponseEntity<?> listarFilmes(){
         try {
             return ResponseEntity.ok(filmeService.listarFilmes());
+        } catch (ArgumentoInvalidoOuNaoEncontradoException e) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+    }
+
+    @GetMapping("/listarFilmesPorStatus/{status}")
+    ResponseEntity<?> listarFilmesPorStatus(
+            @PathVariable StatusFilme status
+            ){
+        try {
+            return ResponseEntity.ok(filmeService.listarFilmesPorStatus(status));
         } catch (ArgumentoInvalidoOuNaoEncontradoException e) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }

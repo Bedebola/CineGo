@@ -11,7 +11,7 @@ function Login() {
     e.preventDefault();
     try {
       await login(email, senha);
-      navigate("/");
+      navigate("/filmes");
     } catch {
       alert("Credenciais inválidas");
     }

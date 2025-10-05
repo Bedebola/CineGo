@@ -16,7 +16,7 @@ import java.net.URL;
 public class AdminController {
 
 public void voltarTelaInicial(ActionEvent event) throws Exception {
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/cinego/cinegoadminconfig/menu-view.fxml"));
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/cinego/cinegoadminconfig/views/menu-view.fxml"));
     Scene scene = new Scene(loader.load());
     Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
     stage.setScene(scene);

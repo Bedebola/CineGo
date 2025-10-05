@@ -25,10 +25,10 @@ import java.util.List;
 @Service
 public class TokenService {
 
-    @Value("${spring.secret}")
+    @Value("${spring.seguranca.secret}")
     private String secret;
 
-    @Value("${spring.expirationTime}")
+    @Value("${spring.seguranca.expirationTime}")
     private Long tempo;
 
     private String emissor = "cinegoapp";
@@ -57,7 +57,9 @@ public class TokenService {
                 .withExpiresAt(this.gerarDataExpiracao())
                 .sign(algorithm);
 
-        tokenRepository.save(new Token(null, token, usuario));
+        Token novoToken = new Token(null, token, usuario);
+        tokenRepository.save(novoToken);
+
         return token;
     }
 

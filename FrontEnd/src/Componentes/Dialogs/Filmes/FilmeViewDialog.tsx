@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+
 import {
   buscarFilmeId,
   alugarFilme,
@@ -96,7 +97,7 @@ function FilmeViewDialog({ filmeId, onChange }: FilmeViewProps) {
               >
                 {filme?.status}
               </span>
-
+ 
               <button
                 onClick={fecharDialog}
                 className="btn-close btn-close-white"
