@@ -1,45 +1,45 @@
 import { AxiosError } from "axios";
-import { http } from "./http";
+import api from "./api";
 
 export async function listarFilmes() {
-  const { data } = await http.get("/filme/listarFilmes");
+  const { data } = await api.get("/filme/listarFilmes");
   return data;
 }
 
 export async function listarFilmesPorStatus(status: string) {
-  const { data } = await http.get(`/filme/listarFilmesPorStatus/${status}`);
+  const { data } = await api.get(`/filme/listarFilmesPorStatus/${status}`);
   return data;
 }
 
 export async function buscarFilmeId(filmeId: number) {
-  const { data } = await http.get(`/filme/buscarFilmeId/${filmeId}`);
+  const { data } = await api.get(`/filme/buscarFilmeId/${filmeId}`);
   return data;
 }
 
 export async function alugarFilme(filmeId: number) {
-  const { data } = await http.put(`/filme/alugarFilme/${filmeId}`);
+  const { data } = await api.put(`/filme/alugarFilme/${filmeId}`);
   return data;
 }
 
 export async function devolverFilme(filmeId: number) {
-  const { data } = await http.put(`/filme/devolverFilme/${filmeId}`);
+  const { data } = await api.put(`/filme/devolverFilme/${filmeId}`);
   return data;
 }
 
 export async function desativarFilme(filmeId: number) {
-  const { data } = await http.put(`/filme/desativarFilme/${filmeId}`);
+  const { data } = await api.put(`/filme/desativarFilme/${filmeId}`);
   return data;
 }
 
 export async function ativarFilme(filmeId: number) {
-  const { data } = await http.put(`/filme/ativarFilme/${filmeId}`);
+  const { data } = await api.put(`/filme/ativarFilme/${filmeId}`);
   return data;
 }
 
 type FilmeRequest = { titulo: string; genero: string, sinopse: string };
 export async function cadastrarFilme(filme: FilmeRequest) {
   try {
-    const { data } = await http.post("/filme/cadastrarFilme", filme);
+    const { data } = await api.post("/filme/cadastrarFilme", filme);
     return data;
   } catch (err: unknown) {
     if (err instanceof AxiosError) {
@@ -52,10 +52,10 @@ export async function editarFilme(
   filmeId: number,
   filme: { titulo: string; genero: string, sinopse: string }
 ) {
-  const { data } = await http.put(`/filme/editarFilme/${filmeId}`, filme);
+  const { data } = await api.put(`/filme/editarFilme/${filmeId}`, filme);
   return data;
 }
 
 export async function excluirFilme(filmeId: number) {
-  await http.delete(`/filme/excluirFilme/${filmeId}`);
+  await api.delete(`/filme/excluirFilme/${filmeId}`);
 }

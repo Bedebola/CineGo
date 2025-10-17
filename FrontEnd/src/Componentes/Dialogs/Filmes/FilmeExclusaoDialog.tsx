@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { excluirFilme, buscarFilmeId } from "../../../api/filmes-api";
+import { excluirFilme, buscarFilmeId } from "../../../api/filmesService";
 
 interface Filme {
   titulo: string;

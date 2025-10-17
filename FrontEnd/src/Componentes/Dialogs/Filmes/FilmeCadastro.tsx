@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { cadastrarFilme } from "../../../api/filmes-api";
+import { cadastrarFilme } from "../../../api/filmesService";
 
 function CadastrarFilme() {
   const dialogRef = useRef<HTMLDialogElement>(null);

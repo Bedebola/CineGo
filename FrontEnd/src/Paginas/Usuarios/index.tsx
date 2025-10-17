@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { listarUsuarios } from "../../api/usuarios-api";
+import { listarUsuarios } from "../../api/usuariosService";
 import UsuarioView from "../../Componentes/Dialogs/Usuarios/UsuarioViewDialog";
 import UsuarioEdicaoDialog from "../../Componentes/Dialogs/Usuarios/UsuarioEdicaoDialog";
 import UsuarioExclusaoDialog from "../../Componentes/Dialogs/Usuarios/UsuarioExclusaoDialog";

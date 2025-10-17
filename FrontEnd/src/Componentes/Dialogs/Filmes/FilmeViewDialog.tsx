@@ -6,7 +6,7 @@ import {
   devolverFilme,
   desativarFilme,
   ativarFilme,
-} from "../../../api/filmes-api";
+} from "../../../api/filmesService";
 
 interface Filme {
   titulo: string;

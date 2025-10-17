@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { editarFilme, buscarFilmeId } from "../../../api/filmes-api";
+import { editarFilme, buscarFilmeId } from "../../../api/filmesService";
 
 interface Filme {
   filmeId: number;

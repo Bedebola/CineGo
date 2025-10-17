@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { cadastrarUsuario } from "../../../api/usuarios-api";
+import { cadastrarUsuario } from "../../../api/usuariosService";
 
 function CadastrarUsuario() {
   const dialogRef = useRef<HTMLDialogElement>(null);

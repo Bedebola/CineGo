@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { excluirUsuario, buscarUsuarioId } from "../../../api/usuarios-api";
+import { excluirUsuario, buscarUsuarioId } from "../../../api/usuariosService";
 
 interface Usuario {
   nome: string;

@@ -1,12 +1,12 @@
-import { http } from "./http";
+import api from "./api";
 
 export async function listarUsuarios() {
-  const { data } = await http.get("/usuario/listarUsuarios");
+  const { data } = await api.get("/usuario/listarUsuarios");
   return data;
 }
 
 export async function buscarUsuarioId(usuarioId: number) {
-  const { data } = await http.get(`/usuario/usuario/${usuarioId}`);
+  const { data } = await api.get(`/usuario/usuario/${usuarioId}`);
   return data;
 }
 
@@ -19,15 +19,15 @@ type UsuarioPayload = {
 };
 
 export async function cadastrarUsuario(usuario: UsuarioPayload) {
-  const { data } = await http.post("/usuario/cadastrarUsuario", usuario);
+  const { data } = await api.post("/usuario/cadastrarUsuario", usuario);
   return data;
 }
 
 export async function editarUsuario(usuarioId: number, usuario: UsuarioPayload) {
-  const { data } = await http.put(`/usuario/editarUsuario/${usuarioId}`, usuario);
+  const { data } = await api.put(`/usuario/editarUsuario/${usuarioId}`, usuario);
   return data;
 }
 
 export async function excluirUsuario(usuarioId: number) {
-  await http.delete(`/usuario/excluirUsuario/${usuarioId}`);
+  await api.delete(`/usuario/excluirUsuario/${usuarioId}`);
 }

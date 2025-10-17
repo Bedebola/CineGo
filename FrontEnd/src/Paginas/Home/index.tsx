@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { listarFilmes } from "../../api/filmes-api";
+import { listarFilmes } from "../../api/filmesService";
 import FilmeView from "../../Componentes/Dialogs/Filmes/FilmeViewDialog";
 
 interface Filme {

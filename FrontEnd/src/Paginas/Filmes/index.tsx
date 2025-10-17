@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { listarFilmes, listarFilmesPorStatus } from "../../api/filmes-api";
+import { listarFilmes, listarFilmesPorStatus } from "../../api/filmesService";
 import FilmeView from "../../Componentes/Dialogs/Filmes/FilmeViewDialog";
 import FilmeEdicaoDialog from "../../Componentes/Dialogs/Filmes/FilmeEdicaoDialog";
 import FilmeExclusaoDialog from "../../Componentes/Dialogs/Filmes/FilmeExclusaoDialog";

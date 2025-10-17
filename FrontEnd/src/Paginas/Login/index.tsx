@@ -1,18 +1,36 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { login } from "../../api/login-api"
+import { login } from "../../api/loginService";
+import { useDispatch } from "react-redux";
+import { loginSucesso } from "../../Redux/authSlice";
 
 function Login() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+
     try {
-      await login(email, senha);
-      navigate("/filmes");
-    } catch {
+      const response = await login(email, senha);
+      const token = response.data.token;
+
+      if (token) {
+        dispatch(
+          loginSucesso({
+            usuario: { email: email, nome: "" },
+            token: token,
+          })
+        );
+
+      } else {
+        alert("Token não recebido. Verifique a resposta do servidor.");
+      }
+    } catch (error) {
+      console.error("Erro no login:", error);
       alert("Credenciais inválidas");
     }
   }
@@ -69,7 +87,7 @@ function Login() {
               transition: "0.3s",
             }}
           >
-            {"Entrar"}
+            Entrar
           </button>
         </form>
       </div>

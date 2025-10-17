@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { listarUsuarios } from "../../api/usuarios-api";
+import { listarUsuarios } from "../../api/usuariosService";
 import UsuarioCadastro from "../../Componentes/Dialogs/Usuarios/UsuarioCadastro";
 
 interface Usuario {
