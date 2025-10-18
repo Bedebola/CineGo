@@ -36,15 +36,7 @@ export default function SideBar() {
         >
           <li>
             <Link
-              to="/cadastrarUsuario"
-              className="nav-link text-white-50 ps-5 py-2"
-            >
-              Cadastrar Usuario
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/usuarios"
+              to="/usuariosListView"
               className="nav-link text-white-50 ps-5 py-2"
             >
               Usuarios

@@ -1,6 +1,6 @@
 package com.cinego.application.services;
 
-import com.cinego.application.dtos.filme.FilmeRequestDTO;
+import com.cinego.application.dtos.filme.FilmeDTO;
 import com.cinego.domain.enums.StatusFilme;
 import com.cinego.domain.exceptions.AcaoInvalidaException;
 import com.cinego.domain.exceptions.ArgumentoInvalidoOuNaoEncontradoException;
@@ -23,8 +23,8 @@ public class FilmeService {
     @Autowired
     private RegistroLocacaoService registroLocacaoService;
 
-    public FilmeRequestDTO criarRetornoFilme(Filme filme) throws ArgumentoInvalidoOuNaoEncontradoException {
-        FilmeRequestDTO filmeRetorno = new FilmeRequestDTO();
+    public FilmeDTO criarRetornoFilme(Filme filme) throws ArgumentoInvalidoOuNaoEncontradoException {
+        FilmeDTO filmeRetorno = new FilmeDTO();
         filmeRetorno.setFilmeId(filme.getId());
         filmeRetorno.setTitulo(filme.getTitulo());
         filmeRetorno.setGenero(filme.getGenero());
@@ -34,7 +34,7 @@ public class FilmeService {
         return filmeRetorno;
     }
 
-    public List<FilmeRequestDTO> listarFilmes() throws ArgumentoInvalidoOuNaoEncontradoException {
+    public List<FilmeDTO> listarFilmes() throws ArgumentoInvalidoOuNaoEncontradoException {
 
         try {
             List<Filme> listaFilmes = filmeRepository.findAll();
@@ -43,13 +43,13 @@ public class FilmeService {
                 throw new ArgumentoInvalidoOuNaoEncontradoException("A lista de filmes encontra-se vazia!");
             }
 
-            List<FilmeRequestDTO> listaFilmesRetorno = new ArrayList<>();
+            List<FilmeDTO> listaFilmesRetorno = new ArrayList<>();
 
             for (int i = 0; i < listaFilmes.size(); i++) {
                 Filme filme = listaFilmes.get(i);
-                FilmeRequestDTO filmeRequestDTO = criarRetornoFilme(filme);
+                FilmeDTO filmeDTO = criarRetornoFilme(filme);
 
-                listaFilmesRetorno.add(filmeRequestDTO);
+                listaFilmesRetorno.add(filmeDTO);
             }
 
             return listaFilmesRetorno;
@@ -59,7 +59,7 @@ public class FilmeService {
         }
     }
 
-    public List<FilmeRequestDTO> listarFilmesPorStatus(StatusFilme status) throws ArgumentoInvalidoOuNaoEncontradoException {
+    public List<FilmeDTO> listarFilmesPorStatus(StatusFilme status) throws ArgumentoInvalidoOuNaoEncontradoException {
 
         try {
             List<Filme> listaFilmes = filmeRepository.findByStatus(status);
@@ -68,13 +68,13 @@ public class FilmeService {
                 throw new ArgumentoInvalidoOuNaoEncontradoException("A lista de filmes encontra-se vazia!");
             }
 
-            List<FilmeRequestDTO> listarFilmesPorStatusRetorno = new ArrayList<>();
+            List<FilmeDTO> listarFilmesPorStatusRetorno = new ArrayList<>();
 
             for (int i = 0; i < listaFilmes.size(); i++) {
                 Filme filme = listaFilmes.get(i);
-                FilmeRequestDTO filmeRequestDTO = criarRetornoFilme(filme);
+                FilmeDTO filmeDTO = criarRetornoFilme(filme);
 
-                listarFilmesPorStatusRetorno.add(filmeRequestDTO);
+                listarFilmesPorStatusRetorno.add(filmeDTO);
             }
 
             return listarFilmesPorStatusRetorno;
@@ -121,7 +121,7 @@ public class FilmeService {
         }
     }
 
-    public FilmeRequestDTO cadastrarFilme(Filme filme) throws ArgumentoInvalidoOuNaoEncontradoException {
+    public FilmeDTO cadastrarFilme(Filme filme) throws ArgumentoInvalidoOuNaoEncontradoException {
         try {
             validarCamposFilme(filme, null);
             filme.setStatus(StatusFilme.DISPONIVEL);
@@ -134,7 +134,7 @@ public class FilmeService {
         }
     }
 
-    public FilmeRequestDTO editarFilme(Long filmeId, Filme filme) throws ArgumentoInvalidoOuNaoEncontradoException {
+    public FilmeDTO editarFilme(Long filmeId, Filme filme) throws ArgumentoInvalidoOuNaoEncontradoException {
 
         try {
             Filme filmeExistente = filmeRepository.findById(filmeId)
@@ -153,7 +153,7 @@ public class FilmeService {
         }
     }
 
-    public FilmeRequestDTO alugarFilme(Long filmeId) throws ArgumentoInvalidoOuNaoEncontradoException {
+    public FilmeDTO alugarFilme(Long filmeId) throws ArgumentoInvalidoOuNaoEncontradoException {
 
         Filme filmeRegistrado = filmeRepository.findById(filmeId)
                 .orElseThrow(() -> new ArgumentoInvalidoOuNaoEncontradoException("Nenhum filme encontrado para o id informado"));
@@ -168,7 +168,7 @@ public class FilmeService {
         return criarRetornoFilme(filmeRegistrado);
     }
 
-    public FilmeRequestDTO devolverFilme(Long filmeId) throws ArgumentoInvalidoOuNaoEncontradoException {
+    public FilmeDTO devolverFilme(Long filmeId) throws ArgumentoInvalidoOuNaoEncontradoException {
 
         Filme filmeRegistrado = filmeRepository.findById(filmeId)
                 .orElseThrow(() -> new ArgumentoInvalidoOuNaoEncontradoException("Nenhum filme encontrado para o id informado"));
@@ -183,7 +183,7 @@ public class FilmeService {
         return criarRetornoFilme(filmeRegistrado);
     }
 
-    public FilmeRequestDTO desativarFilme(Long filmeId) throws ArgumentoInvalidoOuNaoEncontradoException {
+    public FilmeDTO desativarFilme(Long filmeId) throws ArgumentoInvalidoOuNaoEncontradoException {
 
         Filme filmeRegistrado = filmeRepository.findById(filmeId)
                 .orElseThrow(() -> new ArgumentoInvalidoOuNaoEncontradoException("Nenhum filme encontrado para o id informado"));
@@ -198,7 +198,7 @@ public class FilmeService {
         return criarRetornoFilme(filmeRegistrado);
     }
 
-    public FilmeRequestDTO ativarFilme(Long filmeId) throws ArgumentoInvalidoOuNaoEncontradoException {
+    public FilmeDTO ativarFilme(Long filmeId) throws ArgumentoInvalidoOuNaoEncontradoException {
 
         Filme filmeRegistrado = filmeRepository.findById(filmeId)
                 .orElseThrow(() -> new ArgumentoInvalidoOuNaoEncontradoException("Nenhum filme encontrado para o id informado"));

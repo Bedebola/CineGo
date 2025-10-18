@@ -3,9 +3,9 @@ import Layout from "./Componentes/Layout";
 import Home from "./Paginas/Home/index";
 import Filme from "./Paginas/Filmes";
 import FilmeListView from "./Paginas/Filmes/FilmesListView";
-import Usuario from "./Paginas/Usuarios";
 import Login from "./Paginas/Login";
-import UsuariosListView from "./Paginas/Usuarios/UsuariosListView";
+import UsuariosListView from "./Paginas/Usuarios";
+
 
 function AppRoutes() {
   return (
@@ -18,8 +18,6 @@ function AppRoutes() {
         <Route path="/filmeView/:filmeId" element={<Filme />} />
         <Route path="/filmesListView" element={<FilmeListView/>} />
 
-        <Route path="/usuarios" element={<Usuario />} />
-        <Route path="/usuarioView/:usuarioId" element={<Usuario />} />
         <Route path="/usuariosListView" element={<UsuariosListView />} />
 
       </Route>

@@ -31,16 +31,16 @@ public class SecurityConfig {
                         //autorizações do swagger
                         .requestMatchers("/swagger-resources/**").permitAll()
                         .requestMatchers("/swagger-ui/**").permitAll()
-                            .requestMatchers("/v3/api-docs/**").permitAll()
-                        .requestMatchers("/**").permitAll()
+                        .requestMatchers("/v3/api-docs/**").permitAll()
 
                         //autorizações das rotas de usuario
-                        .requestMatchers(HttpMethod.POST,"/access/login/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET,"/usuario/listarTodos").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST,"/access/login").permitAll()
+
+                        .requestMatchers(HttpMethod.GET,"/usuario/listarUsuarios").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET,"/usuario/usuario/**").authenticated()
-                        .requestMatchers(HttpMethod.POST, "/usuario/novo").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/usuario/editar/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/usuario/excluir/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/usuario/cadastrarUsuario").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/usuario/editarUsuario/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/usuario/excluirUsuario/**").hasRole("ADMIN")
 
                         //autorizações das rotas de filme
                         .requestMatchers(HttpMethod.GET,"/filme/listarFilmes").permitAll()
@@ -51,7 +51,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT,"/filme/devolverFilme/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT,"/filme/desativarFilme/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT,"/filme/ativarFilme/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE,"/filme/excluir/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE,"/filme/excluirFilme/**").hasRole("ADMIN")
                 )
 
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)

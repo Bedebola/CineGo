@@ -13,27 +13,27 @@ function Login() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-
-    try {
-      const response = await login(email, senha);
-      const token = response.data.token;
-
-      if (token) {
-        dispatch(
-          loginSucesso({
-            usuario: { email: email, nome: "" },
-            token: token,
-          })
-        );
-
-      } else {
-        alert("Token não recebido. Verifique a resposta do servidor.");
-      }
-    } catch (error) {
-      console.error("Erro no login:", error);
-      alert("Credenciais inválidas");
+  try {
+    const response = await login(email, senha);
+    const token = response.token;
+    
+    if (token) {
+      dispatch(
+        loginSucesso({
+          usuario: { email: email, nome: "" },
+          token: token,
+        })
+      );
+      navigate("/");
+    } else {
+      alert("Token não recebido. Verifique a resposta do servidor.");
     }
+
+  } catch (error) {
+    console.error("Erro no login:", error);
+    alert("Credenciais inválidas");
   }
+}
 
   return (
     <div

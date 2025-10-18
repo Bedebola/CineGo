@@ -1,83 +1,103 @@
-import { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { listarUsuarios } from "../../api/usuariosService";
-import UsuarioView from "../../Componentes/Dialogs/Usuarios/UsuarioViewDialog";
-import UsuarioEdicaoDialog from "../../Componentes/Dialogs/Usuarios/UsuarioEdicaoDialog";
-import UsuarioExclusaoDialog from "../../Componentes/Dialogs/Usuarios/UsuarioExclusaoDialog";
+import UsuarioCadastro from "../../Componentes/Dialogs/Usuarios/UsuarioCadastro";
 
 interface Usuario {
   usuarioId: number;
   nome: string;
+  email: string;
   cpf: string;
   role: string;
-  email: string;
 }
 
-function Usuarios() {
+function UsuariosListView() {
   const [usuarios, setUsuarios] = useState<Usuario[]>([]);
+  const [usuarioSelecionado, setUsuarioSelecionado] = useState<Usuario | null>(
+    null
+  );
 
   useEffect(() => {
-    carregar();
+    async function carregarUsuarios() {
+      const data: Usuario[] = await listarUsuarios();
+      setUsuarios(data);
+    }
+    carregarUsuarios();
   }, []);
 
-  async function carregar() {
-    const data = await listarUsuarios();
-    setUsuarios(data);
-  }
-
   return (
-    <main className="min-vh-100 d-flex flex-column align-items-center py-4">
-      <h2 className="h5 mb-4">Usuários</h2>
+    <div className="d-flex vh-100">
+      <div className="col-3 border-end overflow-auto p-3">
+        <h3>Usuários</h3>
+        <UsuarioCadastro />
 
-      <div className="table-responsive w-100" style={{ maxWidth: 1000 }}>
-        <table className="table table-hover table-striped align-middle shadow rounded overflow-hidden">
-          <thead className="table-dark">
-            <tr>
-              <th className="text-center" style={{ width: 180 }}>
-                Nome
-              </th>
-              <th>E-mail</th>
-              <th>CPF</th>
-              <th>Role</th>
-              <th className="text-center" style={{ width: 140 }}>
-                Ações
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {usuarios.map((usuario) => (
-              <tr key={usuario.usuarioId}>
-                <td>
-                  <span className="fw-semibold">{usuario.nome}</span>
-                </td>
-                <td>
-                  <span className="text-muted">{usuario.email}</span>
-                </td>
-                <td>
-                  <span className="text-muted">{usuario.cpf}</span>
-                </td>
-                <td>
-                  <span className="text-muted">{usuario.role}</span>
-                </td>
-                <td className="text-center">
-                  <div className="d-inline-flex gap-2">
-                    <UsuarioView usuarioId={usuario.usuarioId} />
-                    <UsuarioEdicaoDialog
-                      usuarioId={usuario.usuarioId}
-                      onChange={carregar}
-                    />
-                    <UsuarioExclusaoDialog
-                      usuarioId={usuario.usuarioId}
-                      onChange={carregar}
-                    />
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <ul className="list-unstyled mt-3">
+          {usuarios.map((u) => (
+            <li
+              key={u.usuarioId}
+              onClick={() => setUsuarioSelecionado(u)}
+              className={`p-2 rounded cursor-pointer ${
+                usuarioSelecionado?.usuarioId === u.usuarioId
+                  ? "bg-light fw-semibold"
+                  : "bg-transparent"
+              }`}
+              style={{ cursor: "pointer" }}
+            >
+              {u.nome}
+            </li>
+          ))}
+        </ul>
       </div>
-    </main>
+
+      <div className="flex-grow-1 p-3">
+        {usuarioSelecionado ? (
+          <>
+            <h2>{usuarioSelecionado.nome}</h2>
+
+            <div className="mb-3">
+              <label htmlFor="cpfUsuario" className="form-label fw-bold">
+                CPF:
+              </label>
+              <input
+                type="text"
+                id="cpfUsuario"
+                className="form-control"
+                value={usuarioSelecionado.cpf}
+                readOnly
+              />
+            </div>
+
+            <div className="mb-3">
+              <label htmlFor="emailUsuario" className="form-label fw-bold">
+                E-mail:
+              </label>
+              <input
+                type="email"
+                id="emailUsuario"
+                className="form-control"
+                value={usuarioSelecionado.email}
+                readOnly
+              />
+            </div>
+
+            <div className="mb-3">
+              <label htmlFor="roleUsuario" className="form-label fw-bold">
+                Acesso:
+              </label>
+              <input
+                type="text"
+                id="roleUsuario"
+                className="form-control"
+                value={usuarioSelecionado.role}
+                readOnly
+              />
+            </div>
+          </>
+        ) : (
+          <p className="text-muted">Selecione um usuário no lado esquerdo</p>
+        )}
+      </div>
+    </div>
   );
 }
 
-export default Usuarios;
+export default UsuariosListView;

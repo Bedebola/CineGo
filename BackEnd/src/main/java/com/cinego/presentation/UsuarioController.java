@@ -26,6 +26,8 @@ public class UsuarioController {
             return ResponseEntity.ok(usuarioService.consultarTodosUsuariosSemFiltro());
         } catch (ArgumentoInvalidoOuNaoEncontradoException e) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
@@ -37,42 +39,54 @@ public class UsuarioController {
             return ResponseEntity.ok(usuarioService.buscarUsuarioId(usuarioId));
         } catch (ArgumentoInvalidoOuNaoEncontradoException e){
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
     @PostMapping("/cadastrarUsuario")
-    public ResponseEntity<UsuarioResponseDTO> cadastrarUsuario(
+    public ResponseEntity<?> cadastrarUsuario(
             @RequestBody UsuarioRequestDTO usuario
     ){
         try {
-            return ResponseEntity.ok(usuarioService.cadastrarUsuario(usuario));
+            UsuarioResponseDTO usuarioCriado = usuarioService.cadastrarUsuario(usuario);
+            return ResponseEntity.status(HttpStatus.CREATED).body(usuarioCriado);
         } catch (ArgumentoInvalidoOuNaoEncontradoException e){
-            return ResponseEntity.badRequest().body("Erro: " + e);
+            return ResponseEntity.badRequest().body("Erro: " + e.getMessage());
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Erro interno ao cadastrar usuário: " + e.getMessage());
         }
     }
 
     @PutMapping("/editarUsuario/{usuarioId}")
-    public ResponseEntity<UsuarioResponseDTO> editarUsuario(
+    public ResponseEntity<?> editarUsuario(
             @PathVariable Long usuarioId,
-            @RequestBody Usuario usuario
+            @RequestBody UsuarioRequestDTO usuario
     ){
         try {
-            return  ResponseEntity.ok(usuarioService.editarUsuario(usuarioId, usuario));
+            UsuarioResponseDTO usuarioEditado = usuarioService.editarUsuario(usuarioId, usuario);
+            return ResponseEntity.ok(usuarioEditado);
         } catch (ArgumentoInvalidoOuNaoEncontradoException e) {
-            return ResponseEntity.badRequest().body("Erro: " + e);
+            return ResponseEntity.badRequest().body("Erro: " + e.getMessage());
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Erro interno ao editar usuário: " + e.getMessage());
         }
     }
 
     @DeleteMapping("/excluirUsuario/{usuarioId}")
-    public ResponseEntity<UsuarioResponseDTO> excluirUsuario (
+    public ResponseEntity<?> excluirUsuario (
             @PathVariable long usuarioId
     ){
         try {
             usuarioService.excluirUsuario(usuarioId);
             return ResponseEntity.noContent().build();
+        } catch (ArgumentoInvalidoOuNaoEncontradoException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Erro: " + e.getMessage());
         } catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro interno no servidor");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Erro interno no servidor: " + e.getMessage());
         }
     }
 }
-

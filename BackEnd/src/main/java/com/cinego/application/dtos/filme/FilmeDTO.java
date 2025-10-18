@@ -10,8 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Tag(name = "DTO Filme", description = "DTO desitnado a transição de dados da entidade filme entre requests e responses")
-public class FilmeRequestDTO {
-
+public class FilmeDTO {
     private Long filmeId;
     private String titulo;
     private String genero;

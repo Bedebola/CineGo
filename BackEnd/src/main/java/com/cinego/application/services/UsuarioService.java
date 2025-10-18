@@ -12,11 +12,10 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-
-@Tag(name = "UsuarioService", description = "Classe de serviço da entidade USUARIO onde são implementadas as regras de negocio e validação de campos.")
+@Tag(name = "UsuarioService", description = "Classe de serviço da entidade USUARIO onde são implementadas as regras de negócio e validação de campos.")
 @Service
 public class UsuarioService {
 
@@ -27,138 +26,117 @@ public class UsuarioService {
         return usuarioRepository.existsUsuarioByEmailContainingAndSenha(login.email(), login.senha());
     }
 
-
     public void validarCamposUsuario(UsuarioRequestDTO usuario, Long idIgnorar) throws ArgumentoInvalidoOuNaoEncontradoException {
 
         if (usuario == null){
-            throw new ArgumentoInvalidoOuNaoEncontradoException("Usuario não pode ser nulo!");
+            throw new ArgumentoInvalidoOuNaoEncontradoException("Usuário não pode ser nulo!");
         }
-        if (usuario.getNome() == null || usuario.getNome().isEmpty()){
-            throw new ArgumentoInvalidoOuNaoEncontradoException("O campo NOME não pode ser vazio");
+        if (usuario.nome() == null || usuario.nome().isEmpty()){
+            throw new ArgumentoInvalidoOuNaoEncontradoException("O campo NOME não pode ser vazio.");
         }
-        if (usuario.getCpf() == null || usuario.getCpf().isEmpty() || usuario.getCpf().length() < 11 || usuario.getCpf().length() > 14){
-            throw new ArgumentoInvalidoOuNaoEncontradoException("O campo CPF não pode ser vazio e deve conter 11 dígitos");
+        if (usuario.cpf() == null || usuario.cpf().isEmpty() || usuario.cpf().length() < 11 || usuario.cpf().length() > 14){
+            throw new ArgumentoInvalidoOuNaoEncontradoException("O campo CPF não pode ser vazio e deve conter 11 dígitos.");
         }
         if (idIgnorar == null) {
-            if (usuario.getSenha() == null || usuario.getSenha().isEmpty()){
+            if (usuario.senha() == null || usuario.senha().isEmpty()){
                 throw new ArgumentoInvalidoOuNaoEncontradoException("O campo SENHA não pode ser vazio!");
             }
         }
-        if (usuario.getEmail() == null || usuario.getEmail().isEmpty()){
+        if (usuario.email() == null || usuario.email().isEmpty()){
             throw new ArgumentoInvalidoOuNaoEncontradoException("O campo EMAIL não pode ser vazio!");
         }
 
         boolean emailExiste = (idIgnorar == null)
-                ?usuarioRepository.existsByEmailIgnoreCase(usuario.getEmail())
-                :usuarioRepository.existsByEmailIgnoreCaseAndIdNot(usuario.getEmail(), idIgnorar);
+                ? usuarioRepository.existsByEmailIgnoreCase(usuario.email())
+                : usuarioRepository.existsByEmailIgnoreCaseAndIdNot(usuario.email(), idIgnorar);
 
         if (emailExiste){
             throw new ArgumentoInvalidoOuNaoEncontradoException("Já existe um usuário cadastrado com esse e-mail!");
         }
     }
 
-    public List<UsuarioResponseDTO> consultarTodosUsuariosSemFiltro() throws ArgumentoInvalidoOuNaoEncontradoException{
+    public List<UsuarioResponseDTO> consultarTodosUsuariosSemFiltro() throws ArgumentoInvalidoOuNaoEncontradoException {
 
-        return usuarioRepository.findAll()
-                .stream()
-                .map(UsuarioResponseDTO::new)
-                .collect(Collectors.toList());
+        try {
+            List<Usuario> listaUsuarios = usuarioRepository.findAll();
 
-//        try{
-//            List<Usuario> listaUsuarios = usuarioRepository.findAll();
-//
-//            if (listaUsuarios.isEmpty()){
-//                throw new ArgumentoInvalidoOuNaoEncontradoException("A lista de usuarios está vazia.");
-//            }
-//
-//            List<UsuarioResponseDTO> listaUsuariosRetorno = new ArrayList<>();
-//
-//            for (int i = 0; i < listaUsuarios.size(); i++) {
-//                Usuario usuario = listaUsuarios.get(i);
-//                UsuarioResponseDTO dtoUsuario = criarRetornoUsuario(usuario);
-//
-//                listaUsuariosRetorno.add(dtoUsuario);
-//            }
-//
-//            return listaUsuariosRetorno;
-//
-//        }catch (Exception e){
-//            throw new AcaoInvalidaException("Ocorreu um erro ao efetuar a busca no banco de dados: "+e.getMessage());
-//        }
+            if (listaUsuarios.isEmpty()) {
+                throw new ArgumentoInvalidoOuNaoEncontradoException("A lista de usuários está vazia.");
+            }
+
+            List<UsuarioResponseDTO> listaUsuariosRetorno = new ArrayList<>();
+            for (Usuario usuario : listaUsuarios) {
+                listaUsuariosRetorno.add(new UsuarioResponseDTO(usuario));
+            }
+
+            return listaUsuariosRetorno;
+
+        } catch (Exception e) {
+            throw new AcaoInvalidaException("Ocorreu um erro ao efetuar a busca no banco de dados: " + e.getMessage());
+        }
     }
 
-    public UsuarioResponseDTO buscarUsuarioId(Long usuarioId) throws ArgumentoInvalidoOuNaoEncontradoException{
+    public UsuarioResponseDTO buscarUsuarioId(Long usuarioId) throws ArgumentoInvalidoOuNaoEncontradoException {
+        Usuario usuarioRecord = usuarioRepository.findById(usuarioId)
+                .orElseThrow(() -> new ArgumentoInvalidoOuNaoEncontradoException("Nenhum usuário foi encontrado para o ID informado!"));
 
-        return usuarioRepository.findById(usuarioId).map(UsuarioResponseDTO::new).orElse(null);
-//        try{
-//            Usuario usuarioRecord = usuarioRepository.findById(usuarioId)
-//                    .orElseThrow(()-> new ArgumentoInvalidoOuNaoEncontradoException("Nenhum usuario foi encontrado para o ID informado!"));
-//
-//            return criarRetornoUsuario(usuarioRecord);
-//
-//        } catch (ArgumentoInvalidoOuNaoEncontradoException e) {
-//            throw new RuntimeException(e);
-//        }
+        return new UsuarioResponseDTO(usuarioRecord);
     }
 
     @Transactional
-    public UsuarioResponseDTO cadastrarUsuario(UsuarioRequestDTO usuarioRequest) throws ArgumentoInvalidoOuNaoEncontradoException{
+    public UsuarioResponseDTO cadastrarUsuario(UsuarioRequestDTO usuario) throws ArgumentoInvalidoOuNaoEncontradoException {
+        try {
+            validarCamposUsuario(usuario, null);
 
-        var usuario = usuarioRepository.findByCpf(usuarioRequest.cpf()).map(u -> {
-            u.setNome(usuarioRequest.nome());
-            u.setEmail(usuarioRequest.email());
-            u.setSenha(usuarioRequest.senha());
-            u.setRole(usuarioRequest.role());
-            return u;
-        })
-            .orElseThrow(new Usuario(usuarioRequest));
+            Usuario novoUsuario = new Usuario();
+            novoUsuario.setNome(usuario.nome());
+            novoUsuario.setCpf(usuario.cpf());
+            novoUsuario.setEmail(usuario.email());
+            novoUsuario.setSenha(usuario.senha());
+            novoUsuario.setRole(usuario.role());
 
-        usuarioRepository.save(usuario);
-        return usuario.toResposteDto();
+            usuarioRepository.save(novoUsuario);
 
+            return new UsuarioResponseDTO(novoUsuario);
 
-//        try {
-//            validarCamposUsuario(usuario, null);
-//            usuarioRepository.save(usuario);
-//
-//            return criarRetornoUsuario(usuario);
-//
-//        } catch (Exception e) {
-//            throw new AcaoInvalidaException("Ocorreu um erro ao cadastrar o usuario: " + e.getMessage());
-//        }
+        } catch (Exception e) {
+            throw new AcaoInvalidaException("Ocorreu um erro ao cadastrar o usuário: " + e.getMessage());
+        }
     }
 
-    public UsuarioResponseDTO editarUsuario(Long usuarioId, Usuario usuario) throws ArgumentoInvalidoOuNaoEncontradoException {
-        try{
+    public UsuarioResponseDTO editarUsuario(Long usuarioId, UsuarioRequestDTO usuario) throws ArgumentoInvalidoOuNaoEncontradoException {
+        try {
             Usuario usuarioExistente = usuarioRepository.findById(usuarioId)
-                    .orElseThrow(()->new ArgumentoInvalidoOuNaoEncontradoException("Nenhum usuario encontrado para o id informado"));
+                    .orElseThrow(() -> new ArgumentoInvalidoOuNaoEncontradoException("Nenhum usuário encontrado para o ID informado."));
 
             validarCamposUsuario(usuario, usuarioId);
 
-            usuarioExistente.setNome(usuario.getNome());
-            usuarioExistente.setCpf(usuario.getCpf());
-            usuarioExistente.setEmail(usuario.getEmail());
-
-            if (usuario.getSenha() != null && !usuario.getSenha().isEmpty()) {
-                usuarioExistente.setSenha(usuario.getSenha());
+            usuarioExistente.setNome(usuario.nome());
+            usuarioExistente.setCpf(usuario.cpf());
+            usuarioExistente.setEmail(usuario.email());
+            if (usuario.senha() != null && !usuario.senha().isEmpty()) {
+                usuarioExistente.setSenha(usuario.senha());
             }
-
-            usuarioExistente.setRole(usuario.getRole());
+            usuarioExistente.setRole(usuario.role());
 
             usuarioRepository.save(usuarioExistente);
 
-            return criarRetornoUsuario(usuarioExistente);
+            return new UsuarioResponseDTO(usuarioExistente);
 
         } catch (Exception e) {
-            throw new ArgumentoInvalidoOuNaoEncontradoException("Não foi possível concluir a ação: " + e);
+            throw new AcaoInvalidaException("Não foi possível concluir a ação: " + e.getMessage());
         }
     }
 
     public void excluirUsuario(Long usuarioId) throws ArgumentoInvalidoOuNaoEncontradoException {
-
         Usuario usuarioRegistrado = usuarioRepository.findById(usuarioId)
-                .orElseThrow(()-> new ArgumentoInvalidoOuNaoEncontradoException("Nenhum filme foi encontrado para o ID informado!"));
+                .orElseThrow(() -> new ArgumentoInvalidoOuNaoEncontradoException("Nenhum usuário foi encontrado para o ID informado!"));
 
         usuarioRepository.delete(usuarioRegistrado);
+    }
+
+    // 🔹 Método auxiliar (opcional, se quiser manter o padrão anterior)
+    private UsuarioResponseDTO criarRetornoUsuario(Usuario usuario) {
+        return new UsuarioResponseDTO(usuario);
     }
 }

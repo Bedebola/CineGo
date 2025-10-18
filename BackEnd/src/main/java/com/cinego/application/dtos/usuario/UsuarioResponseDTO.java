@@ -16,8 +16,4 @@ public record UsuarioResponseDTO(Long usuarioId, String nome, String cpf, String
         );
     }
 
-
-
-
-
 }
