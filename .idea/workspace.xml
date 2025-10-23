@@ -6,7 +6,14 @@
   <component name="ChangeListManager">
     <list default="true" id="6e0f71df-840d-45ba-9ebc-9679c8838246" name="Changes" comment="Commit 16-10: implementação do Redux e Service no FrontEnd">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/src/Paginas/Login/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/src/Paginas/Login/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/public/vite.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/src/Componentes/Dialogs/Filmes/FilmeEdicaoDialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/src/Componentes/Dialogs/Filmes/FilmeEdicaoDialog.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/src/Componentes/Dialogs/Filmes/FilmeExclusaoDialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/src/Componentes/Dialogs/Filmes/FilmeExclusaoDialog.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/src/Componentes/Dialogs/Filmes/FilmeViewDialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/src/Componentes/Dialogs/Filmes/FilmeViewDialog.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/src/Paginas/Filmes/FilmesListView.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/src/Paginas/Filmes/FilmesListView.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/src/Paginas/Filmes/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/src/Paginas/Filmes/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/src/api/filmesService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/src/api/filmesService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/src/api/usuariosService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/src/api/usuariosService.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,17 +62,17 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "Application.CineGoApplication.executor": "Debug",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "develop",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/berenice.rodrigues/Documents/CineGo/BackEnd"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;Application.CineGoApplication.executor&quot;: &quot;Debug&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;develop&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/berenice.rodrigues/Documents/CineGo/BackEnd&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="com.cinego.dtos" />
@@ -151,15 +158,7 @@
       <option name="project" value="LOCAL" />
       <updated>1758337222779</updated>
     </task>
-    <task id="LOCAL-00007" summary="Commit 16-10: implementação do Redux e Service no FrontEnd">
-      <option name="closed" value="true" />
-      <created>1760662424487</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1760662424487</updated>
-    </task>
-    <option name="localTasksCounter" value="8" />
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -167,7 +166,6 @@
     <MESSAGE value="Commit 07-09 criacao de endpoins e implementação das regras de segurança." />
     <MESSAGE value="Commit 17-09" />
     <MESSAGE value="Commit 19-09" />
-    <MESSAGE value="Commit 16-10: implementação do Redux e Service no FrontEnd" />
-    <option name="LAST_COMMIT_MESSAGE" value="Commit 16-10: implementação do Redux e Service no FrontEnd" />
+    <option name="LAST_COMMIT_MESSAGE" value="Commit 19-09" />
   </component>
 </project>

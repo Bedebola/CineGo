@@ -1,24 +1,17 @@
-import React, { useState, useEffect } from "react";
-import { listarFilmes } from "../../api/filmesService";
+import { useState, useEffect } from "react";
+import { listarFilmes, type Filme } from "../../api/filmesService";
 import FilmeCadastro from "../../Componentes/Dialogs/Filmes/FilmeCadastro";
-
-interface Filme {
-  filmeId: number;
-  titulo: string;
-  genero: string;
-  sinopse: string;
-}
 
 function FilmesListView() {
   const [filmes, setFilmes] = useState<Filme[]>([]);
   const [filmeSelecionado, setFilmeSelecionado] = useState<Filme | null>(null);
 
   useEffect(() => {
-    async function carregarFilmes() {
-      const data: Filme[] = await listarFilmes();
-      setFilmes(data);
-    }
-    carregarFilmes();
+      const carregarFilmes = async () => {
+        const filmes = await listarFilmes();
+        setFilmes(filmes);
+      };
+      carregarFilmes();
   }, []);
 
   return (

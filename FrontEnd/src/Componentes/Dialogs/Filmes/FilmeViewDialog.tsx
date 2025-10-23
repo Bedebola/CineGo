@@ -6,26 +6,16 @@ import {
   devolverFilme,
   desativarFilme,
   ativarFilme,
+  type Filme,
+  type FilmeViewProps
 } from "../../../api/filmesService";
 
-interface Filme {
-  titulo: string;
-  genero: string;
-  sinopse: string;
-  status: string;
-}
-
-interface FilmeViewProps {
-  filmeId: number;
-  onChange?: () => void;
-}
-
-function FilmeViewDialog({ filmeId, onChange }: FilmeViewProps) {
+function FilmeViewDialog({filmeId, onChange }: FilmeViewProps) {
   const [filme, setFilme] = useState<Filme | null>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   const abrirDialog = async () => {
-    const dados = await buscarFilmeId(Number(filmeId));
+    const dados = await buscarFilmeId(Number(filme?.filmeId));
     setFilme(dados);
     dialogRef.current?.showModal();
   };
@@ -33,29 +23,29 @@ function FilmeViewDialog({ filmeId, onChange }: FilmeViewProps) {
   const fecharDialog = () => dialogRef.current?.close();
 
   const handleAlugar = async () => {
-    await alugarFilme(filmeId);
-    const atualizado = await buscarFilmeId(filmeId);
+    await alugarFilme(Number(filme?.filmeId));
+    const atualizado = await buscarFilmeId(Number(filme?.filmeId));
     setFilme(atualizado);
     onChange?.();
   };
 
   const handleDevolver = async () => {
-    await devolverFilme(filmeId);
-    const atualizado = await buscarFilmeId(filmeId);
+    await devolverFilme(Number(filme?.filmeId));
+    const atualizado = await buscarFilmeId(Number(filme?.filmeId));
     setFilme(atualizado);
     onChange?.();
   };
 
   const handleDesativar = async () => {
-    await desativarFilme(filmeId);
-    const atualizado = await buscarFilmeId(filmeId);
+    await desativarFilme(Number(filme?.filmeId));
+    const atualizado = await buscarFilmeId(Number(filme?.filmeId));
     setFilme(atualizado);
     onChange?.();
   };
 
   const handleAtivar = async () => {
-    await ativarFilme(filmeId);
-    const atualizado = await buscarFilmeId(filmeId);
+    await ativarFilme(Number(filme?.filmeId));
+    const atualizado = await buscarFilmeId(Number(filme?.filmeId));
     setFilme(atualizado);
     onChange?.();
   };

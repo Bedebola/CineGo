@@ -1,16 +1,7 @@
 import api from "./api";
 
-export async function listarUsuarios() {
-  const { data } = await api.get("/usuario/listarUsuarios");
-  return data;
-}
-
-export async function buscarUsuarioId(usuarioId: number) {
-  const { data } = await api.get(`/usuario/usuario/${usuarioId}`);
-  return data;
-}
-
-type UsuarioPayload = {
+export type Usuario = {
+  usuarioId?: number;
   nome: string;
   email: string;
   cpf: string;
@@ -18,14 +9,29 @@ type UsuarioPayload = {
   role: string;
 };
 
-export async function cadastrarUsuario(usuario: UsuarioPayload) {
-  const { data } = await api.post("/usuario/cadastrarUsuario", usuario);
-  return data;
+export interface EditarUsuarioProps {
+  usuarioId: number;
+  onChange?: () => void;
 }
 
-export async function editarUsuario(usuarioId: number, usuario: UsuarioPayload) {
-  const { data } = await api.put(`/usuario/editarUsuario/${usuarioId}`, usuario);
-  return data;
+export async function listarUsuarios() :Promise<Usuario[]> {
+  const  response  = await api.get<Usuario[]>("/usuario/listarUsuarios");
+  return response.data;
+}
+
+export async function buscarUsuarioId(usuarioId: number) :Promise<Usuario> {
+  const response = await api.get<Usuario>(`/usuario/usuario/${usuarioId}`);
+  return response.data;
+}
+
+export async function cadastrarUsuario(usuario: Usuario) :Promise<Usuario> {
+  const response = await api.post<Usuario>("/usuario/cadastrarUsuario", usuario);
+  return response.data;
+}
+
+export async function editarUsuario(usuarioId: number, usuario: Usuario) :Promise<Usuario> {
+  const response = await api.put<Usuario>(`/usuario/editarUsuario/${usuarioId}`, usuario);
+  return response.data;
 }
 
 export async function excluirUsuario(usuarioId: number) {

@@ -1,19 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
-import { editarFilme, buscarFilmeId } from "../../../api/filmesService";
+import { editarFilme, buscarFilmeId, type Filme, type FilmeViewProps, type buscarUsuarioId} from "../../../api/filmesService";
 
-interface Filme {
-  filmeId: number;
-  titulo: string;
-  genero: string;
-  sinopse: string;
-}
 
-interface EditarFilmeProps {
-  filmeId: number;
-  onChange?: () => void;
-}
-
-function EditarFilme({ filmeId, onChange }: EditarFilmeProps) {
+function EditarFilme({ filmeId, onChange }: FilmeViewProps) {
   const [filme, setFilme] = useState<Filme | null>(null);
   const [titulo, setTitulo] = useState("");
   const [genero, setGenero] = useState("");
@@ -34,7 +23,7 @@ function EditarFilme({ filmeId, onChange }: EditarFilmeProps) {
 
   const abrirDialog = async () => {
     try {
-      const dados = await buscarFilmeId(filmeId);
+      const dados = await buscarFilmeId(Number(filme?.filmeId));
       setFilme(dados);
       setTitulo(dados.titulo);
       setGenero(dados.genero);
@@ -53,11 +42,7 @@ function EditarFilme({ filmeId, onChange }: EditarFilmeProps) {
     setMessage("");
 
     try {
-      await editarFilme(filmeId, {
-        titulo,
-        genero,
-        sinopse,
-      });
+      await editarFilme(filme!);
 
       setMessage("As alterações foram salvas com sucesso!");
       onChange?.();

@@ -1,15 +1,12 @@
 import { useEffect, useState } from "react";
-import { listarFilmes, listarFilmesPorStatus } from "../../api/filmesService";
+import {
+  listarFilmes,
+  listarFilmesPorStatus,
+  type Filme,
+} from "../../api/filmesService";
 import FilmeView from "../../Componentes/Dialogs/Filmes/FilmeViewDialog";
 import FilmeEdicaoDialog from "../../Componentes/Dialogs/Filmes/FilmeEdicaoDialog";
 import FilmeExclusaoDialog from "../../Componentes/Dialogs/Filmes/FilmeExclusaoDialog";
-
-interface Filme {
-  filmeId: number;
-  titulo: string;
-  sinopse: string;
-  status: string;
-}
 
 function normalizarStatus(s: string) {
   return s
@@ -31,14 +28,14 @@ function Filmes() {
   const [filmes, setFilmes] = useState<Filme[]>([]);
   const [statusSelecionado, setStatusSelecionado] = useState<string>("");
 
-  useEffect(() => {
-    carregar();
-  }, []);
-
   async function carregar() {
     const data = await listarFilmes();
     setFilmes(data);
   }
+
+  useEffect(() => {
+    carregar();
+  }, []);
 
   async function filtrarFilmesPorStatus() {
     if (statusSelecionado === "" || statusSelecionado === "TODOS") {
@@ -51,11 +48,13 @@ function Filmes() {
   }
 
   return (
-    <main className="container-fluid min-vh-100 py-4" style={{ paddingRight: 260 }}>
+    <main
+      className="container-fluid min-vh-100 py-4"
+      style={{ paddingRight: 260 }}
+    >
       <h2 className="h5 mb-3">Filmes</h2>
 
       <div className="d-flex align-items-center gap-2 mb-3">
-        <i className="bi bi-funnel"></i>
         <select
           id="statusFilme"
           className="form-select form-select-sm w-auto"
@@ -67,8 +66,11 @@ function Filmes() {
           <option value="ALUGADO">Alugados</option>
           <option value="DESATIVADO">Desativados</option>
         </select>
-        <button onClick={filtrarFilmesPorStatus} className="btn btn-primary btn-sm">
-          Filtrar
+        <button
+          onClick={filtrarFilmesPorStatus}
+          className="btn btn-primary btn-sm"
+        >
+          <i className="bi bi-funnel"> Filtrar</i>
         </button>
       </div>
 
@@ -78,8 +80,14 @@ function Filmes() {
             <div className="card h-100 shadow-sm position-relative">
               <div className="position-absolute top-0 end-0 m-2">
                 <FilmeView filmeId={filme.filmeId} />
-                <FilmeEdicaoDialog filmeId={filme.filmeId} onChange={() => carregar()} />
-                <FilmeExclusaoDialog filmeId={filme.filmeId} onChange={() => carregar()} />
+                <FilmeEdicaoDialog
+                  filmeId={filme.filmeId}
+                  onChange={() => carregar()}
+                />
+                <FilmeExclusaoDialog
+                  filmeId={filme.filmeId}
+                  onChange={() => carregar()}
+                />
               </div>
 
               <div className="card-body">
