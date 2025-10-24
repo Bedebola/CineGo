@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.cinego.application.dtos.UsuarioPrincipalDTO;
 import com.cinego.application.dtos.login.LoginRequest;
 import com.cinego.domain.entities.Token;
 import com.cinego.domain.entities.Usuario;
@@ -69,7 +70,7 @@ public class TokenService {
         return dataAtual.toInstant(ZoneOffset.of("-03:00"));
     }
 
-    public Usuario validarToken(String token){
+    public UsuarioPrincipalDTO validarToken(String token){
         Algorithm algorithm = Algorithm.HMAC256(secret);
         JWTVerifier verifier = JWT.require(algorithm)
                 .withIssuer(emissor)
@@ -86,7 +87,7 @@ public class TokenService {
             throw new IllegalArgumentException("Token invalido!");
         }
 
-        return tokenResult.getUsuario();
+        return new UsuarioPrincipalDTO(tokenResult.getUsuario());
     }
 
 }

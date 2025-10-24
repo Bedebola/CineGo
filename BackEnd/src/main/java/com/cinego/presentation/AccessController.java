@@ -1,5 +1,6 @@
 package com.cinego.presentation;
 
+import com.cinego.application.dtos.UsuarioPrincipalDTO;
 import com.cinego.application.dtos.login.LoginRequest;
 import com.cinego.application.dtos.TokenResponse;
 import com.cinego.application.services.TokenService;
@@ -8,10 +9,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/access")
@@ -35,4 +34,25 @@ public class AccessController {
         var token = tokenService.gerarToken(request);
         return ResponseEntity.ok(new TokenResponse(token));
     }
+
+    @PostMapping("/recuperarsenha/envio")
+    @Operation(summary = "Envio de email para recuperacao de senha")
+    public ResponseEntity<?> recuperarSenha(
+            @AuthenticationPrincipal UsuarioPrincipalDTO usuarioLogado
+            ){
+
+        try {
+            usuarioService.recuperarSenha(usuarioLogado);
+            return ResponseEntity.ok("Codigo de recuperação enviado com sucesso!");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+
+
+
+
+
 }

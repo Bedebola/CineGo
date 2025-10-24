@@ -1,11 +1,13 @@
 package com.cinego.application.services;
 
+import com.cinego.application.dtos.UsuarioPrincipalDTO;
 import com.cinego.application.dtos.usuario.UsuarioRequestDTO;
 import com.cinego.application.dtos.usuario.UsuarioResponseDTO;
 import com.cinego.application.dtos.login.LoginRequest;
 import com.cinego.domain.exceptions.AcaoInvalidaException;
 import com.cinego.domain.exceptions.ArgumentoInvalidoOuNaoEncontradoException;
 import com.cinego.domain.entities.Usuario;
+import com.cinego.domain.interfaces.IEnvioEmail;
 import com.cinego.domain.repositories.UsuarioRepository;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.transaction.Transactional;
@@ -21,6 +23,9 @@ public class UsuarioService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private IEnvioEmail iEnvioEmail;
 
     public boolean validarSenha(LoginRequest login){
         return usuarioRepository.existsUsuarioByEmailContainingAndSenha(login.email(), login.senha());
@@ -135,8 +140,12 @@ public class UsuarioService {
         usuarioRepository.delete(usuarioRegistrado);
     }
 
-    // 🔹 Método auxiliar (opcional, se quiser manter o padrão anterior)
-    private UsuarioResponseDTO criarRetornoUsuario(Usuario usuario) {
-        return new UsuarioResponseDTO(usuario);
+    public void recuperarSenha(UsuarioPrincipalDTO usuarioLogado) {
+
+        iEnvioEmail.enviarEmailSImples(usuarioLogado.email(),
+                "CodigoRecuperacao",
+                "123456"
+                );
+
     }
 }
