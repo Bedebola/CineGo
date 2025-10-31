@@ -15,4 +15,6 @@ public interface FilmeRepository extends JpaRepository<Filme, Long> {
     boolean existsByTituloIgnoreCaseAndIdNot(String titulo, Long id);
 
     List<Filme> findByStatus(StatusFilme status);
+
+    List<Filme> findByStatusAndUsuarioId(StatusFilme statusFilme, Long usuarioId);
 }

@@ -1,8 +1,8 @@
 package com.cinego.presentation;
 
-import com.cinego.application.dtos.UsuarioPrincipalDTO;
+import com.cinego.application.dtos.usuario.UsuarioPrincipalDTO;
 import com.cinego.application.dtos.login.LoginRequest;
-import com.cinego.application.dtos.TokenResponse;
+import com.cinego.application.dtos.token.TokenResponse;
 import com.cinego.application.services.TokenService;
 import com.cinego.application.services.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;

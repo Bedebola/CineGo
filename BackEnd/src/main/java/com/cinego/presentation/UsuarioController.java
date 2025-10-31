@@ -4,6 +4,7 @@ import com.cinego.application.dtos.usuario.UsuarioRequestDTO;
 import com.cinego.application.dtos.usuario.UsuarioResponseDTO;
 import com.cinego.domain.exceptions.ArgumentoInvalidoOuNaoEncontradoException;
 import com.cinego.application.services.UsuarioService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,10 @@ public class UsuarioController {
     @Autowired
     UsuarioService usuarioService;
 
+    @Operation(
+            summary = "Listar Usuarios sem filtro",
+            description = "Lista todos os usuarios do repositório sem aplicação de filtros específicos"
+    )
     @GetMapping("/listarUsuarios")
     ResponseEntity<List<UsuarioResponseDTO>> listarUsuarios(){
         try {
@@ -31,6 +36,10 @@ public class UsuarioController {
         }
     }
 
+    @Operation(
+            summary = "Buscar usuario por id",
+            description = "busca um usuario especifico pelo ID."
+    )
     @GetMapping("/usuario/{usuarioId}")
     ResponseEntity<UsuarioResponseDTO> consultarUsuarioId(
             @PathVariable Long usuarioId
@@ -44,6 +53,10 @@ public class UsuarioController {
         }
     }
 
+    @Operation(
+            summary = "Cadastrar Usuario",
+            description = "Faz o cadastro de um novo usuario no banco de dados"
+    )
     @PostMapping("/cadastrarUsuario")
     public ResponseEntity<?> cadastrarUsuario(
             @RequestBody UsuarioRequestDTO usuario
@@ -59,6 +72,10 @@ public class UsuarioController {
         }
     }
 
+    @Operation(
+            summary = "Editar Usuario",
+            description = "Faz a edição de um usuario existente no banco de dados"
+    )
     @PutMapping("/editarUsuario/{usuarioId}")
     public ResponseEntity<?> editarUsuario(
             @PathVariable Long usuarioId,
@@ -75,6 +92,10 @@ public class UsuarioController {
         }
     }
 
+    @Operation(
+            summary = "Excluir Usuario",
+            description = "Exclui o usuario da base de dados"
+    )
     @DeleteMapping("/excluirUsuario/{usuarioId}")
     public ResponseEntity<?> excluirUsuario (
             @PathVariable long usuarioId

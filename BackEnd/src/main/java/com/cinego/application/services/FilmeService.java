@@ -6,6 +6,7 @@ import com.cinego.domain.exceptions.AcaoInvalidaException;
 import com.cinego.domain.exceptions.ArgumentoInvalidoOuNaoEncontradoException;
 import com.cinego.domain.entities.Filme;
 import com.cinego.domain.repositories.FilmeRepository;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,10 @@ public class FilmeService {
     @Autowired
     private RegistroLocacaoService registroLocacaoService;
 
+    @Operation(
+            summary = "Conversão para DTO",
+            description = "Pega um objeto do tipo Filme e transforma em um retorno do tipo FilmeDTO"
+    )
     public FilmeDTO criarRetornoFilme(Filme filme) throws ArgumentoInvalidoOuNaoEncontradoException {
         FilmeDTO filmeRetorno = new FilmeDTO();
         filmeRetorno.setFilmeId(filme.getId());
@@ -59,6 +64,7 @@ public class FilmeService {
         }
     }
 
+
     public List<FilmeDTO> listarFilmesPorStatus(StatusFilme status) throws ArgumentoInvalidoOuNaoEncontradoException {
 
         try {
@@ -84,19 +90,50 @@ public class FilmeService {
         }
     }
 
-    public Filme buscarFilmePorId(Long filmeId) throws ArgumentoInvalidoOuNaoEncontradoException {
+    public List<FilmeDTO> listarFilmesAlugadosPorUsuario(Long usuarioId) throws ArgumentoInvalidoOuNaoEncontradoException{
+
+        try {
+            List<Filme> listaFilmesConsultaPorUsuarioId = filmeRepository.findByStatusAndUsuarioId(StatusFilme.ALUGADO, usuarioId);
+
+            if (listaFilmesConsultaPorUsuarioId.isEmpty()){
+                throw new ArgumentoInvalidoOuNaoEncontradoException("A busca não retornou resultados!");
+            }
+
+            List<FilmeDTO> listarFilmesAlugadosPorUsuarioRetorno = new ArrayList<>();
+
+            for (int i = 0; i < listaFilmesConsultaPorUsuarioId.size(); i++){
+                Filme filme = listaFilmesConsultaPorUsuarioId.get(i);
+                FilmeDTO filmeDTO = criarRetornoFilme(filme);
+
+                listarFilmesAlugadosPorUsuarioRetorno.add(filmeDTO);
+            }
+
+            return listarFilmesAlugadosPorUsuarioRetorno;
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+
+    public FilmeDTO buscarFilmePorId(Long filmeId) throws ArgumentoInvalidoOuNaoEncontradoException {
 
         try {
             Filme filme = filmeRepository.findById(filmeId)
                     .orElseThrow(() -> new ArgumentoInvalidoOuNaoEncontradoException("Nenhum filme foi encontrado para o ID informado!"));
 
-            return filme;
+            return criarRetornoFilme(filme);
 
         } catch (Exception e) {
             throw new AcaoInvalidaException("Ocorreu um erro ao buscar o filme pelo id: " + e.getMessage());
         }
     }
 
+    @Operation(
+            summary = "Validar campos do filme",
+            description = "Antes de registrar ou editar um filme, este metodo é chamado para fazer a validação dos campos"
+    )
     public void validarCamposFilme(Filme filme, Long idIgnore) throws ArgumentoInvalidoOuNaoEncontradoException {
 
         if (filme == null) {
@@ -162,7 +199,11 @@ public class FilmeService {
             throw new AcaoInvalidaException("Não foi possível completar a ação: No momento, o título selecionado encontra-se alugado ou inativo.");
         }
 
-        registroLocacaoService.registrarLocacao(1L, filmeRegistrado.getId());
+
+        registroLocacaoService.registrarLocacao(
+                1L,
+                filmeRegistrado.getId(),
+                "");
         filmeRegistrado.setStatus(StatusFilme.ALUGADO);
         filmeRepository.save(filmeRegistrado);
         return criarRetornoFilme(filmeRegistrado);
@@ -177,7 +218,6 @@ public class FilmeService {
         if (filmeRegistrado.getStatus() != StatusFilme.ALUGADO)
             throw new AcaoInvalidaException("Não foi possível completar a ação: O título selecionado não está alugado, portanto não pode ser devolvido.");
 
-        registroLocacaoService.registrarDevolucao(filmeRegistrado.getId());
         filmeRegistrado.setStatus(StatusFilme.DISPONIVEL);
         filmeRepository.save(filmeRegistrado);
         return criarRetornoFilme(filmeRegistrado);

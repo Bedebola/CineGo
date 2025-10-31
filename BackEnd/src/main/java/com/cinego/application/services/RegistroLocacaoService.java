@@ -3,6 +3,7 @@ package com.cinego.application.services;
 import com.cinego.domain.entities.Filme;
 import com.cinego.domain.entities.RegistroLocacao;
 import com.cinego.domain.entities.Usuario;
+import com.cinego.domain.interfaces.IEnvioEmail;
 import com.cinego.domain.repositories.FilmeRepository;
 import com.cinego.domain.repositories.RegistroLocacaoRepository;
 import com.cinego.domain.repositories.UsuarioRepository;
@@ -23,25 +24,41 @@ public class RegistroLocacaoService {
     @Autowired
     private FilmeRepository filmeRepository;
 
-    public RegistroLocacao registrarLocacao(Long usuarioId, Long filmeId) {
+    @Autowired
+    private IEnvioEmail iEnvioEmail;
+
+    public RegistroLocacao registrarLocacao(Long usuarioId, Long filmeId, String emailCliente) {
         Usuario usuario = usuarioRepository.findById(usuarioId)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
         Filme filme = filmeRepository.findById(filmeId)
                 .orElseThrow(() -> new RuntimeException("Filme não encontrado"));
 
+        LocalDateTime agora = LocalDateTime.now();
+
         RegistroLocacao registro = new RegistroLocacao(
-                usuario, filme, LocalDateTime.now()
+                usuario,
+                filme,
+                agora,
+                agora.plusDays(3L)
         );
+
+        registro.setEmailCliente(emailCliente);
+
         registroLocacaoRepository.save(registro);
-        return null;
+
+        return registro;
     }
 
-    public RegistroLocacao registrarDevolucao(Long filmeId) {
-        RegistroLocacao registroExistente = registroLocacaoRepository.findByFilmeIdAndDataDevolucao(filmeId, null);
+    public RegistroLocacao enviarEmailDevolucao(RegistroLocacao registroLocacao) {
 
-            registroExistente.setDataDevolucao(LocalDateTime.now());
-            registroLocacaoRepository.save(registroExistente);
+        if (registroLocacao.getDataDevolucao().equals(LocalDateTime.now())){
+            iEnvioEmail.enviarEmailSImples(
+                    registroLocacao.getEmailCliente(),
+                    "Lembrete de Devolução",
+                    "CineGo lembra que você precisa devolver o filme 'A volta dos que não foram' hoje!"
+            );
+        }
 
         return null;
     }

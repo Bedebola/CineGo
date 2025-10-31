@@ -1,4 +1,4 @@
-package com.cinego.application.dtos;
+package com.cinego.application.dtos.token;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "DTO Token", description = "DTO usado para retornar o token em uma requisição")

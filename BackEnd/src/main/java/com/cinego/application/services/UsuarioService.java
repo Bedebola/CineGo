@@ -1,6 +1,6 @@
 package com.cinego.application.services;
 
-import com.cinego.application.dtos.UsuarioPrincipalDTO;
+import com.cinego.application.dtos.usuario.UsuarioPrincipalDTO;
 import com.cinego.application.dtos.usuario.UsuarioRequestDTO;
 import com.cinego.application.dtos.usuario.UsuarioResponseDTO;
 import com.cinego.application.dtos.login.LoginRequest;

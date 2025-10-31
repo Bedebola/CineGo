@@ -29,15 +29,17 @@ public class RegistroLocacao {
 
     private LocalDateTime dataDevolucao;
 
+    private String emailCliente;
 
-    public RegistroLocacao(Usuario usuario, Filme filme, LocalDateTime dataLocacao) {
+    public RegistroLocacao (Usuario usuario, Filme filme, LocalDateTime dataLocacao,LocalDateTime dataDevolucao) {
         this.usuario = usuario;
         this.filme = filme;
         this.dataLocacao = dataLocacao;
+        this.dataDevolucao = dataDevolucao;
     }
 
-    public RegistroLocacao(LocalDateTime dataDevolucao) {
-        this.dataDevolucao = dataDevolucao;
+    public RegistroLocacao (String emailCliente){
+        this.emailCliente = emailCliente;
     }
 
 }

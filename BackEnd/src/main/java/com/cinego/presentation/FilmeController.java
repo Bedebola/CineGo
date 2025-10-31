@@ -1,14 +1,18 @@
 package com.cinego.presentation;
 
+import com.cinego.application.dtos.filme.FilmeDTO;
 import com.cinego.domain.enums.StatusFilme;
 import com.cinego.domain.exceptions.ArgumentoInvalidoOuNaoEncontradoException;
 import com.cinego.domain.entities.Filme;
 import com.cinego.application.services.FilmeService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -19,6 +23,10 @@ public class FilmeController {
     @Autowired
     private FilmeService filmeService;
 
+    @Operation(
+            summary = "Listar Filmes sem filtro",
+            description = "Lista todos os filmes do repositório sem aplicação de filtros específicos"
+    )
     @GetMapping("/listarFilmes")
     ResponseEntity<?> listarFilmes(){
         try {
@@ -28,6 +36,10 @@ public class FilmeController {
         }
     }
 
+    @Operation(
+            summary = "Listar filmes por status",
+            description = "Lista os filmes cadastrados no repositório filtrando pelo status selecionado pelo usuario"
+    )
     @GetMapping("/listarFilmesPorStatus/{status}")
     ResponseEntity<?> listarFilmesPorStatus(
             @PathVariable StatusFilme status
@@ -39,6 +51,25 @@ public class FilmeController {
         }
     }
 
+    @Operation(
+            summary = "Listar filmes alugados por usuario",
+            description = "Lista os filmes alugados por um usario especifico, selecionado por quem está fazendo a consulta"
+    )
+    @GetMapping("/listarFilmesAlugadosPorUsuario/{usuarioId}")
+    ResponseEntity<List<FilmeDTO>> listarFilmesAlugadosPorUsuario(
+            @PathVariable Long usuarioId
+    ){
+        try{
+            return ResponseEntity.ok(filmeService.listarFilmesAlugadosPorUsuario(usuarioId));
+        } catch (ArgumentoInvalidoOuNaoEncontradoException e){
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+    }
+
+    @Operation(
+            summary = "Buscar filme por id",
+            description = "busca um filme especifico pelo ID informado pelo usuario"
+    )
     @GetMapping("/buscarFilmeId/{filmeId}")
     ResponseEntity<?> buscarFilmePorId(
             @PathVariable Long filmeId
@@ -50,6 +81,10 @@ public class FilmeController {
         }
     }
 
+    @Operation(
+            summary = "Cadastrar Filme",
+            description = "Faz o cadastro de um novo filme no banco de dados"
+    )
     @PostMapping("/cadastrarFilme")
     ResponseEntity<?> cadastrarFilme(
             @RequestBody Filme filme
@@ -61,6 +96,10 @@ public class FilmeController {
         }
     }
 
+    @Operation(
+            summary = "Editar Filme",
+            description = "Faz a edição de um filme existente no banco de dados"
+    )
     @PutMapping("editarFilme/{filmeId}")
     ResponseEntity<?> editarfilme(
             @PathVariable Long filmeId,
@@ -73,6 +112,10 @@ public class FilmeController {
         }
     }
 
+    @Operation(
+            summary = "Alugar Filme",
+            description = "Altera o status do filme para Alugado"
+    )
     @PutMapping("/alugarFilme/{filmeId}")
     ResponseEntity<?> alugarFilme(
             @PathVariable Long filmeId
@@ -84,6 +127,10 @@ public class FilmeController {
         }
     }
 
+    @Operation(
+            summary = "Devolver Filme",
+            description = "Altera o status do filme para Disponivel"
+    )
     @PutMapping("/devolverFilme/{filmeId}")
     ResponseEntity<?> devolverFilme(
             @PathVariable Long filmeId
@@ -95,6 +142,10 @@ public class FilmeController {
         }
     }
 
+    @Operation(
+            summary = "Desativar Filme",
+            description = "Altera o status do filme para desativado"
+    )
     @PutMapping("/desativarFilme/{filmeId}")
     ResponseEntity<?> desativarFilme(
             @PathVariable Long filmeId
@@ -106,6 +157,10 @@ public class FilmeController {
         }
     }
 
+    @Operation(
+            summary = "Ativar Filme",
+            description = "Altera o status do filme para Disponivel"
+    )
     @PutMapping("/ativarFilme/{filmeId}")
     ResponseEntity<?> ativarFilme(
             @PathVariable Long filmeId
@@ -117,6 +172,10 @@ public class FilmeController {
         }
     }
 
+    @Operation(
+            summary = "Excluir Filme",
+            description = "Exclui o filme da base de dados"
+    )
     @DeleteMapping("/excluirFilme/{filmeId}")
     public ResponseEntity<?> excluirFilme (
             @PathVariable Long filmeId
