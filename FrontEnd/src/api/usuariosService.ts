@@ -9,6 +9,11 @@ export type Usuario = {
   role: string;
 };
 
+export type UsuarioViewProps = {
+  usuarioId: number;
+  onChange?: () => void;
+};
+
 export interface EditarUsuarioProps {
   usuarioId: number;
   onChange?: () => void;

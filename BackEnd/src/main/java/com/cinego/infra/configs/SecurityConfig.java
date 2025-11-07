@@ -35,6 +35,7 @@ public class SecurityConfig {
 
                         //autorizações das rotas de usuario
                         .requestMatchers(HttpMethod.POST,"/access/login").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/access/recuperarsenha/envio").permitAll()
 
                         .requestMatchers(HttpMethod.GET,"/usuario/listarUsuarios").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET,"/usuario/usuario/**").authenticated()

@@ -27,8 +27,11 @@ function UsuariosListView() {
       setCpf(usuarioSelecionado.cpf);
       setRole(usuarioSelecionado.role);
       setSenha("");
+      console.log(usuarioSelecionado?.usuarioId)
+
     }
   }, [usuarioSelecionado]);
+
 
   useEffect(() => {
     if (nome.trim() && email.trim() && cpf.trim()) {

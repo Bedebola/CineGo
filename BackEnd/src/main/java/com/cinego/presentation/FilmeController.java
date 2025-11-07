@@ -51,20 +51,20 @@ public class FilmeController {
         }
     }
 
-    @Operation(
-            summary = "Listar filmes alugados por usuario",
-            description = "Lista os filmes alugados por um usario especifico, selecionado por quem está fazendo a consulta"
-    )
-    @GetMapping("/listarFilmesAlugadosPorUsuario/{usuarioId}")
-    ResponseEntity<List<FilmeDTO>> listarFilmesAlugadosPorUsuario(
-            @PathVariable Long usuarioId
-    ){
-        try{
-            return ResponseEntity.ok(filmeService.listarFilmesAlugadosPorUsuario(usuarioId));
-        } catch (ArgumentoInvalidoOuNaoEncontradoException e){
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        }
-    }
+//    @Operation(
+//            summary = "Listar filmes alugados por usuario",
+//            description = "Lista os filmes alugados por um usario especifico, selecionado por quem está fazendo a consulta"
+//    )
+//    @GetMapping("/listarFilmesAlugadosPorUsuario/{usuarioId}")
+//    ResponseEntity<List<FilmeDTO>> listarFilmesAlugadosPorUsuario(
+//            @PathVariable Long usuarioId
+//    ){
+//        try{
+//            return ResponseEntity.ok(filmeService.listarFilmesAlugadosPorUsuario(usuarioId));
+//        } catch (ArgumentoInvalidoOuNaoEncontradoException e){
+//            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+//        }
+//    }
 
     @Operation(
             summary = "Buscar filme por id",
@@ -172,10 +172,7 @@ public class FilmeController {
         }
     }
 
-    @Operation(
-            summary = "Excluir Filme",
-            description = "Exclui o filme da base de dados"
-    )
+
     @DeleteMapping("/excluirFilme/{filmeId}")
     public ResponseEntity<?> excluirFilme (
             @PathVariable Long filmeId

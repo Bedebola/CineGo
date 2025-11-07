@@ -76,16 +76,16 @@ function Filmes() {
 
       <div className="row g-3">
         {filmes.map((filme) => (
-          <div key={filme.filmeId} className="col-md-4 col-lg-3">
+          <div key={Number(filme.filmeId)} className="col-md-4 col-lg-3">
             <div className="card h-100 shadow-sm position-relative">
               <div className="position-absolute top-0 end-0 m-2">
-                <FilmeView filmeId={filme.filmeId} />
+                <FilmeView filmeId={Number(filme.filmeId)} />
                 <FilmeEdicaoDialog
-                  filmeId={filme.filmeId}
+                  filmeId={Number(filme.filmeId)}
                   onChange={() => carregar()}
                 />
                 <FilmeExclusaoDialog
-                  filmeId={filme.filmeId}
+                  filmeId={Number(filme.filmeId)}
                   onChange={() => carregar()}
                 />
               </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { editarFilme, buscarFilmeId, type Filme, type FilmeViewProps, type buscarUsuarioId} from "../../../api/filmesService";
+import { editarFilme, buscarFilmeId, type Filme, type FilmeViewProps} from "../../../api/filmesService";
 
 
 function EditarFilme({ filmeId, onChange }: FilmeViewProps) {
@@ -23,7 +23,7 @@ function EditarFilme({ filmeId, onChange }: FilmeViewProps) {
 
   const abrirDialog = async () => {
     try {
-      const dados = await buscarFilmeId(Number(filme?.filmeId));
+      const dados = await buscarFilmeId(Number(filmeId));
       setFilme(dados);
       setTitulo(dados.titulo);
       setGenero(dados.genero);
@@ -59,7 +59,7 @@ function EditarFilme({ filmeId, onChange }: FilmeViewProps) {
       </button>
 
       <style>{`
-        #dlg-${filmeId}::backdrop {
+        #dlg-${Number(filmeId)}::backdrop {
           background: rgba(0, 0, 0, 0.55);
         }
         .form-label {
@@ -68,7 +68,7 @@ function EditarFilme({ filmeId, onChange }: FilmeViewProps) {
       `}</style>
 
       <dialog
-        id={`dlg-${filmeId}`}
+        id={`dlg-${Number(filmeId)  }`}
         ref={dialogRef}
         className="border-0 rounded-4 shadow-lg p-0"
         style={{

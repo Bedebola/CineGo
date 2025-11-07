@@ -2,13 +2,13 @@ import { useState, useRef } from "react";
 import { excluirFilme, buscarFilmeId, type Filme, type FilmeViewProps } from "../../../api/filmesService";
 
 
-function ExcluirFilme ({ onChange }: FilmeViewProps) {
+function ExcluirFilme ({ filmeId, onChange }: FilmeViewProps) {
   const [filme, setFilme] = useState<Filme | null>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   const abrirDialog = async () => {
-    const dados = await buscarFilmeId(Number(filme?.filmeId));
-    setFilme(dados);
+    const dados = await buscarFilmeId(Number(filmeId));
+    setFilme(dados);  
     dialogRef.current?.showModal();
   };
 
@@ -30,10 +30,10 @@ function ExcluirFilme ({ onChange }: FilmeViewProps) {
         <i className="bi bi-trash-fill"></i>
       </button>
 
-      <style>{`#dlg-${filme?.filmeId}::backdrop{background:rgba(0,0,0,.55)}`}</style>
+      <style>{`#dlg-${Number(filme?.filmeId)}::backdrop{background:rgba(0,0,0,.55)}`}</style>
 
       <dialog
-        id={`dlg-${filme?.filmeId}`}
+        id={`dlg-${Number(filme?.filmeId)}`}
         ref={dialogRef}
         className="border-0 rounded-4 shadow-lg p-0"
         style={{

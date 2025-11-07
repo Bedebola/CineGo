@@ -10,12 +10,14 @@ import {
   type FilmeViewProps
 } from "../../../api/filmesService";
 
+
 function FilmeViewDialog({filmeId, onChange }: FilmeViewProps) {
   const [filme, setFilme] = useState<Filme | null>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   const abrirDialog = async () => {
-    const dados = await buscarFilmeId(Number(filme?.filmeId));
+    const dados = await buscarFilmeId(Number(filmeId));
+    console.log(filmeId)
     setFilme(dados);
     dialogRef.current?.showModal();
   };
@@ -24,28 +26,28 @@ function FilmeViewDialog({filmeId, onChange }: FilmeViewProps) {
 
   const handleAlugar = async () => {
     await alugarFilme(Number(filme?.filmeId));
-    const atualizado = await buscarFilmeId(Number(filme?.filmeId));
+    const atualizado = await buscarFilmeId(Number(filmeId));
     setFilme(atualizado);
     onChange?.();
   };
 
   const handleDevolver = async () => {
     await devolverFilme(Number(filme?.filmeId));
-    const atualizado = await buscarFilmeId(Number(filme?.filmeId));
+    const atualizado = await buscarFilmeId(Number(filmeId));
     setFilme(atualizado);
     onChange?.();
   };
 
   const handleDesativar = async () => {
     await desativarFilme(Number(filme?.filmeId));
-    const atualizado = await buscarFilmeId(Number(filme?.filmeId));
+    const atualizado = await buscarFilmeId(Number(filmeId));
     setFilme(atualizado);
     onChange?.();
   };
 
   const handleAtivar = async () => {
     await ativarFilme(Number(filme?.filmeId));
-    const atualizado = await buscarFilmeId(Number(filme?.filmeId));
+    const atualizado = await buscarFilmeId(Number(filmeId));
     setFilme(atualizado);
     onChange?.();
   };
@@ -56,10 +58,10 @@ function FilmeViewDialog({filmeId, onChange }: FilmeViewProps) {
         <i className="bi bi-eye-fill"></i>
       </button>
 
-      <style>{`#dlg-${filmeId}::backdrop{background:rgba(0,0,0,.55)} #dlg-${filmeId} .form-label { color: #212529 !important; }`}</style>
+      <style>{`#dlg-${Number(filmeId)}::backdrop{background:rgba(0,0,0,.55)} #dlg-${filmeId} .form-label { color: #212529 !important; }`}</style>
 
       <dialog
-        id={`dlg-${filmeId}`}
+        id={`dlg-${Number(filmeId)}`}
         ref={dialogRef}
         className="border-0 rounded-4 shadow-lg p-0"
         style={{

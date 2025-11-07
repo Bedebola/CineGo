@@ -1,15 +1,5 @@
 import { useState, useRef } from "react";
-import { buscarUsuarioId } from "../../../api/usuariosService";
-
-interface Usuario {
-  nome: string;
-  cpf: string;
-  email: string;
-}
-
-interface UsuarioViewProps {
-  usuarioId: number;
-}
+import { buscarUsuarioId, type Usuario, type UsuarioViewProps } from "../../../api/usuariosService";
 
 function UsuarioView({ usuarioId }: UsuarioViewProps) {
   const [usuario, setUsuario] = useState<Usuario | null>(null);

@@ -90,31 +90,31 @@ public class FilmeService {
         }
     }
 
-    public List<FilmeDTO> listarFilmesAlugadosPorUsuario(Long usuarioId) throws ArgumentoInvalidoOuNaoEncontradoException{
-
-        try {
-            List<Filme> listaFilmesConsultaPorUsuarioId = filmeRepository.findByStatusAndUsuarioId(StatusFilme.ALUGADO, usuarioId);
-
-            if (listaFilmesConsultaPorUsuarioId.isEmpty()){
-                throw new ArgumentoInvalidoOuNaoEncontradoException("A busca não retornou resultados!");
-            }
-
-            List<FilmeDTO> listarFilmesAlugadosPorUsuarioRetorno = new ArrayList<>();
-
-            for (int i = 0; i < listaFilmesConsultaPorUsuarioId.size(); i++){
-                Filme filme = listaFilmesConsultaPorUsuarioId.get(i);
-                FilmeDTO filmeDTO = criarRetornoFilme(filme);
-
-                listarFilmesAlugadosPorUsuarioRetorno.add(filmeDTO);
-            }
-
-            return listarFilmesAlugadosPorUsuarioRetorno;
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-    }
+//    public List<FilmeDTO> listarFilmesAlugadosPorUsuario(Long usuarioId) throws ArgumentoInvalidoOuNaoEncontradoException{
+//
+//        try {
+//            List<Filme> listaFilmesConsultaPorUsuarioId = filmeRepository.findByStatusAndUsuarioId(StatusFilme.ALUGADO, usuarioId);
+//
+//            if (listaFilmesConsultaPorUsuarioId.isEmpty()){
+//                throw new ArgumentoInvalidoOuNaoEncontradoException("A busca não retornou resultados!");
+//            }
+//
+//            List<FilmeDTO> listarFilmesAlugadosPorUsuarioRetorno = new ArrayList<>();
+//
+//            for (int i = 0; i < listaFilmesConsultaPorUsuarioId.size(); i++){
+//                Filme filme = listaFilmesConsultaPorUsuarioId.get(i);
+//                FilmeDTO filmeDTO = criarRetornoFilme(filme);
+//
+//                listarFilmesAlugadosPorUsuarioRetorno.add(filmeDTO);
+//            }
+//
+//            return listarFilmesAlugadosPorUsuarioRetorno;
+//
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
+//
+//    }
 
 
     public FilmeDTO buscarFilmePorId(Long filmeId) throws ArgumentoInvalidoOuNaoEncontradoException {
@@ -178,6 +178,7 @@ public class FilmeService {
                     .orElseThrow(() -> new ArgumentoInvalidoOuNaoEncontradoException("Nenhum filme encontrado para o id informado"));
 
             validarCamposFilme(filmeExistente, filmeId);
+
             filmeExistente.setTitulo(filme.getTitulo());
             filmeExistente.setGenero(filme.getGenero());
             filmeExistente.setSinopse(filme.getSinopse());
@@ -201,7 +202,7 @@ public class FilmeService {
 
 
         registroLocacaoService.registrarLocacao(
-                1L,
+                21L,
                 filmeRegistrado.getId(),
                 "");
         filmeRegistrado.setStatus(StatusFilme.ALUGADO);
