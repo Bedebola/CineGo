@@ -1,6 +1,7 @@
 package com.cinego.application.services;
 
 import com.cinego.application.dtos.filme.FilmeDTO;
+import com.cinego.application.dtos.usuario.UsuarioPrincipalDTO;
 import com.cinego.domain.enums.StatusFilme;
 import com.cinego.domain.exceptions.AcaoInvalidaException;
 import com.cinego.domain.exceptions.ArgumentoInvalidoOuNaoEncontradoException;
@@ -11,6 +12,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -90,33 +92,6 @@ public class FilmeService {
         }
     }
 
-//    public List<FilmeDTO> listarFilmesAlugadosPorUsuario(Long usuarioId) throws ArgumentoInvalidoOuNaoEncontradoException{
-//
-//        try {
-//            List<Filme> listaFilmesConsultaPorUsuarioId = filmeRepository.findByStatusAndUsuarioId(StatusFilme.ALUGADO, usuarioId);
-//
-//            if (listaFilmesConsultaPorUsuarioId.isEmpty()){
-//                throw new ArgumentoInvalidoOuNaoEncontradoException("A busca não retornou resultados!");
-//            }
-//
-//            List<FilmeDTO> listarFilmesAlugadosPorUsuarioRetorno = new ArrayList<>();
-//
-//            for (int i = 0; i < listaFilmesConsultaPorUsuarioId.size(); i++){
-//                Filme filme = listaFilmesConsultaPorUsuarioId.get(i);
-//                FilmeDTO filmeDTO = criarRetornoFilme(filme);
-//
-//                listarFilmesAlugadosPorUsuarioRetorno.add(filmeDTO);
-//            }
-//
-//            return listarFilmesAlugadosPorUsuarioRetorno;
-//
-//        } catch (Exception e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//    }
-
-
     public FilmeDTO buscarFilmePorId(Long filmeId) throws ArgumentoInvalidoOuNaoEncontradoException {
 
         try {
@@ -191,7 +166,7 @@ public class FilmeService {
         }
     }
 
-    public FilmeDTO alugarFilme(Long filmeId) throws ArgumentoInvalidoOuNaoEncontradoException {
+    public FilmeDTO alugarFilme(Long filmeId, String emailCliente, UsuarioPrincipalDTO usuarioLogado) throws ArgumentoInvalidoOuNaoEncontradoException {
 
         Filme filmeRegistrado = filmeRepository.findById(filmeId)
                 .orElseThrow(() -> new ArgumentoInvalidoOuNaoEncontradoException("Nenhum filme encontrado para o id informado"));
@@ -200,11 +175,8 @@ public class FilmeService {
             throw new AcaoInvalidaException("Não foi possível completar a ação: No momento, o título selecionado encontra-se alugado ou inativo.");
         }
 
+        registroLocacaoService.registrarLocacao(usuarioLogado, filmeRegistrado, emailCliente);
 
-        registroLocacaoService.registrarLocacao(
-                21L,
-                filmeRegistrado.getId(),
-                "");
         filmeRegistrado.setStatus(StatusFilme.ALUGADO);
         filmeRepository.save(filmeRegistrado);
         return criarRetornoFilme(filmeRegistrado);

@@ -25,17 +25,18 @@ public class RegistroLocacao {
     @JoinColumn(name = "filme_id")
     private Filme filme;
 
+    private String emailCliente;
+
     private LocalDateTime dataLocacao;
 
     private LocalDateTime dataDevolucao;
 
-    private String emailCliente;
-
-    public RegistroLocacao (Usuario usuario, Filme filme, LocalDateTime dataLocacao,LocalDateTime dataDevolucao) {
+    public RegistroLocacao (Usuario usuario, Filme filme, LocalDateTime dataLocacao,LocalDateTime dataDevolucao, String emailCliente) {
         this.usuario = usuario;
         this.filme = filme;
         this.dataLocacao = dataLocacao;
         this.dataDevolucao = dataDevolucao;
+        this.emailCliente = emailCliente;
     }
 
     public RegistroLocacao (String emailCliente){

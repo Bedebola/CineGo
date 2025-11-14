@@ -1,6 +1,8 @@
 package com.cinego.presentation;
 
 import com.cinego.application.dtos.filme.FilmeDTO;
+import com.cinego.application.dtos.usuario.UsuarioPrincipalDTO;
+import com.cinego.application.services.RegistroLocacaoService;
 import com.cinego.domain.enums.StatusFilme;
 import com.cinego.domain.exceptions.ArgumentoInvalidoOuNaoEncontradoException;
 import com.cinego.domain.entities.Filme;
@@ -10,6 +12,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,6 +25,9 @@ public class FilmeController {
 
     @Autowired
     private FilmeService filmeService;
+
+    @Autowired
+    private RegistroLocacaoService registroLocacaoService;
 
     @Operation(
             summary = "Listar Filmes sem filtro",
@@ -50,21 +56,6 @@ public class FilmeController {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
     }
-
-//    @Operation(
-//            summary = "Listar filmes alugados por usuario",
-//            description = "Lista os filmes alugados por um usario especifico, selecionado por quem está fazendo a consulta"
-//    )
-//    @GetMapping("/listarFilmesAlugadosPorUsuario/{usuarioId}")
-//    ResponseEntity<List<FilmeDTO>> listarFilmesAlugadosPorUsuario(
-//            @PathVariable Long usuarioId
-//    ){
-//        try{
-//            return ResponseEntity.ok(filmeService.listarFilmesAlugadosPorUsuario(usuarioId));
-//        } catch (ArgumentoInvalidoOuNaoEncontradoException e){
-//            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-//        }
-//    }
 
     @Operation(
             summary = "Buscar filme por id",
@@ -116,15 +107,34 @@ public class FilmeController {
             summary = "Alugar Filme",
             description = "Altera o status do filme para Alugado"
     )
+
     @PutMapping("/alugarFilme/{filmeId}")
     ResponseEntity<?> alugarFilme(
-            @PathVariable Long filmeId
+            @PathVariable Long filmeId,
+            @RequestBody String emailCliente,
+            @AuthenticationPrincipal UsuarioPrincipalDTO usuarioLogado
+
     ){
         try {
-            return ResponseEntity.ok(filmeService.alugarFilme(filmeId));
+            return ResponseEntity.ok(filmeService.alugarFilme(filmeId, emailCliente, usuarioLogado));
         } catch (ArgumentoInvalidoOuNaoEncontradoException e) {
             return ResponseEntity.badRequest().body("Erro: " + e);
         }
+    }
+
+    @PostMapping("/enviarEmailLembreteDeDevolucao/{filmeId}")
+    @Operation(summary = "Envio de email para lembrar o cliente de devolver o filme alugado.")
+    public ResponseEntity<?> enviarEmailLembreteDeDevolucaoo(
+            @PathVariable Long filmeId
+    ){
+
+        try {
+            registroLocacaoService.enviarEmailDevolucao(filmeId);
+            return ResponseEntity.ok("Email enviado com sucesso!");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     @Operation(

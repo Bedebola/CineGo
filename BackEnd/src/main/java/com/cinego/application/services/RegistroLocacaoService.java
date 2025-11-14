@@ -1,8 +1,10 @@
 package com.cinego.application.services;
 
+import com.cinego.application.dtos.usuario.UsuarioPrincipalDTO;
 import com.cinego.domain.entities.Filme;
 import com.cinego.domain.entities.RegistroLocacao;
 import com.cinego.domain.entities.Usuario;
+import com.cinego.domain.enums.StatusFilme;
 import com.cinego.domain.interfaces.IEnvioEmail;
 import com.cinego.domain.repositories.FilmeRepository;
 import com.cinego.domain.repositories.RegistroLocacaoRepository;
@@ -27,39 +29,42 @@ public class RegistroLocacaoService {
     @Autowired
     private IEnvioEmail iEnvioEmail;
 
-    public RegistroLocacao registrarLocacao(Long usuarioId, Long filmeId, String emailCliente) {
-        Usuario usuario = usuarioRepository.findById(usuarioId)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+    public RegistroLocacao registrarLocacao(UsuarioPrincipalDTO usuarioLogado, Filme filme, String emailCliente) {
 
-        Filme filme = filmeRepository.findById(filmeId)
+        Filme filmeRegistrado = filmeRepository.findById((filme.getId()))
                 .orElseThrow(() -> new RuntimeException("Filme não encontrado"));
+
+        Usuario usuario = usuarioRepository.findById(usuarioLogado.id())
+                .orElseThrow(() -> new RuntimeException("Usuario não encontrado"));
 
         LocalDateTime agora = LocalDateTime.now();
 
         RegistroLocacao registro = new RegistroLocacao(
                 usuario,
-                filme,
+                filmeRegistrado,
                 agora,
-                agora.plusDays(3L)
+                agora.plusDays(3L),
+                emailCliente
         );
 
         registro.setEmailCliente(emailCliente);
-
         registroLocacaoRepository.save(registro);
 
         return registro;
     }
 
-    public RegistroLocacao enviarEmailDevolucao(RegistroLocacao registroLocacao) {
+    public RegistroLocacao enviarEmailDevolucao(Long filmeId) {
 
-        if (registroLocacao.getDataDevolucao().equals(LocalDateTime.now())){
+        RegistroLocacao registroLocacao = registroLocacaoRepository.findByFilmeIdAndDataDevolucao(filmeId, null);
+
+
+       // if (registroLocacao.getDataDevolucao().equals(LocalDateTime.now()) && registroLocacao.getFilme().getStatus() == StatusFilme.ALUGADO ){
             iEnvioEmail.enviarEmailSImples(
                     registroLocacao.getEmailCliente(),
                     "Lembrete de Devolução",
-                    "CineGo lembra que você precisa devolver o filme 'A volta dos que não foram' hoje!"
+                    "CineGo lembra que você precisa devolver o filme:"+ registroLocacao.getFilme().getTitulo() + "até o dia:" + registroLocacao.getDataDevolucao() + "!"
             );
-        }
-
+       // }
         return null;
     }
 }
