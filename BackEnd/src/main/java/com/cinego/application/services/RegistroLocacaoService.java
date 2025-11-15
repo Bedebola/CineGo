@@ -58,9 +58,9 @@ public class RegistroLocacaoService {
     public RegistroLocacao enviarEmailDevolucao(Long filmeId) {
 
         RegistroLocacao registroLocacao = registroLocacaoRepository.findByFilmeIdAndIsDevolvido(filmeId, false);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        LocalDateTime dataFormatada = registroLocacao.getDataDevolucao();
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String dataFormatada = registroLocacao.getDataDevolucao().format(formatter);
 
         // if (registroLocacao.getDataDevolucao().equals(LocalDateTime.now()) && registroLocacao.getFilme().getStatus() == StatusFilme.ALUGADO ){
             iEnvioEmail.enviarEmailSImples(
