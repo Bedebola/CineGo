@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Service
 public class RegistroLocacaoService {
@@ -44,7 +45,8 @@ public class RegistroLocacaoService {
                 filmeRegistrado,
                 agora,
                 agora.plusDays(3L),
-                emailCliente
+                emailCliente,
+                false
         );
 
         registro.setEmailCliente(emailCliente);
@@ -55,14 +57,16 @@ public class RegistroLocacaoService {
 
     public RegistroLocacao enviarEmailDevolucao(Long filmeId) {
 
-        RegistroLocacao registroLocacao = registroLocacaoRepository.findByFilmeIdAndDataDevolucao(filmeId, null);
+        RegistroLocacao registroLocacao = registroLocacaoRepository.findByFilmeIdAndIsDevolvido(filmeId, false);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDateTime dataFormatada = registroLocacao.getDataDevolucao();
 
 
-       // if (registroLocacao.getDataDevolucao().equals(LocalDateTime.now()) && registroLocacao.getFilme().getStatus() == StatusFilme.ALUGADO ){
+        // if (registroLocacao.getDataDevolucao().equals(LocalDateTime.now()) && registroLocacao.getFilme().getStatus() == StatusFilme.ALUGADO ){
             iEnvioEmail.enviarEmailSImples(
                     registroLocacao.getEmailCliente(),
                     "Lembrete de Devolução",
-                    "CineGo lembra que você precisa devolver o filme:"+ registroLocacao.getFilme().getTitulo() + "até o dia:" + registroLocacao.getDataDevolucao() + "!"
+                    "CineGo lembra que você precisa devolver o filme:"+ registroLocacao.getFilme().getTitulo() + "até o dia:" + dataFormatada + "!"
             );
        // }
         return null;

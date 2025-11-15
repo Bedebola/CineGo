@@ -45,6 +45,7 @@ public class SecurityConfig {
 
                         //autorizações das rotas de filme
                         .requestMatchers(HttpMethod.GET,"/filme/listarFilmes").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/filme/enviarEmailLembreteDeDevolucao/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET,"/filme/buscarFilmeId/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST,"/filme/cadastrarFilme").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT,"/filme/editarFilme/**").hasRole("ADMIN")

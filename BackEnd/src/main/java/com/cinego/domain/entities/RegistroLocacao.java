@@ -31,12 +31,15 @@ public class RegistroLocacao {
 
     private LocalDateTime dataDevolucao;
 
-    public RegistroLocacao (Usuario usuario, Filme filme, LocalDateTime dataLocacao,LocalDateTime dataDevolucao, String emailCliente) {
+    private boolean isDevolvido;
+
+    public RegistroLocacao (Usuario usuario, Filme filme, LocalDateTime dataLocacao,LocalDateTime dataDevolucao, String emailCliente, boolean isDevolvido) {
         this.usuario = usuario;
         this.filme = filme;
         this.dataLocacao = dataLocacao;
         this.dataDevolucao = dataDevolucao;
         this.emailCliente = emailCliente;
+        this.isDevolvido = isDevolvido;
     }
 
     public RegistroLocacao (String emailCliente){
