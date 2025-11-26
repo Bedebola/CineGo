@@ -4,7 +4,7 @@ import { getRoleFromToken } from "../api/api";
 
 interface RoleRouteProps {
   children: React.ReactNode;
-  allowedRoles: string[];
+  allowedRoles: string[]; // ex: ["ADMIN"]
 }
 
 const RoleRoute: React.FC<RoleRouteProps> = ({ children, allowedRoles }) => {

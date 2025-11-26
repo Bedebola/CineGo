@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { editarFilme, buscarFilmeId, type Filme, type FilmeViewProps} from "../../../api/filmesService";
+import { editarFilme, buscarFilmeId, type Filme, type FilmeViewProps } from "../../../api/filmesService";
 
 
 function EditarFilme({ filmeId, onChange }: FilmeViewProps) {
@@ -8,17 +8,11 @@ function EditarFilme({ filmeId, onChange }: FilmeViewProps) {
   const [genero, setGenero] = useState("");
   const [sinopse, setSinopse] = useState("");
   const [isFormValid, setIsFormValid] = useState(false);
-
   const [message, setMessage] = useState("");
-
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
-    if (titulo.trim() && sinopse.trim()) {
-      setIsFormValid(true);
-    } else {
-      setIsFormValid(false);
-    }
+    setIsFormValid(titulo.trim() !== "" && sinopse.trim() !== "");
   }, [titulo, genero, sinopse]);
 
   const abrirDialog = async () => {
@@ -41,11 +35,24 @@ function EditarFilme({ filmeId, onChange }: FilmeViewProps) {
     e.preventDefault();
     setMessage("");
 
+    if (!filme) return;
+
+    const filmeAtualizado: Filme = {
+      ...filme,
+      titulo,
+      genero,
+      sinopse,
+    };
+
     try {
-      await editarFilme(filme!);
+      await editarFilme(filmeAtualizado);
 
       setMessage("As alterações foram salvas com sucesso!");
+
       onChange?.();
+
+      setTimeout(() => fecharDialog(), 1000);
+
     } catch (error) {
       console.error(error);
       setMessage("Erro ao editar os dados do filme. Tente novamente.");
@@ -59,16 +66,16 @@ function EditarFilme({ filmeId, onChange }: FilmeViewProps) {
       </button>
 
       <style>{`
-        #dlg-${Number(filmeId)}::backdrop {
-          background: rgba(0, 0, 0, 0.55);
+       #dlg-${Number(filmeId)}::backdrop {
+        background: rgba(0, 0, 0, 0.55);
         }
         .form-label {
-          color: black !important;
+        color: black !important;
         }
-      `}</style>
+ `}</style>
 
       <dialog
-        id={`dlg-${Number(filmeId)  }`}
+        id={`dlg-${Number(filmeId)}`}
         ref={dialogRef}
         className="border-0 rounded-4 shadow-lg p-0"
         style={{
@@ -93,9 +100,8 @@ function EditarFilme({ filmeId, onChange }: FilmeViewProps) {
 
           {message && (
             <div
-              className={`alert ${
-                message.includes("sucesso") ? "alert-success" : "alert-danger"
-              } mb-2`}
+              className={`alert ${message.includes("sucesso") ? "alert-success" : "alert-danger"
+                } mb-2`}
               role="alert"
             >
               {message}

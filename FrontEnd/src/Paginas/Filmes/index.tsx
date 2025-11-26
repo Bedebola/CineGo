@@ -8,6 +8,7 @@ import FilmeView from "../../Componentes/Dialogs/Filmes/FilmeViewDialog";
 import FilmeEdicaoDialog from "../../Componentes/Dialogs/Filmes/FilmeEdicaoDialog";
 import FilmeExclusaoDialog from "../../Componentes/Dialogs/Filmes/FilmeExclusaoDialog";
 import CadastrarFilme from "../../Componentes/Dialogs/Filmes/FilmeCadastro";
+import { getRoleFromToken } from "../../api/api";
 
 function normalizarStatus(s: string) {
   return s
@@ -28,14 +29,25 @@ function classeStatus(status: string) {
 function Filmes() {
   const [filmes, setFilmes] = useState<Filme[]>([]);
   const [statusSelecionado, setStatusSelecionado] = useState<string>("");
+  const [role, setRole] = useState<string | null>(null);
 
   async function carregar() {
+    if (statusSelecionado && statusSelecionado !== "TODOS") {
+      await filtrarFilmesPorStatus();
+      return;
+    }
     const data = await listarFilmes();
     setFilmes(data);
   }
 
   useEffect(() => {
     carregar();
+
+    async function buscarRole() {
+      const r = await getRoleFromToken();
+      setRole(r);
+    }
+    buscarRole();
   }, []);
 
   async function filtrarFilmesPorStatus() {
@@ -48,6 +60,8 @@ function Filmes() {
     setFilmes(data);
   }
 
+  const isAdmin = role === "ADMIN";
+
   return (
     <main
       className="container-fluid min-vh-100 py-4"
@@ -55,7 +69,7 @@ function Filmes() {
     >
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h2 className="h5 m-0">Filmes</h2>
-        <CadastrarFilme />
+        {isAdmin && <CadastrarFilme onChange={() => carregar()} />}
       </div>
 
       <div className="d-flex align-items-center gap-2 mb-3">
@@ -78,27 +92,40 @@ function Filmes() {
         </button>
       </div>
 
-      <div className="row g-3">
+      <div className="row g-4">
         {filmes.map((filme) => (
-          <div key={Number(filme.filmeId)} className="col-md-4 col-lg-3">
-            <div className="card h-100 shadow-sm position-relative">
-              <div className="position-absolute top-0 end-0 m-2">
+          <div key={Number(filme.filmeId)} className="col-md-6 col-lg-4">
+            <div
+              className="card h-100 shadow-sm position-relative border-0 rounded-3"
+              style={{ minHeight: "200px" }}
+            >
+              <div
+                className="position-absolute top-0 end-0 m-2 d-flex gap-2"
+                style={{ right: "0.75rem", top: "0.75rem" }}
+              >
                 <FilmeView filmeId={Number(filme.filmeId)} />
-                <FilmeEdicaoDialog
-                  filmeId={Number(filme.filmeId)}
-                  onChange={() => carregar()}
-                />
-                <FilmeExclusaoDialog
-                  filmeId={Number(filme.filmeId)}
-                  onChange={() => carregar()}
-                />
+                {isAdmin && (
+                  <>
+                    {/* Estes já estavam corretos */}
+                    <FilmeEdicaoDialog
+                      filmeId={Number(filme.filmeId)}
+                      onChange={() => carregar()}
+                    />
+                    <FilmeExclusaoDialog
+                      filmeId={Number(filme.filmeId)}
+                      onChange={() => carregar()}
+                    />
+                  </>
+                )}
               </div>
 
-              <div className="card-body">
-                <span className={`badge ${classeStatus(filme.status)} mb-2`}>
+              <div className="card-body p-4 pt-5">
+                <span className={`badge ${classeStatus(filme.status)} mb-3 fw-bold`}>
                   {filme.status}
                 </span>
-                <h5 className="card-title">{filme.titulo}</h5>
+                <h4 className="card-title mb-2 text-dark">
+                  {filme.titulo}
+                </h4>
                 <p className="card-text text-muted text-truncate">
                   {filme.sinopse}
                 </p>

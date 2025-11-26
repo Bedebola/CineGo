@@ -26,13 +26,14 @@ function Login() {
           })
         );
 
-        const role = getRoleFromToken(token);
-        console.log(role)
+        const role = await getRoleFromToken();
 
         if (role === "ADMIN") {
           navigate("/");
-        } else {
+        } else if (role === "USER") {
           navigate("/filmes");
+        } else {
+          navigate("/");
         }
 
       } else {
@@ -44,10 +45,6 @@ function Login() {
       alert("Credenciais inválidas");
     }
   }
-
-  const handleRegisterClick = () => {
-    navigate("/cadastroDeNovaEmpresa");
-  };
 
   return (
     <div
@@ -104,23 +101,6 @@ function Login() {
             Entrar
           </button>
         </form>
-        <div>
-          <button
-            type="button"
-            onClick={handleRegisterClick}
-            className="btn w-100"
-            style={{
-              backgroundColor: "#b7bcc2ff",
-              color: "white",
-              fontWeight: 600,
-              borderRadius: "10px",
-              padding: "10px",
-              transition: "0.3s",
-            }}
-          >
-            Registre-se
-          </button>
-        </div>
       </div>
     </div>
   );

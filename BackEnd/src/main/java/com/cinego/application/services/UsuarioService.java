@@ -109,6 +109,25 @@ public class UsuarioService {
         }
     }
 
+    public UsuarioResponseDTO criarPrimeiroAdmin(UsuarioRequestDTO usuario) {
+
+        boolean existeAdmin = usuarioRepository.existsByRole("ADMIN");
+        if (existeAdmin) {
+            throw new AcaoInvalidaException("Já existe um usuário admin cadastrado!");
+        }
+
+        Usuario novoUsuario = new Usuario();
+        novoUsuario.setNome(usuario.nome());
+        novoUsuario.setCpf(usuario.cpf());
+        novoUsuario.setEmail(usuario.email());
+        novoUsuario.setSenha(usuario.senha());
+        novoUsuario.setRole("ADMIN");
+
+        usuarioRepository.save(novoUsuario);
+
+        return new UsuarioResponseDTO(novoUsuario);
+    }
+
     public UsuarioResponseDTO editarUsuario(Long usuarioId, UsuarioRequestDTO usuario) throws ArgumentoInvalidoOuNaoEncontradoException {
         try {
             Usuario usuarioExistente = usuarioRepository.findById(usuarioId)

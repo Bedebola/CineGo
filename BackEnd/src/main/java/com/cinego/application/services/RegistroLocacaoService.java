@@ -62,15 +62,15 @@ public class RegistroLocacaoService {
         RegistroLocacao registroLocacao =
                 registroLocacaoRepository.findByFilmeIdAndIsDevolvido(filmeId, false);
 
+        if (registroLocacao == null) {
+            throw new RuntimeException("Nenhuma locação ativa encontrada para o filme ID: " + filmeId);
+        }
+
         Filme filmeLocado =
                 filmeRepository.findById(filmeId)
                         .orElseThrow(() -> new RuntimeException("Filme não encontrado!"));
 
         String tituloFilme = filmeLocado.getTitulo();
-
-        if (registroLocacao == null) {
-            throw new RuntimeException("Nenhuma locação ativa encontrada para o filme ID: " + filmeId);
-        }
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String dataFormatada = registroLocacao.getDataDevolucao().format(formatter);
@@ -80,13 +80,18 @@ public class RegistroLocacaoService {
                 StandardCharsets.UTF_8
         );
 
+        templateHtml = templateHtml
+                .replace("{{TITULO_FILME}}", tituloFilme)
+                .replace("{{DATA_DEVOLUCAO}}", dataFormatada);
+
         iEnvioEmail.enviarEmailComTemplate(
                 registroLocacao.getEmailCliente(),
-                "Lembrete de Devolução",
+                "Lembrete de Devolução - CineGo",
                 templateHtml
         );
 
         return registroLocacao;
     }
+
 
 }

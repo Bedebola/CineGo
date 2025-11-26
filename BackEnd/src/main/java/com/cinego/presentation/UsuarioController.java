@@ -2,6 +2,7 @@ package com.cinego.presentation;
 
 import com.cinego.application.dtos.usuario.UsuarioRequestDTO;
 import com.cinego.application.dtos.usuario.UsuarioResponseDTO;
+import com.cinego.domain.exceptions.AcaoInvalidaException;
 import com.cinego.domain.exceptions.ArgumentoInvalidoOuNaoEncontradoException;
 import com.cinego.application.services.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -53,6 +54,7 @@ public class UsuarioController {
         }
     }
 
+
     @Operation(
             summary = "Cadastrar Usuario",
             description = "Faz o cadastro de um novo usuario no banco de dados"
@@ -69,6 +71,23 @@ public class UsuarioController {
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Erro interno ao cadastrar usuário: " + e.getMessage());
+        }
+    }
+
+    @Operation(
+            summary = "Criar primeiro admin",
+            description = "Cria o primeiro usuário admin no sistema caso nenhum exista"
+    )
+    @PostMapping("/criarAdminInicial")
+    public ResponseEntity<?> criarAdminInicial(@RequestBody UsuarioRequestDTO usuario) {
+        try {
+            UsuarioResponseDTO adminCriado = usuarioService.criarPrimeiroAdmin(usuario);
+            return ResponseEntity.status(HttpStatus.CREATED).body(adminCriado);
+        } catch (AcaoInvalidaException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Erro: " + e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Erro interno ao criar admin: " + e.getMessage());
         }
     }
 

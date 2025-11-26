@@ -35,24 +35,17 @@ api.interceptors.request.use(
   }
 );
 
-export function getRoleFromToken(tokenString?: string): string | null {
-  // Se um token for passado como argumento, use-o. Caso contrário, tente buscar no sessionStorage.
-  const token = tokenString || sessionStorage.getItem('token');
-  
+export async function getRoleFromToken(): Promise<string | null> {
+  const store = await getStore();
+  const token = store.getState().auth.token;
   if (!token) return null;
 
   try {
-    const payloadBase64 = token.split('.')[1];
-    if (!payloadBase64) return null;
-
-    const payloadJson = atob(payloadBase64.replace(/-/g, "+").replace(/_/g, "/"));
+    const payloadBase64 = token.split(".")[1];
+    const payloadJson = atob(payloadBase64);
     const payload = JSON.parse(payloadJson);
 
-    if (payload.roles && Array.isArray(payload.roles) && payload.roles.length > 0) {
-      return payload.roles[0];
-    }
-    
-    return null;
+    return payload.roles?.[0] || null;
   } catch (error) {
     console.error("Erro ao decodificar token:", error);
     return null;

@@ -1,7 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { cadastrarFilme } from "../../../api/filmesService";
 
-function CadastrarFilme() {
+interface CadastrarFilmeProps {
+  onChange?: () => void;
+}
+
+function CadastrarFilme({ onChange }: CadastrarFilmeProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [titulo, setTitulo] = useState("");
   const [genero, setGenero] = useState("");
@@ -24,6 +28,11 @@ function CadastrarFilme() {
     e.preventDefault();
     try {
       await cadastrarFilme({ titulo, genero, sinopse });
+
+      if (onChange) {
+        onChange();
+      }
+
       fecharDialog();
       setTitulo("");
       setGenero("");
