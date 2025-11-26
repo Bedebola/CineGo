@@ -4,23 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6e0f71df-840d-45ba-9ebc-9679c8838246" name="Changes" comment="">
+    <list default="true" id="6e0f71df-840d-45ba-9ebc-9679c8838246" name="Changes" comment="Commit 06-11: implementação do Envio de Email no BackEnd e ajustes no front end referente a entidae fil">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackEnd/src/main/java/com/cinego/configs/CorsConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/src/main/java/com/cinego/configs/CorsConfiguration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackEnd/src/main/java/com/cinego/configs/JwtFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/src/main/java/com/cinego/configs/JwtFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackEnd/src/main/java/com/cinego/controllers/FilmeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/src/main/java/com/cinego/controllers/FilmeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackEnd/src/main/java/com/cinego/models/Filme.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/src/main/java/com/cinego/models/Filme.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackEnd/src/main/java/com/cinego/models/Usuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/src/main/java/com/cinego/models/Usuario.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackEnd/src/main/java/com/cinego/services/FilmeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/src/main/java/com/cinego/services/FilmeService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackEnd/src/main/java/com/cinego/services/UsuarioService.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/src/main/java/com/cinego/services/UsuarioService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/src/Componentes/Dialogs/Filmes/FilmeEdicaoDialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/src/Componentes/Dialogs/Filmes/FilmeEdicaoDialog.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/src/Componentes/Dialogs/Filmes/FilmeViewDialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/src/Componentes/Dialogs/Filmes/FilmeViewDialog.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/src/Componentes/Dialogs/Usuarios/UsuarioEdicaoDialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/src/Componentes/Dialogs/Usuarios/UsuarioEdicaoDialog.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/src/Paginas/Filmes/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/src/Paginas/Filmes/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/src/Paginas/Usuarios/CadastrarUsuario.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/src/Paginas/Usuarios/CadastrarUsuario.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/src/Paginas/Usuarios/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/src/Paginas/Usuarios/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/src/api/filmes-api.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/src/api/filmes-api.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/src/api/usuarios-api.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/src/api/usuarios-api.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackEnd/src/main/java/com/cinego/application/services/FilmeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/src/main/java/com/cinego/application/services/FilmeService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackEnd/src/main/java/com/cinego/domain/repositories/FilmeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/src/main/java/com/cinego/domain/repositories/FilmeRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackEnd/src/main/java/com/cinego/presentation/FilmeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/src/main/java/com/cinego/presentation/FilmeController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,6 +27,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Bedebola&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Bedebola/CineGo.git&quot;,
+    &quot;accountId&quot;: &quot;4c2cef52-9dd4-4066-83c2-27f8b888ab4a&quot;
+  }
+}</component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
@@ -59,12 +59,13 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
     &quot;Application.CineGoApplication.executor&quot;: &quot;Debug&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;develop&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Suporte/Documents/CineGo/BackEnd&quot;
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/berenice.rodrigues/Documents/CineGo&quot;
   }
 }</component>
   <component name="RecentsManager">
@@ -152,7 +153,15 @@
       <option name="project" value="LOCAL" />
       <updated>1758337222779</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Commit 06-11: implementação do Envio de Email no BackEnd e ajustes no front end referente a entidae fil">
+      <option name="closed" value="true" />
+      <created>1762476718630</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1762476718630</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -160,6 +169,7 @@
     <MESSAGE value="Commit 07-09 criacao de endpoins e implementação das regras de segurança." />
     <MESSAGE value="Commit 17-09" />
     <MESSAGE value="Commit 19-09" />
-    <option name="LAST_COMMIT_MESSAGE" value="Commit 19-09" />
+    <MESSAGE value="Commit 06-11: implementação do Envio de Email no BackEnd e ajustes no front end referente a entidae fil" />
+    <option name="LAST_COMMIT_MESSAGE" value="Commit 06-11: implementação do Envio de Email no BackEnd e ajustes no front end referente a entidae fil" />
   </component>
 </project>

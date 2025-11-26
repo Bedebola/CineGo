@@ -1,19 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
-import { editarFilme, buscarFilmeId } from "../../../api/filmes-api";
+import { editarFilme, buscarFilmeId, type Filme, type FilmeViewProps} from "../../../api/filmesService";
 
-interface Filme {
-  filmeId: number;
-  titulo: string;
-  genero: string;
-  sinopse: string;
-}
 
-interface EditarFilmeProps {
-  filmeId: number;
-  onChange?: () => void;
-}
-
-function EditarFilme({ filmeId, onChange }: EditarFilmeProps) {
+function EditarFilme({ filmeId, onChange }: FilmeViewProps) {
   const [filme, setFilme] = useState<Filme | null>(null);
   const [titulo, setTitulo] = useState("");
   const [genero, setGenero] = useState("");
@@ -34,7 +23,7 @@ function EditarFilme({ filmeId, onChange }: EditarFilmeProps) {
 
   const abrirDialog = async () => {
     try {
-      const dados = await buscarFilmeId(filmeId);
+      const dados = await buscarFilmeId(Number(filmeId));
       setFilme(dados);
       setTitulo(dados.titulo);
       setGenero(dados.genero);
@@ -53,11 +42,7 @@ function EditarFilme({ filmeId, onChange }: EditarFilmeProps) {
     setMessage("");
 
     try {
-      await editarFilme(filmeId, {
-        titulo,
-        genero,
-        sinopse,
-      });
+      await editarFilme(filme!);
 
       setMessage("As alterações foram salvas com sucesso!");
       onChange?.();
@@ -74,7 +59,7 @@ function EditarFilme({ filmeId, onChange }: EditarFilmeProps) {
       </button>
 
       <style>{`
-        #dlg-${filmeId}::backdrop {
+        #dlg-${Number(filmeId)}::backdrop {
           background: rgba(0, 0, 0, 0.55);
         }
         .form-label {
@@ -83,7 +68,7 @@ function EditarFilme({ filmeId, onChange }: EditarFilmeProps) {
       `}</style>
 
       <dialog
-        id={`dlg-${filmeId}`}
+        id={`dlg-${Number(filmeId)  }`}
         ref={dialogRef}
         className="border-0 rounded-4 shadow-lg p-0"
         style={{

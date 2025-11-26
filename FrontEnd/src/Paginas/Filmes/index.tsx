@@ -1,15 +1,13 @@
 import { useEffect, useState } from "react";
-import { listarFilmes } from "../../api/filmes-api";
+import {
+  listarFilmes,
+  listarFilmesPorStatus,
+  type Filme,
+} from "../../api/filmesService";
 import FilmeView from "../../Componentes/Dialogs/Filmes/FilmeViewDialog";
 import FilmeEdicaoDialog from "../../Componentes/Dialogs/Filmes/FilmeEdicaoDialog";
 import FilmeExclusaoDialog from "../../Componentes/Dialogs/Filmes/FilmeExclusaoDialog";
-
-interface Filme {
-  filmeId: number;
-  titulo: string;
-  sinopse: string;
-  status: string;
-}
+import CadastrarFilme from "../../Componentes/Dialogs/Filmes/FilmeCadastro";
 
 function normalizarStatus(s: string) {
   return s
@@ -29,17 +27,24 @@ function classeStatus(status: string) {
 
 function Filmes() {
   const [filmes, setFilmes] = useState<Filme[]>([]);
-
-  useEffect(() => {
-    async function carregarFilmes() {
-      const data: Filme[] = await listarFilmes();
-      setFilmes(data);
-    }
-    carregarFilmes();
-  }, []);
+  const [statusSelecionado, setStatusSelecionado] = useState<string>("");
 
   async function carregar() {
     const data = await listarFilmes();
+    setFilmes(data);
+  }
+
+  useEffect(() => {
+    carregar();
+  }, []);
+
+  async function filtrarFilmesPorStatus() {
+    if (statusSelecionado === "" || statusSelecionado === "TODOS") {
+      await carregar();
+      return;
+    }
+
+    const data = await listarFilmesPorStatus(statusSelecionado);
     setFilmes(data);
   }
 
@@ -48,22 +53,43 @@ function Filmes() {
       className="container-fluid min-vh-100 py-4"
       style={{ paddingRight: 260 }}
     >
-      <h2 className="h5 mb-3">Filmes</h2>
+      <div className="d-flex justify-content-between align-items-center mb-3">
+        <h2 className="h5 m-0">Filmes</h2>
+        <CadastrarFilme />
+      </div>
+
+      <div className="d-flex align-items-center gap-2 mb-3">
+        <select
+          id="statusFilme"
+          className="form-select form-select-sm w-auto"
+          value={statusSelecionado}
+          onChange={(e) => setStatusSelecionado(e.target.value)}
+        >
+          <option value="">Todos</option>
+          <option value="DISPONIVEL">Disponíveis</option>
+          <option value="ALUGADO">Alugados</option>
+          <option value="DESATIVADO">Desativados</option>
+        </select>
+        <button
+          onClick={filtrarFilmesPorStatus}
+          className="btn btn-primary btn-sm"
+        >
+          <i className="bi bi-funnel"> Filtrar</i>
+        </button>
+      </div>
 
       <div className="row g-3">
         {filmes.map((filme) => (
-          <div key={filme.filmeId} className="col-md-4 col-lg-3">
+          <div key={Number(filme.filmeId)} className="col-md-4 col-lg-3">
             <div className="card h-100 shadow-sm position-relative">
               <div className="position-absolute top-0 end-0 m-2">
-                <FilmeView
-                  filmeId={filme.filmeId}
-                />
+                <FilmeView filmeId={Number(filme.filmeId)} />
                 <FilmeEdicaoDialog
-                  filmeId={filme.filmeId}
+                  filmeId={Number(filme.filmeId)}
                   onChange={() => carregar()}
                 />
                 <FilmeExclusaoDialog
-                  filmeId={filme.filmeId}
+                  filmeId={Number(filme.filmeId)}
                   onChange={() => carregar()}
                 />
               </div>
@@ -72,7 +98,6 @@ function Filmes() {
                 <span className={`badge ${classeStatus(filme.status)} mb-2`}>
                   {filme.status}
                 </span>
-
                 <h5 className="card-title">{filme.titulo}</h5>
                 <p className="card-text text-muted text-truncate">
                   {filme.sinopse}

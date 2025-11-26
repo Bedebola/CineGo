@@ -1,78 +1,197 @@
-import { useEffect, useState } from "react";
-import { listarUsuarios } from "../../api/usuarios-api";
-import UsuarioView from "../../Componentes/Dialogs/Usuarios/UsuarioViewDialog";
-import UsuarioEdicaoDialog from "../../Componentes/Dialogs/Usuarios/UsuarioEdicaoDialog";
-import UsuarioExclusaoDialog from "../../Componentes/Dialogs/Usuarios/UsuarioExclusaoDialog";
+import { useState, useEffect } from "react";
+import {listarUsuarios,editarUsuario, type Usuario,} from "../../api/usuariosService";
+import UsuarioCadastro from "../../Componentes/Dialogs/Usuarios/UsuarioCadastro";
 
-interface Usuario {
-  usuarioId: number;
-  nome: string;
-  cpf: string;
-  email: string;
-}
-
-function Usuarios() {
+function UsuariosListView() {
   const [usuarios, setUsuarios] = useState<Usuario[]>([]);
+  const [usuarioSelecionado, setUsuarioSelecionado] = useState<Usuario | null>(null);
+  const [nome, setNome] = useState("");
+  const [email, setEmail] = useState("");
+  const [cpf, setCpf] = useState("");
+  const [senha, setSenha] = useState("");
+  const [role, setRole] = useState("");
+  const [isFormValid, setIsFormValid] = useState(false);
 
   useEffect(() => {
-    carregar();
+    const carregarUsuarios = async () => {
+      const data = await listarUsuarios();
+      setUsuarios(data);
+    };
+    carregarUsuarios();
   }, []);
 
-  async function carregar() {
-    const data = await listarUsuarios();
-    setUsuarios(data);
+  useEffect(() => {
+    if (usuarioSelecionado) {
+      setNome(usuarioSelecionado.nome);
+      setEmail(usuarioSelecionado.email);
+      setCpf(usuarioSelecionado.cpf);
+      setRole(usuarioSelecionado.role);
+      setSenha("");
+      console.log(usuarioSelecionado?.usuarioId)
+
+    }
+  }, [usuarioSelecionado]);
+
+
+  useEffect(() => {
+    if (nome.trim() && email.trim() && cpf.trim()) {
+      setIsFormValid(true);
+    } else {
+      setIsFormValid(false);
+    }
+  }, [nome, email, cpf]);
+
+  async function handleSalvar() {
+    if (!usuarioSelecionado) return;
+
+    try {
+      const usuarioEditado: Usuario = {
+        ...usuarioSelecionado,
+        nome,
+        email,
+        cpf,
+        role,
+      };
+
+      if (senha.trim()) {
+        usuarioEditado.senha = senha;
+      }
+
+      await editarUsuario(Number(usuarioEditado.usuarioId), usuarioEditado);
+
+      const atualizados = await listarUsuarios();
+      setUsuarios(atualizados);
+
+      setUsuarioSelecionado(usuarioEditado);
+
+      alert("Usuário atualizado com sucesso!");
+    } catch (error) {
+      console.error("Erro ao editar usuário:", error);
+      alert("Erro ao salvar as alterações.");
+    }
   }
 
   return (
-    <main className="min-vh-100 d-flex flex-column align-items-center py-4">
-      <h2 className="h5 mb-4">Usuários</h2>
+    <div className="d-flex vh-100">
+      <div className="col-6 border-end overflow-4 p-4">
+        <h3>Usuários</h3>
+        <UsuarioCadastro />
 
-      <div className="table-responsive w-100" style={{ maxWidth: 1000 }}>
-        <table className="table table-hover table-striped align-middle shadow rounded overflow-hidden">
-          <thead className="table-dark">
-            <tr>
-              <th className="text-center" style={{ width: 180 }}>
-                Nome
-              </th>
-              <th>E-mail</th>
-              <th>CPF</th>
-              <th className="text-center" style={{ width: 140 }}>
-                Ações
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {usuarios.map((usuario) => (
-              <tr key={usuario.usuarioId}>
-                <td>
-                  <span className="fw-semibold">{usuario.nome}</span>
-                </td>
-                <td>
-                  <span className="text-muted">{usuario.email}</span>
-                </td>
-                <td>
-                  <span className="text-muted">{usuario.cpf}</span>
-                </td>
-                <td className="text-center">
-                  <div className="d-inline-flex gap-2">
-                    <UsuarioView usuarioId={usuario.usuarioId} />
-                    <UsuarioEdicaoDialog
-                      usuarioId={usuario.usuarioId}
-                      onChange={carregar}
-                    />
-                    <UsuarioExclusaoDialog
-                      usuarioId={usuario.usuarioId}
-                      onChange={carregar}
-                    />
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <ul className="list-unstyled mt-2">
+          {usuarios.map((usuario) => (
+            <li
+              key={usuario.usuarioId}
+              onClick={() => setUsuarioSelecionado(usuario)}
+              className={`p-2 rounded ${
+                usuarioSelecionado?.usuarioId === usuario.usuarioId
+                  ? "bg-light fw-semibold"
+                  : "bg-transparent"
+              }`}
+              style={{ cursor: "pointer" }}
+            >
+              {usuario.nome}
+            </li>
+          ))}
+        </ul>
       </div>
-    </main>
+
+      <div className="flex-grow-1 p-4">
+        {usuarioSelecionado ? (
+          <>
+            <h2>{usuarioSelecionado.nome}</h2>
+
+            <div className="mb-3">
+              <label htmlFor="nomeUsuario" className="form-label">
+                Nome:
+              </label>
+              <input
+                type="text"
+                id="nomeUsuario"
+                className="form-control"
+                placeholder="Digite o nome do usuário"
+                value={nome}
+                onChange={(e) => setNome(e.target.value)}
+              />
+            </div>
+
+            <div className="mb-3">
+              <label htmlFor="cpfUsuario" className="form-label fw-bold">
+                CPF:
+              </label>
+              <input
+                type="text"
+                id="cpfUsuario"
+                className="form-control"
+                value={cpf}
+                onChange={(e) => setCpf(e.target.value)}
+              />
+            </div>
+
+            <div className="mb-3">
+              <label htmlFor="emailUsuario" className="form-label fw-bold">
+                E-mail:
+              </label>
+              <input
+                type="email"
+                id="emailUsuario"
+                className="form-control"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+
+            <div className="mb-3">
+              <label htmlFor="roleUsuario" className="form-label fw-bold">
+                Tipo de Acesso:
+              </label>
+              <select
+                id="roleUsuario"
+                className="form-control"
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+              >
+                <option value="">Selecione uma opção</option>
+                <option value="ADMIN">Administrador</option>
+                <option value="USER">Colaborador</option>
+              </select>
+            </div>
+
+            <div className="mb-3">
+              <label htmlFor="senhaUsuario" className="form-label">
+                Senha:
+              </label>
+              <input
+                type="password"
+                id="senhaUsuario"
+                className="form-control"
+                placeholder="Digite uma nova senha (opcional)"
+                value={senha}
+                onChange={(e) => setSenha(e.target.value)}
+              />
+            </div>
+
+            <button
+              type="button"
+              className="btn w-100"
+              style={{
+                backgroundColor: "#343a40",
+                color: "white",
+                fontWeight: "600",
+                borderRadius: "10px",
+                padding: "10px",
+              }}
+              disabled={!isFormValid}
+              onClick={handleSalvar}
+            >
+              Salvar
+            </button>
+          </>
+        ) : (
+          <p className="text-muted">Selecione um usuário no lado esquerdo</p>
+        )}
+      </div>
+    </div>
   );
 }
 
-export default Usuarios;
+export default UsuariosListView;

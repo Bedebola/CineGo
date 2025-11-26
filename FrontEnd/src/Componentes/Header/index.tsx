@@ -10,7 +10,7 @@ export default function Header() {
         <Link to="/" className="text-white text-decoration-none">
           Home
         </Link>
-        <Link to="/usuarios" className="text-white text-decoration-none">
+        <Link to="/usuariosListView" className="text-white text-decoration-none">
           Usuarios
         </Link>
         <Link to="/filmes" className="text-white text-decoration-none">

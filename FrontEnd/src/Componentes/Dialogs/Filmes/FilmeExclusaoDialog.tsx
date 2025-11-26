@@ -1,22 +1,14 @@
 import { useState, useRef } from "react";
-import { excluirFilme, buscarFilmeId } from "../../../api/filmes-api";
+import { excluirFilme, buscarFilmeId, type Filme, type FilmeViewProps } from "../../../api/filmesService";
 
-interface Filme {
-  titulo: string;
-}
 
-interface FilmeExclusaoProps {
-  filmeId: number;
-  onChange?: () => void;
-}
-
-function ExcluirFilme ({ filmeId, onChange }: FilmeExclusaoProps) {
+function ExcluirFilme ({ filmeId, onChange }: FilmeViewProps) {
   const [filme, setFilme] = useState<Filme | null>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   const abrirDialog = async () => {
     const dados = await buscarFilmeId(Number(filmeId));
-    setFilme(dados);
+    setFilme(dados);  
     dialogRef.current?.showModal();
   };
 
@@ -24,7 +16,7 @@ function ExcluirFilme ({ filmeId, onChange }: FilmeExclusaoProps) {
 
   const confirmarExclusao = async () => {
     try {
-      await excluirFilme(filmeId);
+      await excluirFilme(Number(filme?.filmeId));
       fecharDialog();
       if (onChange) onChange();
     } catch (error) {
@@ -38,10 +30,10 @@ function ExcluirFilme ({ filmeId, onChange }: FilmeExclusaoProps) {
         <i className="bi bi-trash-fill"></i>
       </button>
 
-      <style>{`#dlg-${filmeId}::backdrop{background:rgba(0,0,0,.55)}`}</style>
+      <style>{`#dlg-${Number(filme?.filmeId)}::backdrop{background:rgba(0,0,0,.55)}`}</style>
 
       <dialog
-        id={`dlg-${filmeId}`}
+        id={`dlg-${Number(filme?.filmeId)}`}
         ref={dialogRef}
         className="border-0 rounded-4 shadow-lg p-0"
         style={{

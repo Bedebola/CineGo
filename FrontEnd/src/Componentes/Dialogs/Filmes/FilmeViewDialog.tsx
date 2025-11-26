@@ -5,23 +5,17 @@ import {
   devolverFilme,
   desativarFilme,
   ativarFilme,
-} from "../../../api/filmes-api";
-
-interface Filme {
-  titulo: string;
-  genero: string;
-  sinopse: string;
-  status: string;
-}
-
-interface FilmeViewProps {
-  filmeId: number;
-  onChange?: () => void;
-}
+  type Filme,
+  type FilmeViewProps,
+} from "../../../api/filmesService";
+import { useDispatch } from "react-redux";
+import { updateFilme } from "../../../Redux/filmesSlice";
 
 function FilmeViewDialog({ filmeId, onChange }: FilmeViewProps) {
   const [filme, setFilme] = useState<Filme | null>(null);
+  const [emailCliente, setEmailCliente] = useState("");
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const dispatch = useDispatch();
 
   const abrirDialog = async () => {
     const dados = await buscarFilmeId(Number(filmeId));
@@ -32,31 +26,45 @@ function FilmeViewDialog({ filmeId, onChange }: FilmeViewProps) {
   const fecharDialog = () => dialogRef.current?.close();
 
   const handleAlugar = async () => {
-    await alugarFilme(filmeId);
-    const atualizado = await buscarFilmeId(filmeId);
-    setFilme(atualizado);
-    onChange?.();
+    if (emailCliente && filme?.filmeId) {
+      await alugarFilme({ filmeId: filme.filmeId, emailCliente });
+      const atualizado = await buscarFilmeId(Number(filmeId));
+      setFilme(atualizado);
+      dispatch(updateFilme(atualizado));
+      onChange?.();
+    } else {
+      alert("Por favor, preencha o e-mail do cliente.");
+    }
   };
 
   const handleDevolver = async () => {
-    await devolverFilme(filmeId);
-    const atualizado = await buscarFilmeId(filmeId);
-    setFilme(atualizado);
-    onChange?.();
+    if (filme?.filmeId) {
+      await devolverFilme(Number(filme.filmeId));
+      const atualizado = await buscarFilmeId(Number(filmeId));
+      setFilme(atualizado);
+      dispatch(updateFilme(atualizado));
+      onChange?.();
+    }
   };
 
   const handleDesativar = async () => {
-    await desativarFilme(filmeId);
-    const atualizado = await buscarFilmeId(filmeId);
-    setFilme(atualizado);
-    onChange?.();
+    if (filme?.filmeId) {
+      await desativarFilme(Number(filme.filmeId));
+      const atualizado = await buscarFilmeId(Number(filmeId));
+      setFilme(atualizado);
+      dispatch(updateFilme(atualizado));
+      onChange?.();
+    }
   };
 
   const handleAtivar = async () => {
-    await ativarFilme(filmeId);
-    const atualizado = await buscarFilmeId(filmeId);
-    setFilme(atualizado);
-    onChange?.();
+    if (filme?.filmeId) {
+      await ativarFilme(Number(filme.filmeId));
+      const atualizado = await buscarFilmeId(Number(filmeId));
+      setFilme(atualizado);
+      dispatch(updateFilme(atualizado));
+      onChange?.();
+    }
   };
 
   return (
@@ -65,10 +73,10 @@ function FilmeViewDialog({ filmeId, onChange }: FilmeViewProps) {
         <i className="bi bi-eye-fill"></i>
       </button>
 
-      <style>{`#dlg-${filmeId}::backdrop{background:rgba(0,0,0,.55)} #dlg-${filmeId} .form-label { color: #212529 !important; }`}</style>
+      <style>{`#dlg-${Number(filmeId)}::backdrop{background:rgba(0,0,0,.55)} #dlg-${filmeId} .form-label { color: #212529 !important; }`}</style>
 
       <dialog
-        id={`dlg-${filmeId}`}
+        id={`dlg-${Number(filmeId)}`}
         ref={dialogRef}
         className="border-0 rounded-4 shadow-lg p-0"
         style={{
@@ -118,6 +126,23 @@ function FilmeViewDialog({ filmeId, onChange }: FilmeViewProps) {
             </p>
             <p className="text-muted">{filme?.genero}</p>
           </div>
+
+          {filme?.status === "DISPONIVEL" && (
+            <div className="p-4">
+              <p className="form-label fw-bold text-dark">
+                <strong>E-mail Cliente:</strong>
+              </p>
+              <input
+                type="email"
+                name="emailCliente"
+                id="emailCliente"
+                placeholder="Insira o e-mail do cliente"
+                value={emailCliente}
+                onChange={(e) => setEmailCliente(e.target.value)}
+                className="form-control"
+              />
+            </div>
+          )}
 
           <div className="d-flex gap-2 justify-content-end px-4 pb-4">
             {filme?.status === "DISPONIVEL" && (

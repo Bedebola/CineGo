@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 export default function SideBar() {
   const [isUsuariosOpen, setIsUsuariosOpen] = useState(false);
   const [isFilmesOpen, setIsFilmesOpen] = useState(false);
+  const [isMeusDadosOpen, setIsMeusDadosOpen] = useState(false);
 
   return (
     <ul
@@ -36,15 +37,7 @@ export default function SideBar() {
         >
           <li>
             <Link
-              to="/cadastrarUsuario"
-              className="nav-link text-white-50 ps-5 py-2"
-            >
-              Cadastrar Usuario
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/usuarios"
+              to="/usuariosListView"
               className="nav-link text-white-50 ps-5 py-2"
             >
               Usuarios
@@ -68,16 +61,30 @@ export default function SideBar() {
           className={`list-unstyled collapse ${isFilmesOpen ? "show" : ""}`}
         >
           <li>
-            <Link
-              to="/cadastrarFilme"
-              className="nav-link text-white-50 ps-5 py-2"
-            >
-              Cadastrar Filme
+            <Link to="/filmes" className="nav-link text-white-50 ps-5 py-2">
+              Catalogo de Filmes
             </Link>
           </li>
+        </ul>
+        <a
+          href="#"
+          onClick={(e) => {
+            e.preventDefault();
+            setIsMeusDadosOpen((v) => !v);
+          }}
+          className="nav-link text-white ps-4 py-3 fw-semibold"
+          aria-expanded={isFilmesOpen}
+          aria-controls="submenumeusdados"
+        >
+          Meus Dados
+        </a>
+        <ul
+          id="submenumeusdados"
+          className={`list-unstyled collapse ${isMeusDadosOpen ? "show" : ""}`}
+        >
           <li>
-            <Link to="/filmes" className="nav-link text-white-50 ps-5 py-2">
-              Catálogo de Filmes
+            <Link to="/usuarioMeusDados" className="nav-link text-white-50 ps-5 py-2">
+              Meu Usuário
             </Link>
           </li>
         </ul>
