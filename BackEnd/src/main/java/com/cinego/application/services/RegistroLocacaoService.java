@@ -12,6 +12,8 @@ import com.cinego.domain.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -55,20 +57,36 @@ public class RegistroLocacaoService {
         return registro;
     }
 
-    public RegistroLocacao enviarEmailDevolucao(Long filmeId) {
+    public RegistroLocacao enviarEmailDevolucao(Long filmeId) throws IOException {
 
-        RegistroLocacao registroLocacao = registroLocacaoRepository.findByFilmeIdAndIsDevolvido(filmeId, false);
+        RegistroLocacao registroLocacao =
+                registroLocacaoRepository.findByFilmeIdAndIsDevolvido(filmeId, false);
+
+        Filme filmeLocado =
+                filmeRepository.findById(filmeId)
+                        .orElseThrow(() -> new RuntimeException("Filme não encontrado!"));
+
+        String tituloFilme = filmeLocado.getTitulo();
+
+        if (registroLocacao == null) {
+            throw new RuntimeException("Nenhuma locação ativa encontrada para o filme ID: " + filmeId);
+        }
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String dataFormatada = registroLocacao.getDataDevolucao().format(formatter);
 
-        // if (registroLocacao.getDataDevolucao().equals(LocalDateTime.now()) && registroLocacao.getFilme().getStatus() == StatusFilme.ALUGADO ){
-            iEnvioEmail.enviarEmailSImples(
-                    registroLocacao.getEmailCliente(),
-                    "Lembrete de Devolução",
-                    "CineGo lembra que você precisa devolver o filme:"+ registroLocacao.getFilme().getTitulo() + "até o dia:" + dataFormatada + "!"
-            );
-       // }
-        return null;
+        String templateHtml = new String(
+                getClass().getResourceAsStream("/templates/template-email.html").readAllBytes(),
+                StandardCharsets.UTF_8
+        );
+
+        iEnvioEmail.enviarEmailComTemplate(
+                registroLocacao.getEmailCliente(),
+                "Lembrete de Devolução",
+                templateHtml
+        );
+
+        return registroLocacao;
     }
+
 }

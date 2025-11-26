@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { login } from "../../api/loginService";
 import { useDispatch } from "react-redux";
 import { loginSucesso } from "../../Redux/authSlice";
+import { getRoleFromToken } from "../../api/api";
 
 function Login() {
   const navigate = useNavigate();
@@ -13,27 +14,40 @@ function Login() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-  try {
-    const response = await login(email, senha);
-    const token = response.token;
-    
-    if (token) {
-      dispatch(
-        loginSucesso({
-          usuario: { email: email, nome: "" },
-          token: token,
-        })
-      );
-      navigate("/");
-    } else {
-      alert("Token não recebido. Verifique a resposta do servidor.");
-    }
+    try {
+      const response = await login(email, senha);
+      const token = response.token;
 
-  } catch (error) {
-    console.error("Erro no login:", error);
-    alert("Credenciais inválidas");
+      if (token) {
+        dispatch(
+          loginSucesso({
+            usuario: { email: email, nome: "" },
+            token: token,
+          })
+        );
+
+        const role = getRoleFromToken(token);
+        console.log(role)
+
+        if (role === "ADMIN") {
+          navigate("/");
+        } else {
+          navigate("/filmes");
+        }
+
+      } else {
+        alert("Token não recebido. Verifique a resposta do servidor.");
+      }
+
+    } catch (error) {
+      console.error("Erro no login:", error);
+      alert("Credenciais inválidas");
+    }
   }
-}
+
+  const handleRegisterClick = () => {
+    navigate("/cadastroDeNovaEmpresa");
+  };
 
   return (
     <div
@@ -90,6 +104,23 @@ function Login() {
             Entrar
           </button>
         </form>
+        <div>
+          <button
+            type="button"
+            onClick={handleRegisterClick}
+            className="btn w-100"
+            style={{
+              backgroundColor: "#b7bcc2ff",
+              color: "white",
+              fontWeight: 600,
+              borderRadius: "10px",
+              padding: "10px",
+              transition: "0.3s",
+            }}
+          >
+            Registre-se
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -28,15 +28,18 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
 
+                        //.requestMatchers("/**").permitAll()
+
                         //autorizações do swagger
                         .requestMatchers("/swagger-resources/**").permitAll()
                         .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers("/v3/api-docs/**").permitAll()
 
-                        //autorizações das rotas de usuario
+                        //autorizações das rotas de autenticação
                         .requestMatchers(HttpMethod.POST,"/access/login").permitAll()
                         .requestMatchers(HttpMethod.POST,"/access/recuperarsenha/envio").permitAll()
 
+                        //autorizações das rotas de usuario
                         .requestMatchers(HttpMethod.GET,"/usuario/listarUsuarios").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET,"/usuario/usuario/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/usuario/cadastrarUsuario").hasRole("ADMIN")

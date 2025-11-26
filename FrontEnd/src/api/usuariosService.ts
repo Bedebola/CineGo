@@ -10,7 +10,7 @@ export type Usuario = {
 };
 
 export type UsuarioViewProps = {
-  usuarioId: number;
+  usuarioId ?: number;
   onChange?: () => void;
 };
 

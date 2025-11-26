@@ -1,44 +1,24 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setFilmes, updateFilme } from "../../Redux/filmesSlice";
 import { listarFilmes } from "../../api/filmesService";
 import FilmeView from "../../Componentes/Dialogs/Filmes/FilmeViewDialog";
-
-interface Filme {
-  filmeId: number;
-  titulo: string;
-  sinopse: string;
-  status: string;
-}
+import type { RootState } from "../../Redux/store";
 
 export default function Home() {
-  const [filmes, setFilmes] = useState<Filme[]>([]);
+  const dispatch = useDispatch();
+  const filmes = useSelector((state: RootState) => state.filmes.filmes);
+  const stats = useSelector((state: RootState) => state.filmes.stats);
+
+  const version = useSelector((state) => state.filmes.version);
 
   useEffect(() => {
     async function carregar() {
       const data = await listarFilmes();
-      setFilmes(data);
+      dispatch(setFilmes(data));
     }
     carregar();
-  }, []);
-
-  const filmesRecentes = [...filmes]
-    .sort((a, b) => b.filmeId - a.filmeId)
-    .slice(0, 4);
-
-  const stats = filmes.reduce(
-    (acc, f) => {
-      const s = f.status.toLowerCase();
-      if (s === "disponivel") acc.disponiveis++;
-      if (s === "alugado") acc.alugados++;
-      if (s === "desativado") acc.inativos++;
-      return acc;
-    },
-    { disponiveis: 0, alugados: 0, inativos: 0 }
-  );
-
-  async function carregar() {
-    const data = await listarFilmes();
-    setFilmes(data);
-  }
+  }, [version]);
 
   return (
     <main className="container py-4">
@@ -69,34 +49,6 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </div>
-
-      <h4 className="mb-3">Novidades</h4>
-      <div className="row">
-        {filmesRecentes.map((f) => (
-          <div key={f.filmeId} className="col-md-3">
-            <div className="card h-100 d-flex flex-column justify-content-between">
-              <div className="card-body">
-                <h5 className="card-title">{f.titulo}</h5>
-                <p className="card-text text-truncate">{f.sinopse}</p>
-                <span
-                  className={`badge ${
-                    f.status === "DISPONIVEL"
-                      ? "bg-success"
-                      : f.status === "ALUGADO"
-                      ? "bg-danger"
-                      : "bg-secondary"
-                  }`}
-                >
-                  {f.status}
-                </span>
-              </div>
-              <div className="card-footer bg-transparent border-0 text-end ">
-                <FilmeView filmeId={f.filmeId} onChange={() => carregar()} />
-              </div>
-            </div>
-          </div>
-        ))}
       </div>
     </main>
   );

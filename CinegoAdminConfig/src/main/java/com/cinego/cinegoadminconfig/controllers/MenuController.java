@@ -12,8 +12,15 @@ public class MenuController {
         System.exit(0);
     }
 
-    public void abrirMenuAdmin(ActionEvent event) throws Exception {
+    public void abrirFormCadastroUsuario(ActionEvent event) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/cinego/cinegoadminconfig/views/admin-view.fxml"));
+        Scene scene = new Scene(loader.load());
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+    }
+
+    public void abrirFormCadastroEmpresa(ActionEvent event) throws Exception {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/cinego/cinegoadminconfig/views/empresa-view.fxml"));
         Scene scene = new Scene(loader.load());
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(scene);

@@ -140,12 +140,4 @@ public class UsuarioService {
         usuarioRepository.delete(usuarioRegistrado);
     }
 
-    public void recuperarSenha(UsuarioPrincipalDTO usuarioLogado) {
-
-        iEnvioEmail.enviarEmailSImples(usuarioLogado.email(),
-                "CodigoRecuperacao",
-                "123456"
-                );
-
-    }
 }

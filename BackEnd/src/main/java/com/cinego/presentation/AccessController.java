@@ -35,24 +35,6 @@ public class AccessController {
         return ResponseEntity.ok(new TokenResponse(token));
     }
 
-    @PostMapping("/recuperarsenha/envio")
-    @Operation(summary = "Envio de email para recuperacao de senha")
-    public ResponseEntity<?> recuperarSenha(
-            @AuthenticationPrincipal UsuarioPrincipalDTO usuarioLogado
-            ){
-
-        try {
-            usuarioService.recuperarSenha(usuarioLogado);
-            return ResponseEntity.ok("Codigo de recuperação enviado com sucesso!");
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-    }
-
-
-
-
 
 
 }

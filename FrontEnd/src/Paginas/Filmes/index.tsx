@@ -7,6 +7,7 @@ import {
 import FilmeView from "../../Componentes/Dialogs/Filmes/FilmeViewDialog";
 import FilmeEdicaoDialog from "../../Componentes/Dialogs/Filmes/FilmeEdicaoDialog";
 import FilmeExclusaoDialog from "../../Componentes/Dialogs/Filmes/FilmeExclusaoDialog";
+import CadastrarFilme from "../../Componentes/Dialogs/Filmes/FilmeCadastro";
 
 function normalizarStatus(s: string) {
   return s
@@ -52,7 +53,10 @@ function Filmes() {
       className="container-fluid min-vh-100 py-4"
       style={{ paddingRight: 260 }}
     >
-      <h2 className="h5 mb-3">Filmes</h2>
+      <div className="d-flex justify-content-between align-items-center mb-3">
+        <h2 className="h5 m-0">Filmes</h2>
+        <CadastrarFilme />
+      </div>
 
       <div className="d-flex align-items-center gap-2 mb-3">
         <select
@@ -94,7 +98,6 @@ function Filmes() {
                 <span className={`badge ${classeStatus(filme.status)} mb-2`}>
                   {filme.status}
                 </span>
-
                 <h5 className="card-title">{filme.titulo}</h5>
                 <p className="card-text text-muted text-truncate">
                   {filme.sinopse}

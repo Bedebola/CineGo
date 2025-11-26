@@ -24,10 +24,10 @@ import java.util.List;
 @Service
 public class TokenService {
 
-    @Value("${spring.secret}")
+    @Value("${spring.seguranca.secret}")
     private String secret;
 
-    @Value("${spring.expirationTime}")
+    @Value("${spring.seguranca.expirationTime}")
     private Long tempo;
 
     private String emissor = "cinegoapp";

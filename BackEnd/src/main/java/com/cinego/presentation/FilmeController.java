@@ -21,7 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/filme")
 @Tag(name = "Controller de Filmes", description = "Controler responsável pelas ações feitas na entidade Filmes. Possibilita o CRUDE Basico (Criação, Edição, Listagem/Busca e exclusão) e também ações como alugar, devolver e destivar através do método PUT.")
-public class FilmeController {
+public class    FilmeController {
 
     @Autowired
     private FilmeService filmeService;

@@ -1,6 +1,7 @@
 module com.cinego.cinegoadminconfig {
     requires javafx.controls;
     requires javafx.fxml;
+    requires javafx.graphics;
 
 
     opens com.cinego.cinegoadminconfig to javafx.fxml;

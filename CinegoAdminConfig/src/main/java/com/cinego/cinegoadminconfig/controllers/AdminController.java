@@ -36,7 +36,6 @@ public void voltarTelaInicial(ActionEvent event) throws Exception {
 
     @FXML
     private void cadastrarUsuarioAdmin(ActionEvent event) throws Exception {
-
         try {
         var urlNovoUsuario = "http://localhost:8080/usuario/cadastrarUsuario";
         URL url = new URL(urlNovoUsuario);

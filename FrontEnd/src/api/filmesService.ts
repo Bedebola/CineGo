@@ -9,6 +9,11 @@ export type Filme = {
   sinopse: string;
 };
 
+export type AlugarFilmeProps = {
+    filmeId?: number;
+    emailCliente: string;
+}
+
 export type FilmeViewProps = {
   filmeId?: number;
   onChange?: () => void;
@@ -31,8 +36,13 @@ export async function buscarFilmeId(filmeId: number): Promise<Filme> {
   return response.data;
 }
 
-export async function alugarFilme(filmeId: number): Promise<Filme> {
-  const response = await api.put<Filme>(`/filme/alugarFilme/${filmeId}`);
+export async function alugarFilme(alugarFilme: AlugarFilmeProps): Promise<Filme> {
+  const response = await api.put<Filme>(`/filme/alugarFilme/${alugarFilme.filmeId}`, alugarFilme.emailCliente);
+  return response.data;
+}
+
+export async function enviarEmailLembreteDeDevolucao(filmeId: number): Promise<""> {
+  const response = await api.post<"">(`/filme/enviarEmailLembreteDeDevolucao/${filmeId}`);
   return response.data;
 }
 
